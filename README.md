@@ -32,7 +32,7 @@ git clone https://github.com/devfullcycle/FC3-catalogo-de-videos-api-c-sharp.git
 <br /><br />
 ---
 
-| [<img src="https://github.com/wilsonneto-dev.png" width="75px;"/>][1] |
+| [<img src="https://avatars.githubusercontent.com/u/14916083?s=96&v=4" width="75px;"/>][1] |
 | :-: |
 |[Tutor Igor Gomes][1]|
 
