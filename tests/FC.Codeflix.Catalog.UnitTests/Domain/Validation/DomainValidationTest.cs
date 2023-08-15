@@ -35,6 +35,22 @@ public class DomainValidationTest
             .WithMessage($"{fieldName} should not be null");
     }
 
+    [Theory(DisplayName = nameof(GuidNotNullOrEmptyThrowWhenNullOrEmpty))]
+    [Trait("Domain", "DomainValidation - Validation")]
+    [InlineData("")]
+    [InlineData(null)]
+    public void GuidNotNullOrEmptyThrowWhenNullOrEmpty(string? target)
+    {
+        Guid? value = target == null ? null : Guid.Empty;
+        string fieldName = "Id";
+
+        Action action =
+            () => DomainValidation.NotNullOrEmpty(value, fieldName);
+
+        action.Should().Throw<EntityValidationException>()
+            .WithMessage($"{fieldName} should not be empty or null");
+    }
+
 
     [Theory(DisplayName = nameof(NotNullOrEmptyThrowWhenEmpty))]
     [Trait("Domain", "DomainValidation - Validation")]

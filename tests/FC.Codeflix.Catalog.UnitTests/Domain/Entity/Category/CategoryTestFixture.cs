@@ -30,8 +30,11 @@ public class CategoryTestFixture : BaseFixture
 
     public DomainEntity.Category GetValidCategory()
         => new(
+            Guid.NewGuid(),
             GetValidCategoryName(),
-            GetValidCategoryDescription()
+            GetValidCategoryDescription(),
+            DateTime.Now,
+            GetRandomBoolean()
         );
 }
 

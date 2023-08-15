@@ -1,4 +1,5 @@
-﻿using FC.Codeflix.Catalog.Domain.Exceptions;
+﻿using Bogus.DataSets;
+using FC.Codeflix.Catalog.Domain.Exceptions;
 using FluentAssertions;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 
@@ -17,19 +18,19 @@ public class CategoryTest
     public void Instantiate()
     {
         var validCategory = _categoryTestFixture.GetValidCategory();
-        var datetimeBefore = DateTime.Now;
 
-        var category = new DomainEntity.Category(validCategory.Name, validCategory.Description);
-        var datetimeAfter = DateTime.Now.AddSeconds(1);
+        var category = new DomainEntity.Category(
+            validCategory.Id,
+            validCategory.Name,
+            validCategory.Description,
+            validCategory.CreatedAt);
 
         category.Should().NotBeNull();
+        category.Id.Should().Be(validCategory.Id);
         category.Name.Should().Be(validCategory.Name);
         category.Description.Should().Be(validCategory.Description);
-        category.Id.Should().NotBeEmpty();
-        category.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
-        (category.CreatedAt >= datetimeBefore).Should().BeTrue();
-        (category.CreatedAt <= datetimeAfter).Should().BeTrue();
-        (category.IsActive).Should().BeTrue();
+        category.CreatedAt.Should().Be(validCategory.CreatedAt);
+        category.IsActive.Should().BeTrue();
     }
 
 
@@ -40,19 +41,39 @@ public class CategoryTest
     public void InstantiateWithIsActive(bool isActive)
     {
         var validCategory = _categoryTestFixture.GetValidCategory();
-        var datetimeBefore = DateTime.Now;
 
-        var category = new DomainEntity.Category(validCategory.Name, validCategory.Description, isActive);
-        var datetimeAfter = DateTime.Now.AddSeconds(1);
+        var category = new DomainEntity.Category(
+            validCategory.Id,
+            validCategory.Name,
+            validCategory.Description,
+            validCategory.CreatedAt,
+            isActive);
 
         category.Should().NotBeNull();
+        category.Id.Should().Be(validCategory.Id);
         category.Name.Should().Be(validCategory.Name);
         category.Description.Should().Be(validCategory.Description);
-        category.Id.Should().NotBeEmpty();
-        category.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
-        (category.CreatedAt >= datetimeBefore).Should().BeTrue();
-        (category.CreatedAt <= datetimeAfter).Should().BeTrue();
-        (category.IsActive).Should().Be(isActive);
+        category.CreatedAt.Should().Be(validCategory.CreatedAt);
+        category.IsActive.Should().Be(isActive);
+    }
+
+    [Fact(DisplayName = nameof(InstantiateErrorWhenIdIsEmpty))]
+    [Trait("Domain", "Category - Aggregates")]
+    public void InstantiateErrorWhenIdIsEmpty()
+    {
+        var validCategory = _categoryTestFixture.GetValidCategory();
+
+        Action action =
+            () => new DomainEntity.Category(
+                Guid.Empty,
+                validCategory.Name,
+                validCategory.Description,
+                validCategory.CreatedAt,
+                validCategory.IsActive);
+
+        action.Should()
+            .Throw<EntityValidationException>()
+            .WithMessage("Id should not be empty or null");
     }
 
     [Theory(DisplayName = nameof(InstantiateErrorWhenNameIsEmpty))]
@@ -65,7 +86,12 @@ public class CategoryTest
         var validCategory = _categoryTestFixture.GetValidCategory();
 
         Action action =
-            () => new DomainEntity.Category(name!, validCategory.Description);
+            () => new DomainEntity.Category(
+                validCategory.Id,
+                name,
+                validCategory.Description,
+                validCategory.CreatedAt,
+                validCategory.IsActive);
 
         action.Should()
             .Throw<EntityValidationException>()
@@ -79,7 +105,12 @@ public class CategoryTest
         var validCategory = _categoryTestFixture.GetValidCategory();
 
         Action action =
-            () => new DomainEntity.Category(validCategory.Name, null!);
+            () => new DomainEntity.Category(
+                validCategory.Id,
+                validCategory.Name,
+                null!,
+                validCategory.CreatedAt,
+                validCategory.IsActive);
 
         action.Should()
             .Throw<EntityValidationException>()
