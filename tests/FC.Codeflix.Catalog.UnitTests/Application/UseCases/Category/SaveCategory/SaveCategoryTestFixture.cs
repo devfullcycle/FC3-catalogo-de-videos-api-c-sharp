@@ -1,14 +1,14 @@
-﻿using FC.Codeflix.Catalog.UnitTests.Domain.Entity.Category;
+﻿using FC.Codeflix.Catalog.UnitTests.Application.UseCases.Category.Common;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UseCases.Category.SaveCategory;
 public class SaveCategoryTestFixture 
-    : CategoryTestFixture
+    : CategoryUseCaseFixture
 {
     public SaveCategoryInput GetValidInput()
         => new SaveCategoryInput(
             Guid.NewGuid(),
-            GetValidCategoryName(),
-            GetValidCategoryDescription(),
+            GetValidName(),
+            GetValidDescription(),
             DateTime.Now,
             GetRandomBoolean());
 
@@ -16,7 +16,7 @@ public class SaveCategoryTestFixture
         => new SaveCategoryInput(
             Guid.NewGuid(),
             null,
-            GetValidCategoryDescription(),
+            GetValidDescription(),
             DateTime.Now,
             GetRandomBoolean());
 
