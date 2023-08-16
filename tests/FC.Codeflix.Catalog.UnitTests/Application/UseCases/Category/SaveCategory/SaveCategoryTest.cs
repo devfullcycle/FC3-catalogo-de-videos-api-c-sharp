@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UseCase = FC.Codeflix.Catalog.Application.Category.SaveCategory;
-using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
-using Moq;
+﻿using FC.Codeflix.Catalog.Domain.Exceptions;
 using FluentAssertions;
-using FC.Codeflix.Catalog.Domain.Exceptions;
+using Moq;
+using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
+using UseCase = FC.Codeflix.Catalog.Application.UseCases.Category.SaveCategory;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UseCases.Category.SaveCategory;
 [Collection(nameof(SaveCategoryTestFixture))]
@@ -35,7 +30,7 @@ public class SaveCategoryTest
             It.IsAny<DomainEntity.Category>(),
             It.IsAny<CancellationToken>()),
             Times.Once);
-        output.Should().BeNotNull();
+        output.Should().NotBeNull();
         output.Id.Should().Be(input.Id);
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);

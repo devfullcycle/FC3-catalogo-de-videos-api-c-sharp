@@ -1,4 +1,5 @@
-﻿using FC.Codeflix.Catalog.UnitTests.Application.UseCases.Category.Common;
+﻿using FC.Codeflix.Catalog.Application.UseCases.Category.SaveCategory;
+using FC.Codeflix.Catalog.UnitTests.Application.UseCases.Category.Common;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UseCases.Category.SaveCategory;
 public class SaveCategoryTestFixture 
