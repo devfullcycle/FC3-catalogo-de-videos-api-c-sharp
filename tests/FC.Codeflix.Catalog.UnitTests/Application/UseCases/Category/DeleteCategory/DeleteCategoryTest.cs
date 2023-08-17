@@ -1,6 +1,6 @@
 ﻿using FC.Codeflix.Catalog.Application.UseCases.Category.DeleteCategory;
 using FC.Codeflix.Catalog.UnitTests.Application.UseCases.Category.Common;
-using Moq;
+using NSubstitute;
 using UseCase = FC.Codeflix.Catalog.Application.UseCases.Category.DeleteCategory;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UseCases.Category.DeleteCategory;
@@ -20,14 +20,12 @@ public class DeleteCategoryTest
     public async Task DeleteCategory()
     {
         var repository = _fixture.GetMockRepository();
-        var useCase = new UseCase.DeleteCategory(
-            repository.Object);
+        var useCase = new UseCase.DeleteCategory(repository);
         var input = new DeleteCategoryInput(Guid.NewGuid());
 
         await useCase.Handle(input, CancellationToken.None);
 
-        repository.Verify(x => x.DeleteAsync(
-            input.Id, It.IsAny<CancellationToken>()),
-            Times.Once);
+        await repository.Received(1).DeleteAsync(
+            input.Id, Arg.Any<CancellationToken>());
     }
 }

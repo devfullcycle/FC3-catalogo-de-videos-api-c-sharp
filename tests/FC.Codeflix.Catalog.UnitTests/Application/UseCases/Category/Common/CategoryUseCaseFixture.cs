@@ -1,13 +1,13 @@
 ﻿using FC.Codeflix.Catalog.Domain.Repositories;
 using FC.Codeflix.Catalog.UnitTests.Common;
-using Moq;
+using NSubstitute;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UseCases.Category.Common;
 public class CategoryUseCaseFixture : BaseFixture
 {
-    public Mock<ICategoryRepository> GetMockRepository()
-        => new();
+    public ICategoryRepository GetMockRepository()
+        => Substitute.For<ICategoryRepository>();
 
     public string GetValidName()
         => Faker.Commerce.Categories(1)[0];

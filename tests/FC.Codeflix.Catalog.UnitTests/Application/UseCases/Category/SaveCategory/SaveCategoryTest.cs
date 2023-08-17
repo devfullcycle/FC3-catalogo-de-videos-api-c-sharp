@@ -1,6 +1,6 @@
 ﻿using FC.Codeflix.Catalog.Domain.Exceptions;
 using FluentAssertions;
-using Moq;
+using NSubstitute;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 using UseCase = FC.Codeflix.Catalog.Application.UseCases.Category.SaveCategory;
 
@@ -20,16 +20,14 @@ public class SaveCategoryTest
     public async Task SaveValidCategory()
     {
         var repository = _fixture.GetMockRepository();
-        var useCase = new UseCase.SaveCategory(
-            repository.Object);
+        var useCase = new UseCase.SaveCategory(repository);
         var input = _fixture.GetValidInput();
 
         var output = await useCase.Handle(input, CancellationToken.None);
 
-        repository.Verify(x => x.SaveAsync(
-            It.IsAny<DomainEntity.Category>(),
-            It.IsAny<CancellationToken>()),
-            Times.Once);
+        await repository.Received(1).SaveAsync(
+            Arg.Any<DomainEntity.Category>(),
+            Arg.Any<CancellationToken>());
         output.Should().NotBeNull();
         output.Id.Should().Be(input.Id);
         output.Name.Should().Be(input.Name);
@@ -43,16 +41,14 @@ public class SaveCategoryTest
     public async Task SaveInvalidCategory()
     {
         var repository = _fixture.GetMockRepository();
-        var useCase = new UseCase.SaveCategory(
-            repository.Object);
+        var useCase = new UseCase.SaveCategory(repository);
         var input = _fixture.GetInvalidInput();
 
         var action = async () => await useCase.Handle(input, CancellationToken.None);
 
-        repository.Verify(x => x.SaveAsync(
-            It.IsAny<DomainEntity.Category>(),
-            It.IsAny<CancellationToken>()),
-            Times.Never);
+        await repository.DidNotReceive().SaveAsync(
+            Arg.Any<DomainEntity.Category>(),
+            Arg.Any<CancellationToken>());
         await action
             .Should()
             .ThrowAsync<EntityValidationException>()
