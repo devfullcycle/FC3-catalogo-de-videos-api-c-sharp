@@ -1,4 +1,5 @@
 ﻿using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
+using FluentAssertions;
 using Moq;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 using UseCase = FC.Codeflix.Catalog.Application.UseCases.Category.SearchCategory;
@@ -33,13 +34,13 @@ public class SearchCategoryTest
         var useCase = new UseCase.SearchCategory(
             repository.Object);
 
-        var output = useCase.Handle(input, CancellationToken.None);
+        var output = await useCase.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.Page.Should().Be(input.Page);
+        output.CurrentPage.Should().Be(input.Page);
         output.PerPage.Should().Be(input.PerPage);
         output.Total.Should().Be(expectedQueryResult.Total);
-        output.Items.Should().BeEquivalent(categories);
+        output.Items.Should().BeEquivalentTo(categories);
         repository.Verify(x => x.SearchAsync(
             It.Is<SearchInput>(search =>
                 search.Page == input.Page &&

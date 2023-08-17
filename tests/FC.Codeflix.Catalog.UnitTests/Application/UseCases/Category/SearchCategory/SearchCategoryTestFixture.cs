@@ -1,4 +1,5 @@
-﻿using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
+﻿using FC.Codeflix.Catalog.Application.UseCases.Category.SearchCategory;
+using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 using FC.Codeflix.Catalog.UnitTests.Application.UseCases.Category.Common;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 
@@ -9,7 +10,7 @@ public class SearchCategoryTestFixture
     public SearchCategoryInput GetSearchInput()
     {
         var random = new Random();
-        return SearchCategoryInput(
+        return new SearchCategoryInput(
             page: random.Next(1, 10),
             perPage: random.Next(10, 20),
             search: Faker.Commerce.ProductName(),
