@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace FC.Codeflix.Catalog.Application;
-internal static class ServiceRegistrationExtensions
+public static class ServiceRegistrationExtensions
 {
     public static IServiceCollection AddUseCases(
         this IServiceCollection services)

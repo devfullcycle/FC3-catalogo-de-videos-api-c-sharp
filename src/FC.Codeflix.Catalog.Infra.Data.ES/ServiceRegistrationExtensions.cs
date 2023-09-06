@@ -27,4 +27,11 @@ public static class ServiceRegistrationExtensions
         return services;
     }
 
+    public static IServiceCollection AddRepositories(
+        this IServiceCollection services)
+    {
+
+        return services;
+    }
+
 }
