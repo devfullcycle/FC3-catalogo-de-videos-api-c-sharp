@@ -1,11 +1,47 @@
-﻿using FC.Codeflix.Catalog.IntegrationTests.Common;
+﻿using FC.Codeflix.Catalog.Infra.Data.ES;
+using FC.Codeflix.Catalog.IntegrationTests.Common;
+using Microsoft.Extensions.DependencyInjection;
+using Nest;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 
 namespace FC.Codeflix.Catalog.IntegrationTests.Category.Common;
-public class CategoryTestFixture : BaseFixture
+public class CategoryTestFixture : BaseFixture, IDisposable
 {
     public CategoryTestFixture()
-        : base() { }
+        : base()
+    {
+        CreateCategoryIndexAsync().GetAwaiter().GetResult();
+    }
+
+    private async Task CreateCategoryIndexAsync()
+    {
+        var esClient = ServiceProvider.GetRequiredService<IElasticClient>();
+        var response = await esClient.Indices.CreateAsync(ElasticsearchIndices.Category, c => c
+            .Map<CategoryModel>(m => m
+                .Properties(ps => ps
+                    .Keyword(t => t
+                        .Name(category => category.Id)
+                    )
+                    .Text(t => t
+                        .Name(category => category.Name)
+                        .Fields(fs => fs
+                            .Keyword(k => k
+                                .Name(category => category.Name.Suffix("keyword")))
+                        )
+                    )
+                    .Text(t => t
+                        .Name(category => category.Description)
+                    )
+                    .Boolean(b => b
+                        .Name(category => category.IsActive)
+                    )
+                    .Date(d => d
+                        .Name(category => category.CreatedAt)
+                    )
+                )
+            )
+        );
+    }
 
     public string GetValidCategoryName()
     {
@@ -35,6 +71,19 @@ public class CategoryTestFixture : BaseFixture
             DateTime.Now,
             GetRandomBoolean()
         );
+
+    public void DeleteAll()
+    {
+        var elasticClient = ServiceProvider.GetRequiredService<ElasticClient>();
+        elasticClient.DeleteByQuery<CategoryModel>(del => del
+            .Query(q => q.QueryString(qs => qs.Query("*"))));
+    }
+
+    public void Dispose()
+    {
+        var elasticClient = ServiceProvider.GetRequiredService<ElasticClient>();
+        elasticClient.Indices.Delete(ElasticsearchIndices.Category);
+    }
 }
 
 [CollectionDefinition(nameof(CategoryTestFixture))]

@@ -6,7 +6,7 @@ using Nest;
 
 namespace FC.Codeflix.Catalog.IntegrationTests.Category.SaveCategory;
 [Collection(nameof(SaveCategoryTestFixture))]
-public class SaveCategoryTest
+public class SaveCategoryTest : IDisposable
 {
     private readonly SaveCategoryTestFixture _fixture;
 
@@ -43,4 +43,26 @@ public class SaveCategoryTest
         output.IsActive.Should().Be(input.IsActive);
         output.CreatedAt.Should().Be(input.CreatedAt);
     }
+
+    [Fact(DisplayName = nameof(SaveCategory_WhenInputIsInvalid_ThrowsException))]
+    [Trait("Integration", "[UseCase] SaveCategory")]
+    public async Task SaveCategory_WhenInputIsInvalid_ThrowsException()
+    {
+        var serviceProvider = _fixture.ServiceProvider;
+        var mediator = serviceProvider.GetRequiredService<IMediator>();
+        var elasticClient = serviceProvider.GetRequiredService<IElasticClient>();
+        var input = _fixture.GetInvalidInput();
+        var expectedMessage = "Name should not be empty or null";
+
+        var action = async () => await mediator.Send(input);
+
+        await action.Should().ThrowAsync<EntityValidationException>()
+            .WithMessage(expectedMessage);
+        var persisted = await elasticClient
+            .GetAsync<CategoryModel>(input.Id);
+        persisted.Found.Should().BeFalse();
+        
+    }
+
+    public void Dispose() => _fixture.DeleteAll();
 }
