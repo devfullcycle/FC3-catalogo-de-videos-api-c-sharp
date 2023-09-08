@@ -1,4 +1,6 @@
-﻿using FC.Codeflix.Catalog.Infra.Data.ES;
+﻿using Elasticsearch.Net;
+using FC.Codeflix.Catalog.Infra.Data.ES;
+using FC.Codeflix.Catalog.Infra.Data.ES.Models;
 using FC.Codeflix.Catalog.IntegrationTests.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
@@ -74,14 +76,15 @@ public class CategoryTestFixture : BaseFixture, IDisposable
 
     public void DeleteAll()
     {
-        var elasticClient = ServiceProvider.GetRequiredService<ElasticClient>();
+        var elasticClient = ServiceProvider.GetRequiredService<IElasticClient>();
         elasticClient.DeleteByQuery<CategoryModel>(del => del
-            .Query(q => q.QueryString(qs => qs.Query("*"))));
+            .Query(q => q.QueryString(qs => qs.Query("*")))
+                .Conflicts(Conflicts.Proceed));
     }
 
     public void Dispose()
     {
-        var elasticClient = ServiceProvider.GetRequiredService<ElasticClient>();
+        var elasticClient = ServiceProvider.GetRequiredService<IElasticClient>();
         elasticClient.Indices.Delete(ElasticsearchIndices.Category);
     }
 }
