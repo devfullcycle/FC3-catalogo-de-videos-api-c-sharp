@@ -74,6 +74,12 @@ public class CategoryTestFixture : BaseFixture, IDisposable
             GetRandomBoolean()
         );
 
+    public IList<CategoryModel> GetCategoryModelList(int count = 10)
+        => Enumerable.Range(0, count)
+            .Select(_ => CategoryModel.FromEntity(GetValidCategory()))
+            .ToList();
+
+
     public void DeleteAll()
     {
         var elasticClient = ServiceProvider.GetRequiredService<IElasticClient>();
