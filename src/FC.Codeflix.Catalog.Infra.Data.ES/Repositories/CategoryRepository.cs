@@ -1,4 +1,5 @@
 ﻿using FC.Codeflix.Catalog.Domain.Entity;
+using FC.Codeflix.Catalog.Domain.Exceptions;
 using FC.Codeflix.Catalog.Domain.Repositories;
 using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 using FC.Codeflix.Catalog.Infra.Data.ES.Models;
@@ -15,9 +16,13 @@ public class CategoryRepository : ICategoryRepository
         _client = client;
     }
 
-    public Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var response = await _client.DeleteAsync<CategoryModel>(id, ct: cancellationToken);
+        if (response.Result == Result.NotFound)
+        {
+            throw new NotFoundException($"Category '{id}' not found.");
+        }
     }
 
     public async Task SaveAsync(Category entity, CancellationToken cancellationToken)
