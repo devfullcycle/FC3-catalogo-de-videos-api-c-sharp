@@ -1,4 +1,5 @@
 ﻿using FC.Codeflix.Catalog.Application.UseCases.Category.SearchCategory;
+using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 using FC.Codeflix.Catalog.Infra.Data.ES;
 using FluentAssertions;
 using MediatR;
@@ -74,7 +75,53 @@ public class SearchCategoryTest : IDisposable
             outputItem.IsActive.Should().Be(expected.IsActive);
             outputItem.CreatedAt.Should().Be(expected.CreatedAt);
         }
+    }
 
+    [Theory(DisplayName = nameof(SearchCategory_WhenReceivesValidSearchInput_ReturnOrderedList))]
+    [Trait("Integration", "[UseCase] SearchCategory")]
+    [InlineData("name", "asc")]
+    [InlineData("name", "desc")]
+    [InlineData("id", "asc")]
+    [InlineData("id", "desc")]
+    [InlineData("createdat", "asc")]
+    [InlineData("createdat", "desc")]
+    [InlineData("", "desc")]
+    public async Task SearchCategory_WhenReceivesValidSearchInput_ReturnOrderedList(
+        string orderBy,
+        string direction)
+    {
+        var serviceProvider = _fixture.ServiceProvider;
+        var mediator = serviceProvider.GetRequiredService<IMediator>();
+        var elasticClient = serviceProvider.GetRequiredService<IElasticClient>();
+        var examples = _fixture.GetCategoryModelList();
+        await elasticClient.IndexDocumentAsync(examples);
+        await elasticClient.Indices.RefreshAsync(ElasticsearchIndices.Category);
+        var input = new SearchCategoryInput(
+            page: 1,
+            perPage: examples.Count,
+            orderBy: orderBy,
+            order: direction == "asc" ? SearchOrder.Asc : SearchOrder.Desc);
+        var expectedList = _fixture.CloneCategoriesListOrdered(
+            examples, orderBy, input.Order);
+
+        var output = await mediator.Send(input);
+
+        output.Should().NotBeNull();
+        output.Items.Should().NotBeNull();
+        output.CurrentPage.Should().Be(input.Page);
+        output.PerPage.Should().Be(input.PerPage);
+        output.Total.Should().Be(examples.Count);
+        output.Items.Should().HaveCount(examples.Count);
+        for (int i = 0; i < output.Items.Count; i++)
+        {
+            var outputItem = output.Items[i];
+            var expected = expectedList[i];
+            outputItem.Id.Should().Be(expected.Id);
+            outputItem.Name.Should().Be(expected.Name);
+            outputItem.Description.Should().Be(expected.Description);
+            outputItem.IsActive.Should().Be(expected.IsActive);
+            outputItem.CreatedAt.Should().Be(expected.CreatedAt);
+        }
     }
 
     public void Dispose() => _fixture.DeleteAll();
