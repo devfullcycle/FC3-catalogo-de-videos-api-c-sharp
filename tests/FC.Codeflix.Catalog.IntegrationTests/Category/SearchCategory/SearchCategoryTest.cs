@@ -31,7 +31,7 @@ public class SearchCategoryTest : IDisposable
     [InlineData("Sci-fi", 1, 2, 2, 4)]
     [InlineData("Sci-fi", 2, 3, 1, 4)]
     [InlineData("Others", 1, 5, 0, 0)]
-    [InlineData("Robots", 1, 5, 1, 1)]
+    [InlineData("Robots", 1, 5, 2, 2)]
     public async Task SearchCategory_WhenReceivesValidSearchInput_ReturnFilteredList(
         string search,
         int page,
@@ -54,7 +54,7 @@ public class SearchCategoryTest : IDisposable
             "Sci-fi Future"
         };
         var examples = _fixture.GetCategoryModelList(categoryNamesList);
-        await elasticClient.IndexDocumentAsync(examples);
+        await elasticClient.IndexManyAsync(examples);
         await elasticClient.Indices.RefreshAsync(ElasticsearchIndices.Category);
         var input = new SearchCategoryInput(page: page, perPage: perPage, search: search);
 
@@ -94,7 +94,7 @@ public class SearchCategoryTest : IDisposable
         var mediator = serviceProvider.GetRequiredService<IMediator>();
         var elasticClient = serviceProvider.GetRequiredService<IElasticClient>();
         var examples = _fixture.GetCategoryModelList();
-        await elasticClient.IndexDocumentAsync(examples);
+        await elasticClient.IndexManyAsync(examples);
         await elasticClient.Indices.RefreshAsync(ElasticsearchIndices.Category);
         var input = new SearchCategoryInput(
             page: 1,

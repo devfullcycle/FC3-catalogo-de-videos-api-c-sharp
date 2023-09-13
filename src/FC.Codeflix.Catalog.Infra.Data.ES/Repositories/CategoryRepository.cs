@@ -32,9 +32,46 @@ public class CategoryRepository : ICategoryRepository
             .IndexDocumentAsync(model, cancellationToken);
     }
 
-    public Task<SearchOutput<Category>> SearchAsync(
+    /*
+     * {
+     *    "query": {
+     *       "match": {
+     *          "name": {
+     *             "query": "action"
+     *          }
+     *       }
+     *    },
+     *    "from": 20, 
+     *    "size": 10,
+     *    "sort": [
+     *       { "name.keyword": "asc" },
+     *       { "id": "asc" }
+     *    ]
+     * }
+     */
+    public async Task<SearchOutput<Category>> SearchAsync(
         SearchInput input, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var response = await _client
+            .SearchAsync<CategoryModel>(s => s
+                .Query(q => q
+                    .Match(m => m
+                        .Field(f => f.Name)
+                        .Query(input.Search)
+                    )
+                )
+                .From(input.From)
+                .Size(input.PerPage),
+            ct: cancellationToken);
+
+        var categories = response.Documents
+            .Select(doc => doc.ToEntity())
+            .ToList();
+
+        return new SearchOutput<Category>(
+            input.Page,
+            input.PerPage,
+            (int)response.Total,
+            categories);
     }
 }
