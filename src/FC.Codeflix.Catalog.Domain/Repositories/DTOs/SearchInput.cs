@@ -7,6 +7,8 @@ public class SearchInput
     public string OrderBy { get; set; }
     public SearchOrder Order { get; set; }
 
+    public int From => (Page - 1) * PerPage;
+
     public SearchInput(
         int page,
         int perPage,
