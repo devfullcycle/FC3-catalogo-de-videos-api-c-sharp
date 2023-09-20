@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{87D63327-5855-4D8E-9E83-541DEA4CB289}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{91DE1722-53CE-43DE-8BE6-A5CA5E79C889}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.Codeflix.Catalog.Domain", "src\FC.Codeflix.Catalog.Domain\FC.Codeflix.Catalog.Domain.csproj", "{03DD74BB-1D03-472A-B681-5672E3FB7482}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.Codeflix.Catalog.UnitTests", "tests\FC.Codeflix.Catalog.UnitTests\FC.Codeflix.Catalog.UnitTests.csproj", "{3760823F-F9A1-4111-A2FF-BD1E1D315956}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.Codeflix.Catalog.Application", "src\FC.Codeflix.Catalog.Application\FC.Codeflix.Catalog.Application.csproj", "{E7D79067-0CF4-4FFF-A88B-566C4550BB63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.Codeflix.Catalog.Infra.Data.ES", "src\FC.Codeflix.Catalog.Infra.Data.ES\FC.Codeflix.Catalog.Infra.Data.ES.csproj", "{326FA487-00CA-4B8F-93CB-81D428F100A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.Codeflix.Catalog.IntegrationTests", "tests\FC.Codeflix.Catalog.IntegrationTests\FC.Codeflix.Catalog.IntegrationTests.csproj", "{44862547-E4BB-4284-B119-A1A275150394}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03DD74BB-1D03-472A-B681-5672E3FB7482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03DD74BB-1D03-472A-B681-5672E3FB7482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03DD74BB-1D03-472A-B681-5672E3FB7482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03DD74BB-1D03-472A-B681-5672E3FB7482}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3760823F-F9A1-4111-A2FF-BD1E1D315956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3760823F-F9A1-4111-A2FF-BD1E1D315956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3760823F-F9A1-4111-A2FF-BD1E1D315956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3760823F-F9A1-4111-A2FF-BD1E1D315956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7D79067-0CF4-4FFF-A88B-566C4550BB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7D79067-0CF4-4FFF-A88B-566C4550BB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7D79067-0CF4-4FFF-A88B-566C4550BB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7D79067-0CF4-4FFF-A88B-566C4550BB63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{326FA487-00CA-4B8F-93CB-81D428F100A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{326FA487-00CA-4B8F-93CB-81D428F100A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{326FA487-00CA-4B8F-93CB-81D428F100A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{326FA487-00CA-4B8F-93CB-81D428F100A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44862547-E4BB-4284-B119-A1A275150394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44862547-E4BB-4284-B119-A1A275150394}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44862547-E4BB-4284-B119-A1A275150394}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44862547-E4BB-4284-B119-A1A275150394}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{03DD74BB-1D03-472A-B681-5672E3FB7482} = {87D63327-5855-4D8E-9E83-541DEA4CB289}
+		{3760823F-F9A1-4111-A2FF-BD1E1D315956} = {91DE1722-53CE-43DE-8BE6-A5CA5E79C889}
+		{E7D79067-0CF4-4FFF-A88B-566C4550BB63} = {87D63327-5855-4D8E-9E83-541DEA4CB289}
+		{326FA487-00CA-4B8F-93CB-81D428F100A0} = {87D63327-5855-4D8E-9E83-541DEA4CB289}
+		{44862547-E4BB-4284-B119-A1A275150394} = {91DE1722-53CE-43DE-8BE6-A5CA5E79C889}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {19E619F6-ACB5-42F8-AA92-C967C2D5DCE8}
+	EndGlobalSection
+EndGlobal
