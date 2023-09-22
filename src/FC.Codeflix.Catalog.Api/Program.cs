@@ -1,4 +1,7 @@
 using FC.Codeflix.Catalog.Api;
+using FC.Codeflix.Catalog.Api.Categories;
+using FC.Codeflix.Catalog.Application;
+using FC.Codeflix.Catalog.Infra.Data.ES;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +12,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
+    .AddUseCases()
+    .AddElasticSearch(builder.Configuration)
+    .AddRepositories()
     .AddGraphQLServer()
-    .AddQueryType<Query>();
+    .AddQueryType<Query>()
+    .AddMutationType<CategoryMutations>();
 
 var app = builder.Build();
 

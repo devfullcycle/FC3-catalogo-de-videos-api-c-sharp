@@ -31,7 +31,8 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/graphql",
+      "DockerfileRunArguments": "--network catalog_api -p 4040:80 -p 5050:443",
       "publishAllPorts": true,
       "useSSL": true
     }
