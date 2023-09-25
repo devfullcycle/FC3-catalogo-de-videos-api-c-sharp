@@ -1,5 +1,5 @@
-using FC.Codeflix.Catalog.Api;
 using FC.Codeflix.Catalog.Api.Categories;
+using FC.Codeflix.Catalog.Api.Filters;
 using FC.Codeflix.Catalog.Application;
 using FC.Codeflix.Catalog.Infra.Data.ES;
 
@@ -19,7 +19,8 @@ builder.Services
     .AddQueryType()
     .AddMutationType()
     .AddTypeExtension<CategoryQueries>()
-    .AddTypeExtension<CategoryMutations>();
+    .AddTypeExtension<CategoryMutations>()
+    .AddErrorFilter<GraphQLErrorFilter>();
 
 var app = builder.Build();
 

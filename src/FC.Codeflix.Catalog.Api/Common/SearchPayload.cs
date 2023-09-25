@@ -1,6 +1,6 @@
 ﻿namespace FC.Codeflix.Catalog.Api.Common;
 
-public class SearchPayload<TPayload>
+public abstract class SearchPayload<TPayload>
     where TPayload : class
 {
     public int CurrentPage { get; set; }
