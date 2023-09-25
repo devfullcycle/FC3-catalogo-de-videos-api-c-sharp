@@ -16,8 +16,10 @@ builder.Services
     .AddElasticSearch(builder.Configuration)
     .AddRepositories()
     .AddGraphQLServer()
-    .AddQueryType<Query>()
-    .AddMutationType<CategoryMutations>();
+    .AddQueryType()
+    .AddMutationType()
+    .AddTypeExtension<CategoryQueries>()
+    .AddTypeExtension<CategoryMutations>();
 
 var app = builder.Build();
 

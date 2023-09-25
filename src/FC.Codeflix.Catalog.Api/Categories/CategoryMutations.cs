@@ -1,10 +1,10 @@
 ﻿using FC.Codeflix.Catalog.Application.UseCases.Category.DeleteCategory;
 using FC.Codeflix.Catalog.Application.UseCases.Category.SaveCategory;
 using MediatR;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 
 namespace FC.Codeflix.Catalog.Api.Categories;
 
+[ExtendObjectType(OperationTypeNames.Mutation)]
 public class CategoryMutations
 {
     public async Task<CategoryPayload> SaveCategoryAsync(
