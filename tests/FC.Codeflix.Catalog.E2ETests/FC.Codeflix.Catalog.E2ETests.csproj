@@ -10,8 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <GraphQL Remove="GraphQL\Categories\SaveCategory\SaveCategory.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.11" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="StrawberryShake.Server" Version="13.5.1" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="GraphQL\Categories\SaveCategory\SaveCategory.graphql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="xunit.runner.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
