@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "env", "env", "{AE598EDE-66A
 		category_index.json = category_index.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.Codeflix.Catalog.E2ETests", "tests\FC.Codeflix.Catalog.E2ETests\FC.Codeflix.Catalog.E2ETests.csproj", "{531CF613-3F8E-474F-8824-F7BE2E25D962}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{C79C59A7-3C14-42F1-BC4A-79A007581866}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C79C59A7-3C14-42F1-BC4A-79A007581866}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C79C59A7-3C14-42F1-BC4A-79A007581866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{531CF613-3F8E-474F-8824-F7BE2E25D962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{531CF613-3F8E-474F-8824-F7BE2E25D962}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{531CF613-3F8E-474F-8824-F7BE2E25D962}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{531CF613-3F8E-474F-8824-F7BE2E25D962}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{326FA487-00CA-4B8F-93CB-81D428F100A0} = {87D63327-5855-4D8E-9E83-541DEA4CB289}
 		{44862547-E4BB-4284-B119-A1A275150394} = {91DE1722-53CE-43DE-8BE6-A5CA5E79C889}
 		{C79C59A7-3C14-42F1-BC4A-79A007581866} = {87D63327-5855-4D8E-9E83-541DEA4CB289}
+		{531CF613-3F8E-474F-8824-F7BE2E25D962} = {91DE1722-53CE-43DE-8BE6-A5CA5E79C889}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19E619F6-ACB5-42F8-AA92-C967C2D5DCE8}
