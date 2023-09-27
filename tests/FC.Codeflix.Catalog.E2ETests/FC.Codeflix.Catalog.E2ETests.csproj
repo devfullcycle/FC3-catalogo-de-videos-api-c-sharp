@@ -29,6 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\FC.Codeflix.Catalog.Api\FC.Codeflix.Catalog.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="GraphQL\Categories\SaveCategory\SaveCategory.graphql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

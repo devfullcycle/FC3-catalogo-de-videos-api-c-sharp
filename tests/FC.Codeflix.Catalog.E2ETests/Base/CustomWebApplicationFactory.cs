@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Http;
 
 namespace FC.Codeflix.Catalog.E2ETests.Base;
 public class CustomWebApplicationFactory<TStartup>
@@ -16,6 +17,8 @@ public class CustomWebApplicationFactory<TStartup>
         builder.UseEnvironment(environment);
         builder.ConfigureServices(services =>
         {
+            services.AddTransient<HttpMessageHandlerBuilder>(
+                sp => new TestServerHttpMessageHandlerBuilder(Server));
             services
                 .AddCatalogClient()
                 .ConfigureHttpClient(client => client.BaseAddress = new Uri($"{BaseUrl}graphql"));
