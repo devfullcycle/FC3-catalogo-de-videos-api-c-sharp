@@ -84,19 +84,19 @@ public class CategoryTestFixture : BaseFixture, IDisposable
             .ToList();
 
 
-public void DeleteAll()
-{
-    var elasticClient = ServiceProvider.GetRequiredService<IElasticClient>();
-    elasticClient.DeleteByQuery<CategoryModel>(del => del
-        .Query(q => q.QueryString(qs => qs.Query("*")))
-            .Conflicts(Conflicts.Proceed));
-}
+    public void DeleteAll()
+    {
+        var elasticClient = ServiceProvider.GetRequiredService<IElasticClient>();
+        elasticClient.DeleteByQuery<CategoryModel>(del => del
+            .Query(q => q.QueryString(qs => qs.Query("*")))
+                .Conflicts(Conflicts.Proceed));
+    }
 
-public void Dispose()
-{
-    var elasticClient = ServiceProvider.GetRequiredService<IElasticClient>();
-    elasticClient.Indices.Delete(ElasticsearchIndices.Category);
-}
+    public void Dispose()
+    {
+        var elasticClient = ServiceProvider.GetRequiredService<IElasticClient>();
+        elasticClient.Indices.Delete(ElasticsearchIndices.Category);
+    }
 }
 
 [CollectionDefinition(nameof(CategoryTestFixture))]
