@@ -24,7 +24,7 @@ public class DeleteCategoryTest : IDisposable
     {
         var serviceProvider = _fixture.ServiceProvider;
         var mediator = serviceProvider.GetRequiredService<IMediator>();
-        var elasticClient = serviceProvider.GetRequiredService<IElasticClient>();
+        var elasticClient = _fixture.ElasticClient;
         var categoriesExample = _fixture.GetCategoryModelList();
         await elasticClient.IndexManyAsync(categoriesExample);
         var input = new DeleteCategoryInput(categoriesExample[3].Id);
@@ -41,7 +41,7 @@ public class DeleteCategoryTest : IDisposable
     {
         var serviceProvider = _fixture.ServiceProvider;
         var mediator = serviceProvider.GetRequiredService<IMediator>();
-        var elasticClient = serviceProvider.GetRequiredService<IElasticClient>();
+        var elasticClient = _fixture.ElasticClient;
         var categoriesExample = _fixture.GetCategoryModelList();
         await elasticClient.IndexManyAsync(categoriesExample);
         var input = new DeleteCategoryInput(Guid.NewGuid());

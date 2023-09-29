@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="34.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="FluentAssertions" Version="6.11.0" />
@@ -25,8 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FC.Codeflix.Catalog.Application\FC.Codeflix.Catalog.Application.csproj" />
-    <ProjectReference Include="..\..\src\FC.Codeflix.Catalog.Infra.Data.ES\FC.Codeflix.Catalog.Infra.Data.ES.csproj" />
+    <ProjectReference Include="..\FC.Codeflix.Catalog.Tests.Shared\FC.Codeflix.Catalog.Tests.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

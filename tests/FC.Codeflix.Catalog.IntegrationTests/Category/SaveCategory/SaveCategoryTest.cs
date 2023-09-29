@@ -22,7 +22,7 @@ public class SaveCategoryTest : IDisposable
     {
         var serviceProvider = _fixture.ServiceProvider;
         var mediator = serviceProvider.GetRequiredService<IMediator>();
-        var elasticClient = serviceProvider.GetRequiredService<IElasticClient>();
+        var elasticClient = _fixture.ElasticClient;
         var input = _fixture.GetValidInput();
 
         var output = await mediator.Send(input);
@@ -51,7 +51,7 @@ public class SaveCategoryTest : IDisposable
     {
         var serviceProvider = _fixture.ServiceProvider;
         var mediator = serviceProvider.GetRequiredService<IMediator>();
-        var elasticClient = serviceProvider.GetRequiredService<IElasticClient>();
+        var elasticClient = _fixture.ElasticClient;
         var input = _fixture.GetInvalidInput();
         var expectedMessage = "Name should not be empty or null";
 
