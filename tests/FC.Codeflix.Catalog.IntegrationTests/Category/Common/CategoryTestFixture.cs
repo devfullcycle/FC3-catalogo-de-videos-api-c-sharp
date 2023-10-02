@@ -25,14 +25,7 @@ public class CategoryTestFixture : BaseFixture, IDisposable
         => DataGenerator.GetValidCategory();
 
     public IList<CategoryModel> GetCategoryModelList(int count = 10)
-        => Enumerable.Range(0, count)
-            .Select(_ =>
-            {
-                Task.Delay(5).GetAwaiter().GetResult();
-                return CategoryModel.FromEntity(GetValidCategory());
-            })
-            .ToList();
-
+        => DataGenerator.GetCategoryModelList(count);
 
     public void DeleteAll()
         => ElasticSearchOperations.DeleteCategoryDocuments(ElasticClient);

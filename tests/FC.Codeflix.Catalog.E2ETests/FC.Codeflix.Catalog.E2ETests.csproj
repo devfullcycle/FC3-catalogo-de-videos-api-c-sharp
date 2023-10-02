@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <GraphQL Remove="GraphQL\Categories\DeleteCategory\DeleteCategory.graphql" />
     <GraphQL Remove="GraphQL\Categories\SaveCategory\SaveCategory.graphql" />
   </ItemGroup>
 

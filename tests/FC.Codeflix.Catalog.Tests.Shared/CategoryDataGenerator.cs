@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FC.Codeflix.Catalog.Infra.Data.ES.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,4 +41,13 @@ public class CategoryDataGenerator : DataGeneratorBase
             DateTime.Now,
             GetRandomBoolean()
         );
+
+    public IList<CategoryModel> GetCategoryModelList(int count = 10)
+       => Enumerable.Range(0, count)
+           .Select(_ =>
+           {
+               Task.Delay(5).GetAwaiter().GetResult();
+               return CategoryModel.FromEntity(GetValidCategory());
+           })
+           .ToList();
 }

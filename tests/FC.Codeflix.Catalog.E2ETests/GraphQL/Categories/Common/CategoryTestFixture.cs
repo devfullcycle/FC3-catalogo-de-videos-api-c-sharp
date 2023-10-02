@@ -1,4 +1,5 @@
 ﻿using FC.Codeflix.Catalog.E2ETests.Base;
+using FC.Codeflix.Catalog.Infra.Data.ES.Models;
 using FC.Codeflix.Catalog.Tests.Shared;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,9 @@ public class CategoryTestFixture : IDisposable
         GraphQLClient = WebAppFactory.Services.GetRequiredService<CatalogClient>();
         ElasticSearchOperations.CreateCategoryIndexAsync(ElasticClient).GetAwaiter().GetResult();
     }
+
+    public IList<CategoryModel> GetCategoryModelList(int count = 10)
+       => DataGenerator.GetCategoryModelList(count);
 
     public void DeleteAll()
         => ElasticSearchOperations.DeleteCategoryDocuments(ElasticClient);
