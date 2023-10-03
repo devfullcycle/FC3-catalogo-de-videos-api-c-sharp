@@ -12,6 +12,7 @@
   <ItemGroup>
     <GraphQL Remove="GraphQL\Categories\DeleteCategory\DeleteCategory.graphql" />
     <GraphQL Remove="GraphQL\Categories\SaveCategory\SaveCategory.graphql" />
+    <GraphQL Remove="GraphQL\Categories\SearchCategory\SearchCategory.graphql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +38,9 @@
 
   <ItemGroup>
     <None Update="GraphQL\Categories\SaveCategory\SaveCategory.graphql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="GraphQL\Categories\SearchCategory\SearchCategory.graphql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="xunit.runner.json">
