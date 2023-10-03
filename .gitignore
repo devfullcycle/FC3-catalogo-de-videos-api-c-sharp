@@ -367,3 +367,4 @@ gcp_credentials.json
 
 # docker volumes
 .docker
+/.idea/.idea.FC.Codeflix.Catalog/.idea

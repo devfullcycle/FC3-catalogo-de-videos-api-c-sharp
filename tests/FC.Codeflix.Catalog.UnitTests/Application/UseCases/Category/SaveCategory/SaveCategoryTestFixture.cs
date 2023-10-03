@@ -8,18 +8,18 @@ public class SaveCategoryTestFixture
     public SaveCategoryInput GetValidInput()
         => new SaveCategoryInput(
             Guid.NewGuid(),
-            GetValidName(),
-            GetValidDescription(),
+            DataGenerator.GetValidCategoryName(),
+            DataGenerator.GetValidCategoryDescription(),
             DateTime.Now,
-            GetRandomBoolean());
+            DataGenerator.GetRandomBoolean());
 
     public SaveCategoryInput GetInvalidInput()
         => new SaveCategoryInput(
             Guid.NewGuid(),
             null,
-            GetValidDescription(),
+            DataGenerator.GetValidCategoryDescription(),
             DateTime.Now,
-            GetRandomBoolean());
+            DataGenerator.GetRandomBoolean());
 
 }
 

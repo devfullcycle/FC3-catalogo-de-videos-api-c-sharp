@@ -13,8 +13,8 @@ public class SearchCategoryTestFixture
         return new SearchCategoryInput(
             page: random.Next(1, 10),
             perPage: random.Next(10, 20),
-            search: Faker.Commerce.ProductName(),
-            orderBy: Faker.Commerce.ProductName(),
+            search: DataGenerator.Faker.Commerce.ProductName(),
+            orderBy: DataGenerator.Faker.Commerce.ProductName(),
             order: random.Next(0, 2) == 0 
                 ? SearchOrder.Asc
                 : SearchOrder.Desc);
