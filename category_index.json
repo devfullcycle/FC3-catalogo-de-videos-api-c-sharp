@@ -1,0 +1,26 @@
+{
+	"mappings": {
+		"properties": {
+			"createdAt": {
+				"type": "date"
+			},
+			"description": {
+				"type": "text"
+			},
+			"id": {
+				"type": "keyword"
+			},
+			"isActive": {
+				"type": "boolean"
+			},
+			"name": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword"
+					}
+				}
+			}
+		}
+	}
+}

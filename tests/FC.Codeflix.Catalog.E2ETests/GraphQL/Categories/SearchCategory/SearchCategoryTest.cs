@@ -1,17 +1,10 @@
-﻿using FC.Codeflix.Catalog.Application.UseCases.Category.SearchCategory;
-using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
-using FC.Codeflix.Catalog.Infra.Data.ES;
+﻿using FC.Codeflix.Catalog.Infra.Data.ES;
 using FluentAssertions;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using Nest;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RepositoryDTOs = FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 
-namespace FC.Codeflix.Catalog.IntegrationTests.Category.SearchCategory;
+namespace FC.Codeflix.Catalog.E2ETests.GraphQL.Categories.SearchCategory;
+
 [Collection(nameof(SearchCategoryTestFixture))]
 public class SearchCategoryTest : IDisposable
 {
@@ -23,7 +16,7 @@ public class SearchCategoryTest : IDisposable
     }
 
     [Theory(DisplayName = nameof(SearchCategory_WhenReceivesValidSearchInput_ReturnFilteredList))]
-    [Trait("Integration", "[UseCase] SearchCategory")]
+    [Trait("E2E/GraphQL", "[Category] Search")]
     [InlineData("Action", 1, 5, 1, 1)]
     [InlineData("Horror", 1, 5, 3, 3)]
     [InlineData("Horror", 2, 5, 0, 3)]
@@ -39,8 +32,6 @@ public class SearchCategoryTest : IDisposable
         int expectedItemsCount,
         int expectedTotalCount)
     {
-        var serviceProvider = _fixture.ServiceProvider;
-        var mediator = serviceProvider.GetRequiredService<IMediator>();
         var elasticClient = _fixture.ElasticClient;
         var categoryNamesList = new List<string>() {
             "Action",
@@ -56,18 +47,18 @@ public class SearchCategoryTest : IDisposable
         var examples = _fixture.GetCategoryModelList(categoryNamesList);
         await elasticClient.IndexManyAsync(examples);
         await elasticClient.Indices.RefreshAsync(ElasticsearchIndices.Category);
-        var input = new SearchCategoryInput(page: page, perPage: perPage, search: search);
 
-        var output = await mediator.Send(input);
+        var output = await _fixture.GraphQLClient.SearchCategory
+            .ExecuteAsync(page, perPage, search, "", SearchOrder.Asc, CancellationToken.None);
 
-        output.Should().NotBeNull();
-        output.Items.Should().NotBeNull();
-        output.CurrentPage.Should().Be(page);
-        output.PerPage.Should().Be(perPage);
-        output.Total.Should().Be(expectedTotalCount);
-        output.Items.Should().HaveCount(expectedItemsCount);
+        output.Data!.Categories.Should().NotBeNull();
+        output.Data!.Categories.Items.Should().NotBeNull();
+        output.Data!.Categories.CurrentPage.Should().Be(page);
+        output.Data!.Categories.PerPage.Should().Be(perPage);
+        output.Data!.Categories.Total.Should().Be(expectedTotalCount);
+        output.Data!.Categories.Items.Should().HaveCount(expectedItemsCount);
 
-        foreach (var outputItem in output.Items)
+        foreach (var outputItem in output.Data!.Categories.Items)
         {
             var expected = examples.First(x => x.Id == outputItem.Id);
             outputItem.Name.Should().Be(expected!.Name);
@@ -78,7 +69,7 @@ public class SearchCategoryTest : IDisposable
     }
 
     [Theory(DisplayName = nameof(SearchCategory_WhenReceivesValidSearchInput_ReturnOrderedList))]
-    [Trait("Integration", "[UseCase] SearchCategory")]
+    [Trait("E2E/GraphQL", "[Category] Search")]
     [InlineData("name", "asc")]
     [InlineData("name", "desc")]
     [InlineData("id", "asc")]
@@ -90,31 +81,32 @@ public class SearchCategoryTest : IDisposable
         string orderBy,
         string direction)
     {
-        var serviceProvider = _fixture.ServiceProvider;
-        var mediator = serviceProvider.GetRequiredService<IMediator>();
         var elasticClient = _fixture.ElasticClient;
         var examples = _fixture.GetCategoryModelList();
         await elasticClient.IndexManyAsync(examples);
         await elasticClient.Indices.RefreshAsync(ElasticsearchIndices.Category);
-        var input = new SearchCategoryInput(
-            page: 1,
-            perPage: examples.Count,
-            orderBy: orderBy,
-            order: direction == "asc" ? SearchOrder.Asc : SearchOrder.Desc);
+        const int page = 1;
+        var perPage = examples.Count;
+        var directionGraphql = direction == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+        var directionRepository = direction == "asc" ?
+            RepositoryDTOs.SearchOrder.Asc :
+            RepositoryDTOs.SearchOrder.Desc;
+
         var expectedList = _fixture.CloneCategoriesListOrdered(
-            examples, orderBy, input.Order);
+            examples, orderBy, directionRepository);
 
-        var output = await mediator.Send(input);
+        var output = await _fixture.GraphQLClient.SearchCategory
+            .ExecuteAsync(page, perPage, "", orderBy, directionGraphql);
 
-        output.Should().NotBeNull();
-        output.Items.Should().NotBeNull();
-        output.CurrentPage.Should().Be(input.Page);
-        output.PerPage.Should().Be(input.PerPage);
-        output.Total.Should().Be(examples.Count);
-        output.Items.Should().HaveCount(examples.Count);
-        for (int i = 0; i < output.Items.Count; i++)
+        output.Data!.Categories.Should().NotBeNull();
+        output.Data!.Categories.Items.Should().NotBeNullOrEmpty();
+        output.Data!.Categories.CurrentPage.Should().Be(page);
+        output.Data!.Categories.PerPage.Should().Be(perPage);
+        output.Data!.Categories.Total.Should().Be(examples.Count);
+        output.Data!.Categories.Items.Should().HaveCount(examples.Count);
+        for (int i = 0; i < output.Data!.Categories.Items.Count; i++)
         {
-            var outputItem = output.Items[i];
+            var outputItem = output.Data!.Categories.Items[i];
             var expected = expectedList[i];
             outputItem.Id.Should().Be(expected.Id);
             outputItem.Name.Should().Be(expected.Name);
