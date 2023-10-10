@@ -19,14 +19,22 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.Codeflix.Catalog.Integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.Codeflix.Catalog.Api", "src\FC.Codeflix.Catalog.Api\FC.Codeflix.Catalog.Api.csproj", "{C79C59A7-3C14-42F1-BC4A-79A007581866}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "env", "env", "{AE598EDE-66A8-4954-A9BD-B0DB1D7CBB39}"
-	ProjectSection(SolutionItems) = preProject
-		category_index.json = category_index.json
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sandbox", "sandbox", "{AE598EDE-66A8-4954-A9BD-B0DB1D7CBB39}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.Codeflix.Catalog.E2ETests", "tests\FC.Codeflix.Catalog.E2ETests\FC.Codeflix.Catalog.E2ETests.csproj", "{531CF613-3F8E-474F-8824-F7BE2E25D962}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.Codeflix.Catalog.Tests.Shared", "tests\FC.Codeflix.Catalog.Tests.Shared\FC.Codeflix.Catalog.Tests.Shared.csproj", "{E48AFA95-FA9B-4C34-97DB-1632FA3E0461}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elk", "elk", "{28E22760-143D-44A3-BF0A-6704C6C894D2}"
+	ProjectSection(SolutionItems) = preProject
+		sandbox\elk\category_index.json = sandbox\elk\category_index.json
+		sandbox\elk\docker-compose.yml = sandbox\elk\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kafka", "kafka", "{99DE503F-837C-42D0-86B1-E553C7D0E682}"
+	ProjectSection(SolutionItems) = preProject
+		sandbox\kafka\docker-compose.yml = sandbox\kafka\docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +87,8 @@ Global
 		{C79C59A7-3C14-42F1-BC4A-79A007581866} = {87D63327-5855-4D8E-9E83-541DEA4CB289}
 		{531CF613-3F8E-474F-8824-F7BE2E25D962} = {91DE1722-53CE-43DE-8BE6-A5CA5E79C889}
 		{E48AFA95-FA9B-4C34-97DB-1632FA3E0461} = {91DE1722-53CE-43DE-8BE6-A5CA5E79C889}
+		{28E22760-143D-44A3-BF0A-6704C6C894D2} = {AE598EDE-66A8-4954-A9BD-B0DB1D7CBB39}
+		{99DE503F-837C-42D0-86B1-E553C7D0E682} = {AE598EDE-66A8-4954-A9BD-B0DB1D7CBB39}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19E619F6-ACB5-42F8-AA92-C967C2D5DCE8}
