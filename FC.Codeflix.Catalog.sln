@@ -34,6 +34,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kafka", "kafka", "{99DE503F-837C-42D0-86B1-E553C7D0E682}"
 	ProjectSection(SolutionItems) = preProject
 		sandbox\kafka\docker-compose.yml = sandbox\kafka\docker-compose.yml
+		sandbox\kafka\connector.json = sandbox\kafka\connector.json
 	EndProjectSection
 EndProject
 Global

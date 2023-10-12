@@ -1,0 +1,16 @@
+{
+  "name": "catalog-admin",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "tasks.max": "1",
+    "database.hostname": "catalogdb",
+    "database.port": "3306",
+    "database.user": "root",
+    "database.password": "C0D3fl1X.@",
+    "database.server.id": "184054",
+    "topic.prefix": "catalogadmin",
+    "database.include.list": "catalog",
+    "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
+    "schema.history.internal.kafka.topic": "schema-changes.catalog"
+  }
+}
