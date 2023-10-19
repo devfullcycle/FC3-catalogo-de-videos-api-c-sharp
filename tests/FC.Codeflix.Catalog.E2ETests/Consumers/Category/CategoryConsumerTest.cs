@@ -61,6 +61,24 @@ public class CategoryConsumerTest : IDisposable
         document.IsActive.Should().Be(category.IsActive);
         document.CreatedAt.Date.Should().Be(category.CreatedAt.Date);
     }
+    
+    [Fact(DisplayName = nameof(CategoryEvent_WhenOperationIsDelete_DeletesCategory))]
+    [Trait("E2E/Consumers", "Category")]
+    public async Task CategoryEvent_WhenOperationIsDelete_DeletesCategory()
+    {
+        var examplesList = _fixture.GetCategoryModelList();
+        await _fixture.ElasticClient.IndexManyAsync(examplesList);
+        var example = examplesList[2];
+        var message = _fixture.BuildValidMessage("d", example);
+        var category = message.Payload.Before;
+        
+        await _fixture.PublishMessageAsync(message);
+        await Task.Delay(2_000);
+        
+        var persisted = await _fixture.ElasticClient
+            .GetAsync<CategoryModel>(category.Id);
+        persisted.Found.Should().BeFalse();
+    }
 
     public void Dispose() => _fixture.DeleteAll();
 }
