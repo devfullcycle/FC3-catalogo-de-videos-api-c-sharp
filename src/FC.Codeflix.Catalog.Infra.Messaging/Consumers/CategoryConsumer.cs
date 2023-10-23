@@ -27,10 +27,11 @@ public class CategoryConsumer : BackgroundService
         {
             BootstrapServers = _configuration.BootstrapServers,
             GroupId = _configuration.CategoryConsumer.GroupId,
-            AutoOffsetReset = AutoOffsetReset.Earliest
+            AutoOffsetReset = AutoOffsetReset.Earliest,
+            EnableAutoCommit = true,
+            EnableAutoOffsetStore = false
         };
-
-
+ 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var config = GetConsumerConfig();
