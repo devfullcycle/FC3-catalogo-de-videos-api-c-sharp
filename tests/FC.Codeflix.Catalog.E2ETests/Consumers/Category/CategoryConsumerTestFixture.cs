@@ -24,7 +24,7 @@ public class CategoryConsumerTestFixture : CategoryTestFixtureBase
     {
         var config = new ProducerConfig { BootstrapServers = _kafkaConfiguration.BootstrapServers };
         using var producer = new ProducerBuilder<string, string>(config).Build();
-        var rawMessage = JsonSerializer.Serialize(message);
+        var rawMessage = JsonSerializer.Serialize(message, SerializerConfiguration.JsonSerializerOptions);
         _ = await producer.ProduceAsync(
             _kafkaConfiguration.CategoryConsumer.Topic,
             new Message<string, string>

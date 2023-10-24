@@ -13,10 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="JsonConverters\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\FC.Codeflix.Catalog.Application\FC.Codeflix.Catalog.Application.csproj" />
     </ItemGroup>
 

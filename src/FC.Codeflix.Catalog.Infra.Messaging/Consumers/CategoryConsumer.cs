@@ -63,7 +63,7 @@ public class CategoryConsumer : BackgroundService
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         var messageModel = JsonSerializer.Deserialize<MessageModel<CategoryPayloadModel>>(
-            message.Value);
+            message.Value, SerializerConfiguration.JsonSerializerOptions);
 
         switch (messageModel!.Payload.Operation)
         {
