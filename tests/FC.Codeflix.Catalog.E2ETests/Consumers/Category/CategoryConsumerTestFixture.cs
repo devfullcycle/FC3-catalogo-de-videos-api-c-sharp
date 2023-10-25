@@ -17,7 +17,7 @@ public class CategoryConsumerTestFixture : CategoryTestFixtureBase
     {
         _kafkaConfiguration = WebAppFactory.Services.GetRequiredService<IOptions<KafkaConfiguration>>().Value;
         // Wait a little for the consumer to be assigned a Partition, mainly in case of rebalacing
-        Thread.Sleep(10_000);
+        Thread.Sleep(15_000);
     }
 
     public async Task PublishMessageAsync(object message)
@@ -66,3 +66,8 @@ public class CategoryConsumerTestFixture : CategoryTestFixtureBase
     public MessageModel<CategoryPayloadModel> BuildValidMessage(string operation)
         => BuildValidMessage(operation, DataGenerator.GetCategoryModelList(1)[0]);
 }
+
+[CollectionDefinition(nameof(CategoryConsumerTestFixture))]
+public class CategoryConsumerTestFixtureCollection
+    : ICollectionFixture<CategoryConsumerTestFixture>
+{ }
