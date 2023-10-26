@@ -46,7 +46,7 @@ public class CategoryConsumer : BackgroundService
         while (!stoppingToken.IsCancellationRequested)
         {
             var consumeResult = await Task.Run(() =>
-                consumer.Consume(TimeSpan.FromSeconds(30).Milliseconds), stoppingToken);
+                consumer.Consume((int)TimeSpan.FromSeconds(30).TotalMilliseconds), stoppingToken);
             if (consumeResult == null || consumeResult.IsPartitionEOF || stoppingToken.IsCancellationRequested)
             {
                 continue;
