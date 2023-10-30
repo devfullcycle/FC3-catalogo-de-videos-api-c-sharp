@@ -1,3 +1,5 @@
+using FC.Codeflix.Catalog.Domain.Entity;
+
 namespace FC.Codeflix.Catalog.Tests.Shared;
 
 public class GenreDataGenerator : DataGeneratorBase

@@ -1,4 +1,5 @@
 using FC.Codeflix.Catalog.Domain.Exceptions;
+using FluentAssertions;
 
 namespace FC.Codeflix.Catalog.UnitTests.Domain.Entity.Genre;
 [Collection(nameof(GenreTestFixture))]
