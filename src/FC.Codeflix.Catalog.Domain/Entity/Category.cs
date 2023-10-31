@@ -10,17 +10,22 @@ public class Category
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; }
-    public string Description { get; private set; }
+    public string? Description { get; private set; }
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
+    public Category(
+        Guid id,
+        string? name)
+            : this(id, name, null, DateTime.Now, true)
+    { }
+    
     public Category(
         Guid id,
         string? name,
         string? description,
         DateTime createdAt,
         bool isActive = true)
-        : base()
     {
         Id = id;
         Name = name!;
@@ -35,6 +40,5 @@ public class Category
     {
         DomainValidation.NotNullOrEmpty(Id, nameof(Id));
         DomainValidation.NotNullOrEmpty(Name, nameof(Name));
-        DomainValidation.NotNull(Description, nameof(Description));
     }
 }
