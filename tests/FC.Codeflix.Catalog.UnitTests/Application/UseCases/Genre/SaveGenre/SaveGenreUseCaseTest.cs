@@ -1,4 +1,5 @@
 using FC.Codeflix.Catalog.Domain.Exceptions;
+using FluentAssertions;
 using NSubstitute;
 using UseCase = FC.Codeflix.Catalog.Application.UseCases.Genre.SaveGenre;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
