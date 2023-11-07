@@ -1,3 +1,4 @@
+using FC.Codeflix.Catalog.Application.UseCases.Genre.SearchGenre;
 using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 using FC.Codeflix.Catalog.UnitTests.Application.UseCases.Genre.Common;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
@@ -24,3 +25,8 @@ public class SearchGenreUseCaseTestFixture : GenreUseCaseTestFixture
             .Select(_ => GetValidGenre())
             .ToList();
 }
+
+[CollectionDefinition(nameof(SearchGenreUseCaseTestFixture))]
+public class SearchGenreUseCaseTestFixtureCollection
+    : ICollectionFixture<SearchGenreUseCaseTestFixture>
+{ }

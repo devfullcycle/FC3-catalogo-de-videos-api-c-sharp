@@ -1,4 +1,5 @@
 using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
+using FluentAssertions;
 using NSubstitute;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 using UseCase = FC.Codeflix.Catalog.Application.UseCases.Genre.SearchGenre;
@@ -29,7 +30,7 @@ public class SearchGenreUseCaseTest
                 genre.Name,
                 genre.CreatedAt,
                 genre.IsActive,
-                Categories = genre.Categories.Select(category => new { category.Id, category.Name });
+                Categories = genre.Categories.Select(category => new { category.Id, category.Name })
             });
         var expectedQueryResult = new SearchOutput<DomainEntity.Genre>(
             input.Page,
