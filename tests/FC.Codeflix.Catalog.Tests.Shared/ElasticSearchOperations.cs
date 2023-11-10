@@ -8,6 +8,11 @@ public static class ElasticSearchOperations
 {
     public static async Task CreateCategoryIndexAsync(IElasticClient elasticClient)
     {
+        var existsResponse = await elasticClient.Indices.ExistsAsync(ElasticsearchIndices.Category);
+        if (existsResponse.Exists)
+        {
+            await elasticClient.Indices.DeleteAsync(ElasticsearchIndices.Category);
+        }
         _ = await elasticClient.Indices.CreateAsync(ElasticsearchIndices.Category, c => c
             .Map<CategoryModel>(m => m
                 .Properties(ps => ps
