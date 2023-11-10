@@ -25,5 +25,5 @@ services:
       - elasticsearch
 
 networks:
-  default:
-    name: catalog_api  
+  catalog_api:
+    external: true  

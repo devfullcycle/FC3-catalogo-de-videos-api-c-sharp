@@ -12,7 +12,58 @@ services:
     ports:
       - '9201:9200'
       - '9301:9300'
+  
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper_tests
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2182
+    networks:
+      - catalog_api_tests
 
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka_tests
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+      - "29094:29094"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2182
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_LISTENERS: INTERNAL://:29092,OUTSIDE://:29094
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,OUTSIDE://host.docker.internal:29094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    networks:
+      - catalog_api_tests
+
+  init-kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - kafka
+    entrypoint: [ '/bin/sh', '-c' ]
+    networks:
+      - catalog_api_tests
+    command: |
+      "
+      # blocks until kafka is reachable
+      kafka-topics --bootstrap-server kafka:29092 --list
+      
+      echo -e 'Deleting all topics'
+      kafka-topics --bootstrap-server kafka:29092 --delete --topic 'catalogadmin.*'
+      
+      echo -e 'Creating kafka topics'
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic catalogadmin.catalog.Categories --replication-factor 1 --partitions 1
+      
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka:29092 --list
+      "
+      
 networks:
-  default:
-    name: catalog_api_tests  
+  catalog_api_tests:
+    external: true  
