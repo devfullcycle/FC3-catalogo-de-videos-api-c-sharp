@@ -1,41 +1,36 @@
-﻿using FC.Codeflix.Catalog.Domain.Validation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FC.Codeflix.Catalog.Domain.Validation;
 
 namespace FC.Codeflix.Catalog.Domain.Entity;
-public class Category
+
+public class Genre
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; }
-    public string? Description { get; private set; }
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Category(
-        Guid id,
-        string? name)
-            : this(id, name, null, DateTime.Now, true)
-    { }
+    private readonly List<Category> _categories = new List<Category>();
+    public IReadOnlyList<Category> Categories => _categories.AsReadOnly();
     
-    public Category(
+    public Genre(
         Guid id,
-        string? name,
-        string? description,
+        string name,
+        bool isActive,
         DateTime createdAt,
-        bool isActive = true)
+        IEnumerable<Category>? categories)
     {
         Id = id;
-        Name = name!;
-        Description = description!;
+        Name = name;
         IsActive = isActive;
         CreatedAt = createdAt;
+        if (categories != null)
+        {
+            _categories.AddRange(categories);
+        }
 
         Validate();
     }
-
+    
     private void Validate()
     {
         DomainValidation.NotNullOrEmpty(Id, nameof(Id));

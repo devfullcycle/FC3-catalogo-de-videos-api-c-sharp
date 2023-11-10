@@ -6,10 +6,7 @@ using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 namespace FC.Codeflix.Catalog.UnitTests.Application.UseCases.Category.Common;
 public class CategoryUseCaseFixture
 {
-    public CategoryDataGenerator DataGenerator { get; }
-
-    public CategoryUseCaseFixture()
-        => DataGenerator = new CategoryDataGenerator();
+    public CategoryDataGenerator DataGenerator { get; } = new();
 
     public ICategoryRepository GetMockRepository()
         => Substitute.For<ICategoryRepository>();
