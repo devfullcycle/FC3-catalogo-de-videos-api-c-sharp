@@ -5,8 +5,8 @@
   </p>  
   <h1 align="center">🚀 Microsserviço Catálogo de Vídeos com .NET</h1>
   <p align="center">
-    Microsserviço referente ao backend do Catálogo de Vídeos<br />
-    Utilizando Clean Architecture, TDD e as principais boas práticas atuais de mercado
+    Microsserviço referente ao backend do Catálogo de Vídeos.<br />
+    Utilizando Clean Architecture, TDD e as principais boas práticas atuais de mercado.
   </p>
 </center>
 <br />
@@ -14,20 +14,20 @@
 
 ## Como executar?
 
-- Basta clonar o Repositório:
+- Basta clonar o Repositório.
 ```sh
 git clone https://github.com/devfullcycle/FC3-catalogo-de-videos-api-c-sharp.git
 ```
 
-- Então executar o arquivo da solution com Visual Studio 2022
+- Então abrir o projeto com sua IDE ou editor preferido.
 
 <br />
 
 ## Ferramentas necessárias
 
-- Visual Studio 2022
-- SDK do .NET 7 instalado
-- Docker Desktop (para integração do Docker com o Visual Studio)
+- IDE ou editor de código de sua preferência (recomendamos Visual Studio ou Rider).
+- SDK do .NET 7 instalado.
+- Docker Desktop.
 
 <br /><br />
 ---
