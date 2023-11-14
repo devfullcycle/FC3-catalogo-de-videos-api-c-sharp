@@ -30,6 +30,7 @@ public static class ElasticSearchExtensions
                         )
                     )
                     .Nested<GenreCategoryModel>(n => n
+                        .Name(genre => genre.Categories)
                         .Properties(pss => pss
                             .Keyword(k => k
                                 .Name(category => category.Id)
