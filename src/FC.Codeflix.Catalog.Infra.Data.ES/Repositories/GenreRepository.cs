@@ -1,4 +1,5 @@
 using FC.Codeflix.Catalog.Domain.Entity;
+using FC.Codeflix.Catalog.Domain.Exceptions;
 using FC.Codeflix.Catalog.Domain.Repositories;
 using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 using FC.Codeflix.Catalog.Infra.Data.ES.Models;
@@ -23,9 +24,13 @@ public class GenreRepository : IGenreRepository
             .IndexDocumentAsync(model, cancellationToken);
     }
 
-    public Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var response = await _client.DeleteAsync<GenreModel>(id, ct: cancellationToken);
+        if (response.Result == Result.NotFound)
+        {
+            throw new NotFoundException($"Genre '{id}' not found.");
+        }
     }
 
     public Task<SearchOutput<Genre>> SearchAsync(SearchInput input, CancellationToken cancellationToken)

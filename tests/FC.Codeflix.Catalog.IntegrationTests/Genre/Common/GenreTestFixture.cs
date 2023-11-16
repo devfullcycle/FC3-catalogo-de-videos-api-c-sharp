@@ -23,8 +23,12 @@ public class GenreTestFixture : BaseFixture, IDisposable
 
     public List<GenreModel> GetGenreModelList(int count = 10)
         => DataGenerator.GetGenreModelList(count);
-    
+
     public void Dispose()
         => ElasticClient.DeleteGenreIndex();
-    
 }
+
+[CollectionDefinition(nameof(GenreTestFixture))]
+public class GenreTestFixtureCollection 
+    : ICollectionFixture<GenreTestFixture>
+{ }
