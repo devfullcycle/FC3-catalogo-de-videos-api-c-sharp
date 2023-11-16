@@ -20,7 +20,11 @@ public class GenreTestFixture : BaseFixture, IDisposable
     
     public void DeleteAll()
         => ElasticClient.DeleteDocuments<GenreModel>();
+
+    public List<GenreModel> GetGenreModelList(int count = 10)
+        => DataGenerator.GetGenreModelList(count);
     
     public void Dispose()
         => ElasticClient.DeleteGenreIndex();
+    
 }

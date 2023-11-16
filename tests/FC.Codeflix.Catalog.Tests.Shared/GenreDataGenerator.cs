@@ -1,5 +1,6 @@
 using FC.Codeflix.Catalog.Application.UseCases.Genre.SaveGenre;
 using FC.Codeflix.Catalog.Domain.Entity;
+using FC.Codeflix.Catalog.Infra.Data.ES.Models;
 
 namespace FC.Codeflix.Catalog.Tests.Shared;
 
@@ -26,6 +27,14 @@ public class GenreDataGenerator : DataGeneratorBase
 
         return genre;
     }
+
+    public List<GenreModel> GetGenreModelList(int count = 10)
+        => Enumerable.Range(0, count)
+            .Select(_ =>
+            {
+                Task.Delay(5).GetAwaiter().GetResult();
+                return GenreModel.FromEntity(GetValidGenre());
+            }).ToList();
     
     public SaveGenreInput GetValidSaveGenreInput()
     {
