@@ -24,6 +24,14 @@ public class GenreModel
                 Name = c.Name
             }).ToList()
         };
+
+    public Genre ToEntity()
+        => new(
+            Id,
+            Name,
+            IsActive,
+            CreatedAt,
+            Categories.Select(item => new Category(item.Id, item.Name)));
 }
 
 public class GenreCategoryModel
