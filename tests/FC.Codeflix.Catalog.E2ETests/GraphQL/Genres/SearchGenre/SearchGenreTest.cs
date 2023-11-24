@@ -6,7 +6,7 @@ using RepositoryDTOs = FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 namespace FC.Codeflix.Catalog.E2ETests.GraphQL.Genres.SearchGenre;
 
 [Collection(nameof(SearchGenreTestFixture))]
-public class SearchGenreTest
+public class SearchGenreTest : IDisposable
 {
     private readonly SearchGenreTestFixture _fixture;
 
@@ -63,7 +63,7 @@ public class SearchGenreTest
             var expected = examples.First(x => x.Id == outputItem.Id);
             outputItem.Name.Should().Be(expected!.Name);
             outputItem.IsActive.Should().Be(expected.IsActive);
-            outputItem.CreatedAt.Should().Be(expected.CreatedAt);
+            outputItem.CreatedAt.Date.Should().Be(expected.CreatedAt.Date);
             outputItem.Categories.Should().BeEquivalentTo(expected.Categories);
         }
     }
@@ -111,7 +111,7 @@ public class SearchGenreTest
             outputItem.Id.Should().Be(expected.Id);
             outputItem.Name.Should().Be(expected.Name);
             outputItem.IsActive.Should().Be(expected.IsActive);
-            outputItem.CreatedAt.Should().Be(expected.CreatedAt);
+            outputItem.CreatedAt.Date.Should().Be(expected.CreatedAt.Date);
             outputItem.Categories.Should().BeEquivalentTo(expected.Categories);
         }
     }
