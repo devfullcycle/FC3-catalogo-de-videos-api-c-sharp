@@ -28,6 +28,12 @@ public class GenreDataGenerator : DataGeneratorBase
 
         return genre;
     }
+    
+    public List<Genre> GetGenreList(int length = 10)
+        => Enumerable
+            .Range(0, length)
+            .Select(_ => GetValidGenre())
+            .ToList();
 
     public List<GenreModel> GetGenreModelList(int count = 10)
         => Enumerable.Range(0, count)

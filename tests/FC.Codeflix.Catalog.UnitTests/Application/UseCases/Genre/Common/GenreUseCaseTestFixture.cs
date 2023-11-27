@@ -1,4 +1,5 @@
 using FC.Codeflix.Catalog.Domain.Repositories;
+using FC.Codeflix.Catalog.Infra.Data.ES.Models;
 using FC.Codeflix.Catalog.Tests.Shared;
 using NSubstitute;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
@@ -14,6 +15,9 @@ public class GenreUseCaseTestFixture
 
     public DomainEntity.Genre GetValidGenre()
         => DataGenerator.GetValidGenre();
+
+    public IList<DomainEntity.Genre> GetGenreList(int count = 10)
+        => DataGenerator.GetGenreList(count);
 }
 
 [CollectionDefinition(nameof(GenreUseCaseTestFixture))]
