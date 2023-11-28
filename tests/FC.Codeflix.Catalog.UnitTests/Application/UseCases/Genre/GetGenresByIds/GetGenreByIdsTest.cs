@@ -1,4 +1,5 @@
 using FC.Codeflix.Catalog.UnitTests.Application.UseCases.Genre.Common;
+using FluentAssertions;
 using NSubstitute;
 using UseCase = FC.Codeflix.Catalog.Application.UseCases.Genre.GetGenresByIds;
 
@@ -28,19 +29,19 @@ public class GetGenreByIdsTest
                 genre.CreatedAt,
                 genre.IsActive,
                 Categories = genre.Categories.Select(category => new { category.Id, category.Name })
-            });
-        var ids = expectedOutput.Select(x => x.Id);
-        repository.GetGenresByIdsAsyc(
+            }).ToList();
+        var ids = expectedOutput.Select(x => x.Id).ToList();
+        repository.GetGenresByIdsAsync(
             Arg.Any<IEnumerable<Guid>>(),
             Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(genres));
+            .Returns(Task.FromResult(genres.AsEnumerable()));
         var useCase = new UseCase.GetGenresByIds(repository);
-        var input = new GeGenresByIdsInput(ids);
+        var input = new UseCase.GetGenresByIdsInput(ids);
 
         var output = await useCase.Handle(input, CancellationToken.None);
 
         output.Should().BeEquivalentTo(expectedOutput);
-        await repository.Received(1).GetGenresByIdsAsyc(
+        await repository.Received(1).GetGenresByIdsAsync(
             ids, Arg.Any<CancellationToken>());
     }
 }

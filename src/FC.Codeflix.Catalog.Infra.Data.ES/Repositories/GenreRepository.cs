@@ -58,7 +58,12 @@ public class GenreRepository : IGenreRepository
             (int)response.Total,
             genres);
     }
-    
+
+    public Task<IEnumerable<Genre>> GetGenresByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
     private static Func<SortDescriptor<GenreModel>, IPromise<IList<ISort>>> BuildSortExpression(
         string orderBy, SearchOrder order)
         => (orderBy.ToLower(), order) switch
