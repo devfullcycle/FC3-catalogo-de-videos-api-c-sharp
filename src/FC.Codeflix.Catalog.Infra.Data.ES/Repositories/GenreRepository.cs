@@ -59,9 +59,25 @@ public class GenreRepository : IGenreRepository
             genres);
     }
 
-    public Task<IEnumerable<Genre>> GetGenresByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Genre>> GetGenresByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var response = await _client.SearchAsync<GenreModel>(s => s
+            .Query(q => q
+                .Bool(b => b
+                    .Filter(f => f
+                        // .Terms(t => t
+                        //     .Field(genre => genre.Id)
+                        //     .Terms(ids)
+                        // )
+                        .Ids(i => i.Values(ids))
+                    )
+                )
+            ), ct: cancellationToken
+        );
+
+        return response.Documents
+            .Select(doc => doc.ToEntity())
+            .ToList();
     }
 
     private static Func<SortDescriptor<GenreModel>, IPromise<IList<ISort>>> BuildSortExpression(

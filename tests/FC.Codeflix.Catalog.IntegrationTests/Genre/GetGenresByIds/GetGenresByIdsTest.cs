@@ -1,3 +1,4 @@
+using FC.Codeflix.Catalog.Infra.Data.ES;
 using FC.Codeflix.Catalog.IntegrationTests.Genre.Common;
 using FluentAssertions;
 using MediatR;
@@ -24,6 +25,7 @@ public class GetGenresByIdsTest : IDisposable
         var elasticClient = _fixture.ElasticClient;
         var genres = _fixture.GetGenreModelList();
         await elasticClient.IndexManyAsync(genres);
+        await elasticClient.Indices.RefreshAsync(ElasticsearchIndices.Genre);
         var expectedOutput = new[]
         {
             genres[3], genres[5]
