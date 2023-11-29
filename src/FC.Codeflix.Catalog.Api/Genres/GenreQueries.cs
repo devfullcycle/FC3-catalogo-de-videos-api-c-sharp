@@ -19,6 +19,12 @@ public class GenreQueries
         var input = new SearchGenreInput(page, perPage, search, sort, direction);
         var output = await mediator.Send(input, cancellationToken);
         return SearchGenrePayload.FromSearchListOutput(output);
+    }
 
-    } 
+    public async Task<GenrePayload> GetGenreAsync(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }

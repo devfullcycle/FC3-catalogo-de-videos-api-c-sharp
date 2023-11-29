@@ -6,6 +6,7 @@
 type Query {
   categories(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchCategoryPayload!
   genres(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchGenrePayload!
+  genre(id: UUID!): GenrePayload!
 }
 
 type Mutation {
@@ -58,10 +59,10 @@ type GenrePayload {
   categories: [GenreCategoryPayload!]
 }
 
-"The `DateTime` scalar represents an ISO-8601 compliant date time type."
-scalar DateTime
-
 type GenreCategoryPayload {
   id: UUID!
   name: String
 }
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime
