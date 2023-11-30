@@ -6,7 +6,7 @@
 type Query {
   categories(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchCategoryPayload!
   genres(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchGenrePayload!
-  genre(id: UUID!): GenrePayload!
+  genre(id: UUID!): GenrePayload
 }
 
 type Mutation {

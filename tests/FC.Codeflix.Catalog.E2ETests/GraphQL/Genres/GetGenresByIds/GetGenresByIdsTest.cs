@@ -30,11 +30,34 @@ public class GetGenresByIdsTest : IDisposable
 
         output.Should().NotBeNull();
         output.Data.Should().NotBeNull();
-        output.Data!.Genre1.Name.Should().Be(genre1.Name);
+        output.Data!.Genre1!.Name.Should().Be(genre1.Name);
         output.Data.Genre1.IsActive.Should().Be(genre1.IsActive);
         output.Data.Genre1.CreatedAt.Date.Should().Be(genre1.CreatedAt.Date);
         output.Data.Genre1.Categories.Should().BeEquivalentTo(genre1.Categories);
-        output.Data.Genre2.Name.Should().Be(genre2.Name);
+        output.Data.Genre2!.Name.Should().Be(genre2.Name);
+    }
+    
+    [Fact(DisplayName = nameof(GetGenresByIds_WhenNotFindId_ReturnsNull))]
+    [Trait("E2E/GraphQL", "[Genre] GetByIds")]
+    public async Task GetGenresByIds_WhenNotFindId_ReturnsNull()
+    {
+        var elasticClient = _fixture.ElasticClient;
+        var examples = _fixture.GetGenreModelList();
+        await elasticClient.IndexManyAsync(examples);
+        await elasticClient.Indices.RefreshAsync();
+        var genre1 = examples[3];
+        var genreId2 = Guid.NewGuid();
+
+        var output = await _fixture.GraphQLClient.GetGenresByIds
+            .ExecuteAsync(genre1.Id, genreId2, CancellationToken.None);
+
+        output.Should().NotBeNull();
+        output.Data.Should().NotBeNull();
+        output.Data!.Genre1!.Name.Should().Be(genre1.Name);
+        output.Data.Genre1.IsActive.Should().Be(genre1.IsActive);
+        output.Data.Genre1.CreatedAt.Date.Should().Be(genre1.CreatedAt.Date);
+        output.Data.Genre1.Categories.Should().BeEquivalentTo(genre1.Categories);
+        output.Data.Genre2.Should().BeNull();
     }
 
     public void Dispose() => _fixture.DeleteAll();
