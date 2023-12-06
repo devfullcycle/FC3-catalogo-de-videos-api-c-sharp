@@ -4,6 +4,8 @@ using FC.Codeflix.Catalog.Infra.Messaging.Consumers;
 using FC.Codeflix.Catalog.Infra.Messaging.Consumers.MessageHandlers;
 using FC.Codeflix.Catalog.Infra.Messaging.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FC.Codeflix.Catalog.Infra.Messaging;
 
@@ -16,6 +18,13 @@ public static class ServiceRegistrationExtensions
             .BindConfiguration("KafkaConfiguration");
         return services
             .AddScoped<IMessageHandler<CategoryPayloadModel>, CategoryMessageHandler>()
-            .AddHostedService<CategoryConsumer>();
+            .AddHostedService<KafkaConsumer<CategoryPayloadModel>>(
+                provider =>
+                {
+                    var configuration = provider.GetRequiredService<IOptions<KafkaConfiguration>>();
+                    var logger = provider.GetRequiredService<ILogger<KafkaConsumer<CategoryPayloadModel>>>();
+                    return new KafkaConsumer<CategoryPayloadModel>(
+                        configuration.Value.CategoryConsumer, logger, provider);
+                });
     }
 }

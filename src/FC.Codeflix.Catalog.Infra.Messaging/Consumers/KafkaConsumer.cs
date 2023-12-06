@@ -12,18 +12,19 @@ using Microsoft.Extensions.Options;
 
 namespace FC.Codeflix.Catalog.Infra.Messaging.Consumers;
 
-public class CategoryConsumer : BackgroundService
+public class KafkaConsumer<TMessage> : BackgroundService
+    where TMessage : class
 {
-    private readonly KafkaConfiguration _configuration;
-    private readonly ILogger<CategoryConsumer> _logger;
+    private readonly KafkaConsumerConfiguration _configuration;
+    private readonly ILogger<KafkaConsumer<TMessage>> _logger;
     private readonly IServiceProvider _serviceProvider;
 
-    public CategoryConsumer(
-        IOptions<KafkaConfiguration> configuration,
-        ILogger<CategoryConsumer> logger,
+    public KafkaConsumer(
+        KafkaConsumerConfiguration configuration,
+        ILogger<KafkaConsumer<TMessage>> logger,
         IServiceProvider serviceProvider)
     {
-        _configuration = configuration.Value;
+        _configuration = configuration;
         _logger = logger;
         _serviceProvider = serviceProvider;
     }
@@ -32,7 +33,7 @@ public class CategoryConsumer : BackgroundService
         => new()
         {
             BootstrapServers = _configuration.BootstrapServers,
-            GroupId = _configuration.CategoryConsumer.GroupId,
+            GroupId = _configuration.GroupId,
             AutoOffsetReset = AutoOffsetReset.Earliest,
             EnableAutoCommit = true,
             EnableAutoOffsetStore = false
@@ -41,7 +42,7 @@ public class CategoryConsumer : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var config = GetConsumerConfig();
-        var topic = _configuration.CategoryConsumer.Topic;
+        var topic = _configuration.Topic;
         using var consumer = new ConsumerBuilder<string, string>(config).Build();
         consumer.Subscribe(topic);
         while (!stoppingToken.IsCancellationRequested)
@@ -61,9 +62,9 @@ public class CategoryConsumer : BackgroundService
     private async Task HandleMessageAsync(Message<string, string> message, CancellationToken cancellationToken)
     {
         using var scope = _serviceProvider.CreateScope();
-        var handler = scope.ServiceProvider.GetRequiredService<IMessageHandler<CategoryPayloadModel>>();
+        var handler = scope.ServiceProvider.GetRequiredService<IMessageHandler<TMessage>>();
 
-        var messageModel = JsonSerializer.Deserialize<MessageModel<CategoryPayloadModel>>(
+        var messageModel = JsonSerializer.Deserialize<MessageModel<TMessage>>(
             message.Value, SerializerConfiguration.JsonSerializerOptions);
         
         await handler.HandleMessageAsync(messageModel!, cancellationToken);
