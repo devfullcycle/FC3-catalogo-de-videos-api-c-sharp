@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Confluent.Kafka;
 using FC.Codeflix.Catalog.Domain.Exceptions;
+using FC.Codeflix.Catalog.Infra.Messaging.Common;
 using FC.Codeflix.Catalog.Infra.Messaging.Configuration;
 using FC.Codeflix.Catalog.Infra.Messaging.Models;
 using MediatR;
@@ -51,42 +52,21 @@ public class CategoryConsumer : BackgroundService
             {
                 continue;
             }
-            await HandlerMessageAsync(consumeResult.Message, stoppingToken);
+            await HandleMessageAsync(consumeResult.Message, stoppingToken);
             consumer.StoreOffset(consumeResult);
         }
         consumer.Close();
     }
 
-    private async Task HandlerMessageAsync(Message<string, string> message, CancellationToken cancellationToken)
+    private async Task HandleMessageAsync(Message<string, string> message, CancellationToken cancellationToken)
     {
         using var scope = _serviceProvider.CreateScope();
-        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+        var handler = scope.ServiceProvider.GetRequiredService<IMessageHandler<CategoryPayloadModel>>();
 
         var messageModel = JsonSerializer.Deserialize<MessageModel<CategoryPayloadModel>>(
             message.Value, SerializerConfiguration.JsonSerializerOptions);
+        
+        await handler.HandleMessageAsync(messageModel!, cancellationToken);
 
-        switch (messageModel!.Payload.Operation)
-        {
-            case MessageModelOperation.Create:
-            case MessageModelOperation.Read:
-            case MessageModelOperation.Update:
-                var saveInput = messageModel.Payload.After.ToSaveCategoryInput();
-                await mediator.Send(saveInput, cancellationToken);
-                break;
-            case MessageModelOperation.Delete:
-                try
-                {
-                    var deleteInput = messageModel.Payload.Before.ToDeleteCategoryInput();
-                    await mediator.Send(deleteInput, cancellationToken);
-                }
-                catch (NotFoundException ex)
-                {
-                    _logger.LogError(ex, "Category not found. Message: {message}", message.Value);
-                }
-                break;
-            default:
-                _logger.LogError("Invalid operation: {operation}", messageModel.Payload.Op);
-                break;
-        }
     }
 }
