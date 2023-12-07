@@ -17,7 +17,8 @@ public static class ServiceRegistrationExtensions
         services.AddOptions<KafkaConfiguration>()
             .BindConfiguration("KafkaConfiguration");
         return services
-            .AddScoped<IMessageHandler<CategoryPayloadModel>, CategoryMessageHandler>()
+            .AddScoped<SaveCategoryMessageHandler>()
+            .AddScoped<DeleteCategoryMessageHandler>()
             .AddHostedService<KafkaConsumer<CategoryPayloadModel>>(
                 provider =>
                 {
@@ -25,7 +26,13 @@ public static class ServiceRegistrationExtensions
                     var logger = provider.GetRequiredService<ILogger<KafkaConsumer<CategoryPayloadModel>>>();
                     var consumer = new KafkaConsumer<CategoryPayloadModel>(
                         configuration.Value.CategoryConsumer, logger, provider);
-                    consumer.AddMessageHandler<IMessageHandler<CategoryPayloadModel>>(_ => true);
+                    consumer.AddMessageHandler<SaveCategoryMessageHandler>(
+                        message => message.Payload.Operation is
+                            MessageModelOperation.Create or 
+                            MessageModelOperation.Read or 
+                            MessageModelOperation.Update);
+                    consumer.AddMessageHandler<DeleteCategoryMessageHandler>(
+                        message => message.Payload.Operation is MessageModelOperation.Delete);
                     return consumer;
                 });
     }
