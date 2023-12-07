@@ -19,6 +19,8 @@ public class KafkaConsumer<TMessage> : BackgroundService
     private readonly ILogger<KafkaConsumer<TMessage>> _logger;
     private readonly IServiceProvider _serviceProvider;
 
+    private readonly List<(Func<MessageModel<TMessage>, bool> Predicate, Type Type)> _messageHandlers = new();
+
     public KafkaConsumer(
         KafkaConsumerConfiguration configuration,
         ILogger<KafkaConsumer<TMessage>> logger,
@@ -62,12 +64,34 @@ public class KafkaConsumer<TMessage> : BackgroundService
     private async Task HandleMessageAsync(Message<string, string> message, CancellationToken cancellationToken)
     {
         using var scope = _serviceProvider.CreateScope();
-        var handler = scope.ServiceProvider.GetRequiredService<IMessageHandler<TMessage>>();
 
         var messageModel = JsonSerializer.Deserialize<MessageModel<TMessage>>(
             message.Value, SerializerConfiguration.JsonSerializerOptions);
+
+        var messageHandlerType = _messageHandlers
+            .FirstOrDefault(tuple => tuple.Predicate.Invoke(messageModel!))
+            .Type;
+
+        if (messageHandlerType is null)
+        {
+            _logger.LogError("None of the message handlers predicates was satisfied by the message: {@message}",
+                message);
+            return;
+        }
+
+        var handler = (IMessageHandler<TMessage>?)scope.ServiceProvider.GetRequiredService(messageHandlerType);
+
+        if (handler is null)
+        {
+            _logger.LogError("No message handle found of type: {@messageHandlerType}", messageHandlerType);
+            return;
+        }
         
         await handler.HandleMessageAsync(messageModel!, cancellationToken);
+    }
 
+    public void AddMessageHandler<T>(Func<MessageModel<TMessage>, bool> predicate)
+    {
+        _messageHandlers.Add((predicate, typeof(T)));
     }
 }

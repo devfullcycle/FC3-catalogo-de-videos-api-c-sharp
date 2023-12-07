@@ -23,8 +23,10 @@ public static class ServiceRegistrationExtensions
                 {
                     var configuration = provider.GetRequiredService<IOptions<KafkaConfiguration>>();
                     var logger = provider.GetRequiredService<ILogger<KafkaConsumer<CategoryPayloadModel>>>();
-                    return new KafkaConsumer<CategoryPayloadModel>(
+                    var consumer = new KafkaConsumer<CategoryPayloadModel>(
                         configuration.Value.CategoryConsumer, logger, provider);
+                    consumer.AddMessageHandler<IMessageHandler<CategoryPayloadModel>>(_ => true);
+                    return consumer;
                 });
     }
 }
