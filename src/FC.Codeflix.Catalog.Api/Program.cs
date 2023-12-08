@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
     .AddUseCases()
-    .AddConsumers()
+    .AddConsumers(builder.Configuration)
     .AddElasticSearch(builder.Configuration)
     .AddRepositories()
     .AddGraphQLServer()
