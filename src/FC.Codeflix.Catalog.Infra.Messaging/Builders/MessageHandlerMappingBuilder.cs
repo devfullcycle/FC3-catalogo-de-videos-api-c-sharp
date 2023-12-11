@@ -31,4 +31,9 @@ public class MessageHandlerMappingBuilder<TMessage>
         _predicate = predicate;
         return this;
     }
+
+    public (Func<MessageModel<TMessage>, bool> Predicate, Type Type) Build()
+    {
+        return (_predicate, _handlerType);
+    }
 }

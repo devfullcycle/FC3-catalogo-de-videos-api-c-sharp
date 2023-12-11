@@ -94,4 +94,9 @@ public class KafkaConsumer<TMessage> : BackgroundService
     {
         _messageHandlers.Add((predicate, typeof(T)));
     }
+
+    public void AddMessageHandler(Type type, Func<MessageModel<TMessage>, bool> predicate)
+    {
+        _messageHandlers.Add((predicate, type));
+    }
 }
