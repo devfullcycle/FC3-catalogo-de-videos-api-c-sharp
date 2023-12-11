@@ -2,6 +2,7 @@ using FC.Codeflix.Catalog.Infra.Messaging.Common;
 using FC.Codeflix.Catalog.Infra.Messaging.Configuration;
 using FC.Codeflix.Catalog.Infra.Messaging.Consumers;
 using FC.Codeflix.Catalog.Infra.Messaging.Consumers.MessageHandlers;
+using FC.Codeflix.Catalog.Infra.Messaging.Extensions;
 using FC.Codeflix.Catalog.Infra.Messaging.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
