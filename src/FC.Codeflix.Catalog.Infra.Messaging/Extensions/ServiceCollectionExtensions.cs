@@ -10,9 +10,6 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services)
         where TMessage : class
     {
-        var builder = new KafkaConsumerBuilder<TMessage>();
-        services.AddHostedService<KafkaConsumer<TMessage>>(
-            provider => builder.Build(provider));
-        return builder;
+        return new KafkaConsumerBuilder<TMessage>(services);
     }
 }

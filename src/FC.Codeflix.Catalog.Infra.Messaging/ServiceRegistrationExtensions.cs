@@ -23,20 +23,21 @@ public static class ServiceRegistrationExtensions
             .BindConfiguration(KafkaConfigurationSection);
 
         var kafkaConfiguration = configuration.GetSection(KafkaConfigurationSection);
-
-        services.AddKafkaConsumer<CategoryPayloadModel>()
-            .Configure(kafkaConfiguration.GetSection(CategoryConsumerConfigurationSection))
-            .With<SaveCategoryMessageHandler>()
-            .When(message => message.Payload.Operation is
-                MessageModelOperation.Create or
-                MessageModelOperation.Read or
-                MessageModelOperation.Update)
-            .And
-            .With<DeleteCategoryMessageHandler>()
-            .When(message => message.Payload.Operation is MessageModelOperation.Delete);
         
         return services
             .AddScoped<SaveCategoryMessageHandler>()
-            .AddScoped<DeleteCategoryMessageHandler>();
+            .AddScoped<DeleteCategoryMessageHandler>()
+            .AddKafkaConsumer<CategoryPayloadModel>()
+                .Configure(kafkaConfiguration.GetSection(CategoryConsumerConfigurationSection))
+                .WithRetries(3)
+                .With<SaveCategoryMessageHandler>()
+                .When(message => message.Payload.Operation is
+                    MessageModelOperation.Create or
+                    MessageModelOperation.Read or
+                    MessageModelOperation.Update)
+                .And
+                .With<DeleteCategoryMessageHandler>()
+                .When(message => message.Payload.Operation is MessageModelOperation.Delete)
+                .Register();
     }
 }

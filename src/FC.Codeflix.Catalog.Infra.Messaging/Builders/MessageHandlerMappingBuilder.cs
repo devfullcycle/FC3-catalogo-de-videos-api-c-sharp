@@ -1,5 +1,6 @@
 using FC.Codeflix.Catalog.Infra.Messaging.Common;
 using FC.Codeflix.Catalog.Infra.Messaging.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FC.Codeflix.Catalog.Infra.Messaging.Builders;
 
@@ -36,4 +37,6 @@ public class MessageHandlerMappingBuilder<TMessage>
     {
         return (_predicate, _handlerType);
     }
+
+    public IServiceCollection Register() => _kafkaConsumerBuilder.Register();
 }
