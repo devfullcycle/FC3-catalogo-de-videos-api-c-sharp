@@ -1,14 +1,12 @@
 using System.Text.Json;
 using Confluent.Kafka;
-using FC.Codeflix.Catalog.Domain.Exceptions;
+using Confluent.Kafka.Admin;
 using FC.Codeflix.Catalog.Infra.Messaging.Common;
 using FC.Codeflix.Catalog.Infra.Messaging.Configuration;
 using FC.Codeflix.Catalog.Infra.Messaging.Models;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace FC.Codeflix.Catalog.Infra.Messaging.Consumers;
 
@@ -43,6 +41,7 @@ public class KafkaConsumer<TMessage> : BackgroundService
  
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        await EnsureTopicsAreCreatedAsync();
         var config = GetConsumerConfig();
         var topic = _configuration.Topic;
         using var consumer = new ConsumerBuilder<string, string>(config).Build();
@@ -98,5 +97,27 @@ public class KafkaConsumer<TMessage> : BackgroundService
     public void AddMessageHandler(Type type, Func<MessageModel<TMessage>, bool> predicate)
     {
         _messageHandlers.Add((predicate, type));
+    }
+
+    public async Task EnsureTopicsAreCreatedAsync()
+    {
+        var kafkaAdminConfig = new AdminClientConfig { BootstrapServers = _configuration.BootstrapServers };
+        var topics = new[] { _configuration.Topic, _configuration.DlqTopic };
+        using var kafkaAdmin = new AdminClientBuilder(kafkaAdminConfig).Build();
+        try
+        {
+            var topicsSpecification = topics.Select(topicName => new TopicSpecification
+            {
+                Name = topicName,
+                ReplicationFactor = 1,
+                NumPartitions = 1
+            });
+            await kafkaAdmin.CreateTopicsAsync(topicsSpecification);
+        }
+        catch (CreateTopicsException ex)
+            when (ex.Message.Contains("already exists"))
+        {
+            _logger.LogWarning("Topic already exists: {error}", ex.ToString());
+        }
     }
 }
