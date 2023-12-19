@@ -14,6 +14,9 @@ public class KafkaConsumerConfiguration
     public string Topic { get; set; } = null!;
     public string? RetryTopic { get; set; }
     public string? DlqTopic { get; set; }
+    public int ConsumeDelaySeconds { get; private set; }
+
+    public bool HasRetry => !string.IsNullOrWhiteSpace(RetryTopic);
 
     public KafkaConsumerConfiguration CreateRetryConfiguration(int retryIndex, bool hasNextRetry)
         => new()
@@ -22,7 +25,8 @@ public class KafkaConsumerConfiguration
             GroupId = GroupId,
             Topic = Topic.ToRetryTopic(retryIndex),
             RetryTopic = !hasNextRetry ? null : Topic.ToRetryTopic(retryIndex + 1),
-            DlqTopic = DlqTopic
+            DlqTopic = DlqTopic,
+            ConsumeDelaySeconds = (int)Math.Pow(2, retryIndex)
         };
 
 }
