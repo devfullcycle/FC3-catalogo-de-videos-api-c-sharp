@@ -35,7 +35,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kafka", "kafka", "{99DE503F-837C-42D0-86B1-E553C7D0E682}"
 	ProjectSection(SolutionItems) = preProject
 		sandbox\kafka\docker-compose.yml = sandbox\kafka\docker-compose.yml
-		sandbox\kafka\connector.json = sandbox\kafka\connector.json
+		sandbox\kafka\Kafka Connect.postman_collection.json = sandbox\kafka\Kafka Connect.postman_collection.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.Codeflix.Catalog.Infra.Messaging", "src\FC.Codeflix.Catalog.Infra.Messaging\FC.Codeflix.Catalog.Infra.Messaging.csproj", "{A3244022-A055-47DE-B7DC-68FE9D27E61C}"
