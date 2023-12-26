@@ -53,6 +53,8 @@ public class GenreConsumerTestFixture : GenreTestFixtureBase
     
     public MessageModel<GenrePayloadModel> BuildValidMessage(string operation)
         => BuildValidMessage(operation, DataGenerator.GetGenreModelList(1)[0]);
+
+    public Domain.Entity.Genre GetValidGenre(Guid id) => DataGenerator.GetValidGenre(id);
 }
 
 [CollectionDefinition(nameof(GenreConsumerTestFixture))]

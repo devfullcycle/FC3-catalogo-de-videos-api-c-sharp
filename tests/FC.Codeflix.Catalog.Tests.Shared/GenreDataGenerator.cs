@@ -12,7 +12,7 @@ public class GenreDataGenerator : DataGeneratorBase
     public string GetValidName()
         => Faker.Commerce.Categories(1)[0];
 
-    public Genre GetValidGenre()
+    public Genre GetValidGenre(Guid? id = null)
     {
         var categories = new[]
         {
@@ -20,7 +20,7 @@ public class GenreDataGenerator : DataGeneratorBase
             _categoryDataGenerator.GetValidCategory()
         };
         var genre = new Genre(
-            Guid.NewGuid(),
+            id ?? Guid.NewGuid(),
             GetValidName(),
             GetRandomBoolean(),
             DateTime.Now,
