@@ -1,6 +1,10 @@
+using System.Text.Json;
 using FC.Codeflix.Catalog.Infra.Data.ES.Models;
 using FluentAssertions;
 using Nest;
+using WireMock.RequestBuilders;
+using WireMock.ResponseBuilders;
+using WireMock.Server;
 
 namespace FC.Codeflix.Catalog.E2ETests.Consumers.Genre;
 
@@ -8,6 +12,7 @@ namespace FC.Codeflix.Catalog.E2ETests.Consumers.Genre;
 public class GenreConsumerTest: IDisposable
 {
     private readonly GenreConsumerTestFixture _fixture;
+    private readonly WireMockServer _mockServer = WireMockServer.Start(5555);
 
     public GenreConsumerTest(GenreConsumerTestFixture fixture)
     {
@@ -22,8 +27,16 @@ public class GenreConsumerTest: IDisposable
     {
         var message = _fixture.BuildValidMessage(operation);
         var genre = _fixture.GetValidGenre(message.Payload.After.Id);
-        /// Configurarmos um mock para um HTTP server, para que sempre que uma requisição for enviada
-        /// com esse ID, genre seja retornado
+        var apiResponseBody = JsonSerializer.Serialize(genre, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        _mockServer.Given(
+            Request.Create()
+                .WithPath($"genres/{genre.Id}")
+                .UsingGet())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBody(apiResponseBody));
         
         await _fixture.PublishMessageAsync(message);
         await Task.Delay(2_000);
@@ -45,8 +58,16 @@ public class GenreConsumerTest: IDisposable
         var example = examplesList[2];
         var message = _fixture.BuildValidMessage("u", example);
         var genre = _fixture.GetValidGenre(message.Payload.After.Id);
-        /// Configurarmos um mock para um HTTP server, para que sempre que uma requisição for enviada
-        /// com esse ID, genre seja retornado
+        var apiResponseBody = JsonSerializer.Serialize(genre, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        _mockServer.Given(
+                Request.Create()
+                    .WithPath($"genres/{genre.Id}")
+                    .UsingGet())
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBody(apiResponseBody));
         
         await _fixture.PublishMessageAsync(message);
         await Task.Delay(2_000);
