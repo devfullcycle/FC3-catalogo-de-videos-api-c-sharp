@@ -22,7 +22,7 @@ public class CategoryConsumerTestFixture : CategoryTestFixtureBase
 
     public async Task PublishMessageAsync(object message)
     {
-        var config = new ProducerConfig { BootstrapServers = _kafkaConfiguration.BootstrapServers };
+        var config = new ProducerConfig { BootstrapServers = _kafkaConfiguration.CategoryConsumer.BootstrapServers };
         using var producer = new ProducerBuilder<string, string>(config).Build();
         var rawMessage = JsonSerializer.Serialize(message, SerializerConfiguration.JsonSerializerOptions);
         _ = await producer.ProduceAsync(

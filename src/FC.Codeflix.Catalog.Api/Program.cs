@@ -1,5 +1,6 @@
 using FC.Codeflix.Catalog.Api.Categories;
 using FC.Codeflix.Catalog.Api.Filters;
+using FC.Codeflix.Catalog.Api.Genres;
 using FC.Codeflix.Catalog.Application;
 using FC.Codeflix.Catalog.Infra.Data.ES;
 using FC.Codeflix.Catalog.Infra.Messaging;
@@ -14,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
     .AddUseCases()
-    .AddConsumers()
+    .AddConsumers(builder.Configuration)
     .AddElasticSearch(builder.Configuration)
     .AddRepositories()
     .AddGraphQLServer()
@@ -22,6 +23,7 @@ builder.Services
     .AddMutationType()
     .AddTypeExtension<CategoryQueries>()
     .AddTypeExtension<CategoryMutations>()
+    .AddTypeExtension<GenreQueries>()
     .AddErrorFilter<GraphQLErrorFilter>();
 
 var app = builder.Build();

@@ -1,0 +1,15 @@
+query GetGenresByIds($genreId1: UUID!, $genreId2: UUID!) {
+    genre1: genre(id: $genreId1) {
+        id
+        name
+        isActive
+        createdAt
+        categories {
+            id
+            name
+        }
+    }
+    genre2: genre(id: $genreId2) {
+        name
+    }
+}

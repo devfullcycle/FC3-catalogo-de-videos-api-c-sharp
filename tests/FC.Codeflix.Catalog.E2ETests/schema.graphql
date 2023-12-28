@@ -5,6 +5,8 @@
 
 type Query {
   categories(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchCategoryPayload!
+  genres(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchGenrePayload!
+  genre(id: UUID!): GenrePayload
 }
 
 type Mutation {
@@ -12,16 +14,16 @@ type Mutation {
   deleteCategory(id: UUID!): Boolean!
 }
 
+enum SearchOrder {
+  ASC
+  DESC
+}
+
 type SearchCategoryPayload {
   currentPage: Int!
   perPage: Int!
   total: Int!
   items: [CategoryPayload!]!
-}
-
-enum SearchOrder {
-  ASC
-  DESC
 }
 
 type CategoryPayload {
@@ -41,6 +43,26 @@ input SaveCategoryInput {
 }
 
 scalar UUID
+
+type SearchGenrePayload {
+  currentPage: Int!
+  perPage: Int!
+  total: Int!
+  items: [GenrePayload!]!
+}
+
+type GenrePayload {
+  id: UUID!
+  name: String
+  isActive: Boolean!
+  createdAt: DateTime!
+  categories: [GenreCategoryPayload!]
+}
+
+type GenreCategoryPayload {
+  id: UUID!
+  name: String
+}
 
 "The `DateTime` scalar represents an ISO-8601 compliant date time type."
 scalar DateTime
