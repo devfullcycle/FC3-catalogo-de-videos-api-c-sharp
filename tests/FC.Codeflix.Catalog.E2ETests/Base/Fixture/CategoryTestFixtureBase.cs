@@ -21,15 +21,15 @@ public class CategoryTestFixtureBase : IDisposable
         });
         DataGenerator = new CategoryDataGenerator();
         ElasticClient = WebAppFactory.Services.GetRequiredService<IElasticClient>();   
-        ElasticSearchOperations.CreateCategoryIndexAsync(ElasticClient).GetAwaiter().GetResult();
+        ElasticClient.CreateCategoryIndexAsync().GetAwaiter().GetResult();
     }
 
     public IList<CategoryModel> GetCategoryModelList(int count = 10)
         => DataGenerator.GetCategoryModelList(count);
 
     public void DeleteAll()
-        => ElasticSearchOperations.DeleteCategoryDocuments(ElasticClient);
+        => ElasticClient.DeleteDocuments<CategoryModel>();
 
     public void Dispose()
-        => ElasticSearchOperations.DeleteCategoryIndex(ElasticClient);
+        => ElasticClient.DeleteCategoryIndex();
 }
