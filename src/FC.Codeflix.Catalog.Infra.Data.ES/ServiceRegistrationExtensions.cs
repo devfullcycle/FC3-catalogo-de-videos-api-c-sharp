@@ -20,6 +20,10 @@ public static class ServiceRegistrationExtensions
                 .IndexName(ElasticsearchIndices.Category)
                 .IdProperty(p => p.Id)
             )
+            .DefaultMappingFor<GenreModel>(i => i
+                .IndexName(ElasticsearchIndices.Genre)
+                .IdProperty(p => p.Id)
+            )
             //.EnableDebugMode()
             .PrettyJson()
             .ThrowExceptions()
@@ -34,6 +38,7 @@ public static class ServiceRegistrationExtensions
         this IServiceCollection services)
     {
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IGenreRepository, GenreRepository>();
         return services;
     }
 
