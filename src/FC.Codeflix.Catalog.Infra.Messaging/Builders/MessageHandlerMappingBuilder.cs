@@ -26,6 +26,14 @@ public class MessageHandlerMappingBuilder<TMessage>
         return this;
     }
 
+    public MessageHandlerMappingBuilder<TMessage> WithDefault<THandler>()
+        where THandler : IMessageHandler<TMessage>
+    {
+        _handlerType = typeof(THandler);
+        _predicate = _ => true;
+        return this;
+    }
+
     public MessageHandlerMappingBuilder<TMessage> When(
         Func<MessageModel<TMessage>, bool> predicate)
     {

@@ -12,7 +12,7 @@ namespace FC.Codeflix.Catalog.E2ETests.Consumers.Genre;
 public class GenreConsumerTest: IDisposable
 {
     private readonly GenreConsumerTestFixture _fixture;
-    private readonly WireMockServer _mockServer = WireMockServer.Start(5555);
+    private readonly WireMockServer _mockServer = WireMockServer.Start(61001);
 
     public GenreConsumerTest(GenreConsumerTestFixture fixture)
     {
