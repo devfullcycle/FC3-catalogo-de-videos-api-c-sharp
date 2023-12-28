@@ -9,7 +9,7 @@ public class CustomWebApplicationFactory<TStartup>
     : WebApplicationFactory<TStartup>
     where TStartup : class
 {
-    public readonly string BaseUrl = "http://localhost:61000/";
+    public readonly string BaseUrl = "http://localhost:5555/";
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         var environment = "EndToEndTest";

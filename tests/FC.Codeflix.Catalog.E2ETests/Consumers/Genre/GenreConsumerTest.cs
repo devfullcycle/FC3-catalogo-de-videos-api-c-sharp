@@ -98,5 +98,9 @@ public class GenreConsumerTest: IDisposable
         persisted.Found.Should().BeFalse();
     }*/
 
-    public void Dispose() => _fixture.DeleteAll();
+    public void Dispose()
+    {
+        _mockServer.Dispose();
+        _fixture.DeleteAll();
+    }
 }

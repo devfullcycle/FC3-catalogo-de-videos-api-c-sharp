@@ -1,0 +1,24 @@
+using FC.Codeflix.Catalog.Application.UseCases.Genre.SaveGenre;
+using FC.Codeflix.Catalog.Infra.Messaging.Common;
+using FC.Codeflix.Catalog.Infra.Messaging.Models;
+using MediatR;
+
+namespace FC.Codeflix.Catalog.Infra.Messaging.Consumers.MessageHandlers.Genre;
+
+public class SaveGenreMessageHandler
+    : IMessageHandler<GenrePayloadModel>
+{
+    private readonly IMediator _mediator;
+
+    public SaveGenreMessageHandler(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    public async Task HandleMessageAsync(MessageModel<GenrePayloadModel> messageModel, CancellationToken cancellationToken)
+    {
+        var id = messageModel.Payload.After.Id;
+        var input = new SaveGenreInput(id);
+        await _mediator.Send(input, cancellationToken);
+    }
+}
