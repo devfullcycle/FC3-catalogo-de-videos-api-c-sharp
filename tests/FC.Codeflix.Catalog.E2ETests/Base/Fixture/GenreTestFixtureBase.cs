@@ -6,30 +6,30 @@ using Nest;
 
 namespace FC.Codeflix.Catalog.E2ETests.Base.Fixture;
 
-public class CategoryTestFixtureBase : IDisposable
+public class GenreTestFixtureBase : IDisposable
 {
     public CustomWebApplicationFactory<Program> WebAppFactory { get; }
     public IElasticClient ElasticClient { get; }
-    public CategoryDataGenerator DataGenerator { get; }
+    public GenreDataGenerator DataGenerator { get; }
     
-    protected CategoryTestFixtureBase()
+    protected GenreTestFixtureBase()
     {
         WebAppFactory = new CustomWebApplicationFactory<Program>();
         _ = WebAppFactory.CreateClient(new WebApplicationFactoryClientOptions
         {
             BaseAddress = new Uri(WebAppFactory.BaseUrl)
         });
-        DataGenerator = new CategoryDataGenerator();
+        DataGenerator = new GenreDataGenerator();
         ElasticClient = WebAppFactory.Services.GetRequiredService<IElasticClient>();   
-        ElasticClient.CreateCategoryIndexAsync().GetAwaiter().GetResult();
+        ElasticClient.CreateGenreIndexAsync().GetAwaiter().GetResult();
     }
 
-    public IList<CategoryModel> GetCategoryModelList(int count = 10)
-        => DataGenerator.GetCategoryModelList(count);
+    public IList<GenreModel> GetGenreModelList(int count = 10)
+        => DataGenerator.GetGenreModelList(count);
 
     public void DeleteAll()
-        => ElasticClient.DeleteDocuments<CategoryModel>();
+        => ElasticClient.DeleteDocuments<GenreModel>();
 
     public void Dispose()
-        => ElasticClient.DeleteCategoryIndex();
+        => ElasticClient.DeleteGenreIndex();
 }

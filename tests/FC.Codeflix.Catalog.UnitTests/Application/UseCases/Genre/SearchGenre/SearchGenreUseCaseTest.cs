@@ -36,7 +36,7 @@ public class SearchGenreUseCaseTest
             input.Page,
             input.PerPage,
             input.PerPage,
-            genres);
+            genres.ToList());
         repository.SearchAsync(
             Arg.Any<SearchInput>(),
             Arg.Any<CancellationToken>()
