@@ -18,12 +18,7 @@ public class SearchGenreUseCaseTestFixture : GenreUseCaseTestFixture
                 ? SearchOrder.Asc
                 : SearchOrder.Desc);
     }
-
-    public List<DomainEntity.Genre> GetGenreList(int length = 10)
-        => Enumerable
-            .Range(0, length)
-            .Select(_ => GetValidGenre())
-            .ToList();
+    
 }
 
 [CollectionDefinition(nameof(SearchGenreUseCaseTestFixture))]
