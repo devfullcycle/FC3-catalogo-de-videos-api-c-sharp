@@ -19,18 +19,18 @@ public class GenreConsumerTest: IDisposable
         _fixture = fixture;
     }
 
-    [Theory(DisplayName = nameof(GenreEvent_WhenOperationIsCreate_SavesGenre))]
+    [Theory(DisplayName = nameof(GenreEvent_WhenOperationIsCreateOrRead_SavesGenre))]
     [Trait("E2E/Consumers", "Genre")]
     [InlineData("c")]
     [InlineData("r")]
-    public async Task GenreEvent_WhenOperationIsCreate_SavesGenre(string operation)
+    public async Task GenreEvent_WhenOperationIsCreateOrRead_SavesGenre(string operation)
     {
         var message = _fixture.BuildValidMessage(operation);
         var genre = _fixture.GetValidGenre(message.Payload.After.Id);
         var apiResponseBody = JsonSerializer.Serialize(genre, new JsonSerializerOptions(JsonSerializerDefaults.Web));
         _mockServer.Given(
             Request.Create()
-                .WithPath($"genres/{genre.Id}")
+                .WithPath($"/genres/{genre.Id}")
                 .UsingGet())
             .RespondWith(
                 Response.Create()
@@ -46,7 +46,11 @@ public class GenreConsumerTest: IDisposable
         persisted.Found.Should().BeTrue();
         var document = persisted.Source;
         document.Should().NotBeNull();
-        document.Should().BeEquivalentTo(genre);
+        document.Id.Should().Be(genre.Id);
+        document.Name.Should().Be(genre.Name);
+        document.CreatedAt.Should().Be(genre.CreatedAt);
+        document.IsActive.Should().Be(genre.IsActive);
+        document.Categories.Should().BeEquivalentTo(genre.Categories.Select(c => new { c.Id, c.Name }));
     }
     
     [Fact(DisplayName = nameof(GenreEvent_WhenOperationIsUpdate_SavesGenre))]
@@ -61,7 +65,7 @@ public class GenreConsumerTest: IDisposable
         var apiResponseBody = JsonSerializer.Serialize(genre, new JsonSerializerOptions(JsonSerializerDefaults.Web));
         _mockServer.Given(
                 Request.Create()
-                    .WithPath($"genres/{genre.Id}")
+                    .WithPath($"/genres/{genre.Id}")
                     .UsingGet())
             .RespondWith(
                 Response.Create()
@@ -77,7 +81,11 @@ public class GenreConsumerTest: IDisposable
         persisted.Found.Should().BeTrue();
         var document = persisted.Source;
         document.Should().NotBeNull();
-        document.Should().BeEquivalentTo(genre);
+        document.Id.Should().Be(genre.Id);
+        document.Name.Should().Be(genre.Name);
+        document.CreatedAt.Should().Be(genre.CreatedAt);
+        document.IsActive.Should().Be(genre.IsActive);
+        document.Categories.Should().BeEquivalentTo(genre.Categories.Select(c => new { c.Id, c.Name }));
     }
     
     /*[Fact(DisplayName = nameof(GenreEvent_WhenOperationIsDelete_DeletesGenre))]
