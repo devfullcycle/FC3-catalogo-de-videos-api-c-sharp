@@ -88,7 +88,7 @@ public class GenreConsumerTest: IDisposable
         document.Categories.Should().BeEquivalentTo(genre.Categories.Select(c => new { c.Id, c.Name }));
     }
     
-    /*[Fact(DisplayName = nameof(GenreEvent_WhenOperationIsDelete_DeletesGenre))]
+    [Fact(DisplayName = nameof(GenreEvent_WhenOperationIsDelete_DeletesGenre))]
     [Trait("E2E/Consumers", "Genre")]
     public async Task GenreEvent_WhenOperationIsDelete_DeletesGenre()
     {
@@ -104,7 +104,7 @@ public class GenreConsumerTest: IDisposable
         var persisted = await _fixture.ElasticClient
             .GetAsync<GenreModel>(genre.Id);
         persisted.Found.Should().BeFalse();
-    }*/
+    }
 
     public void Dispose()
     {
