@@ -30,6 +30,7 @@ public static class ServiceRegistrationExtensions
             .AddScoped<SaveCategoryMessageHandler>()
             .AddScoped<DeleteCategoryMessageHandler>()
             .AddScoped<SaveGenreMessageHandler>()
+            .AddScoped<DeleteGenreMessageHandler>()
             .AddKafkaConsumer<CategoryPayloadModel>()
                 .Configure(kafkaConfiguration.GetSection(CategoryConsumerConfigurationSection))
                 .WithRetries(3)
@@ -45,7 +46,14 @@ public static class ServiceRegistrationExtensions
             .AddKafkaConsumer<GenrePayloadModel>()
                 .Configure(kafkaConfiguration.GetSection(GenreConsumerConfigurationSection))
                 .WithRetries(3)
-                .WithDefault<SaveGenreMessageHandler>()
+                .With<SaveGenreMessageHandler>()
+                .When(message => message.Payload.Operation is
+                    MessageModelOperation.Create or
+                    MessageModelOperation.Read or
+                    MessageModelOperation.Update)
+                .And
+                .With<DeleteGenreMessageHandler>()
+                .When(message => message.Payload.Operation is MessageModelOperation.Delete)
                 .Register();
     }
 }
