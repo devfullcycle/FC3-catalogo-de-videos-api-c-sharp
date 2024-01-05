@@ -17,6 +17,7 @@ public class GenreConsumerTest: IDisposable
     public GenreConsumerTest(GenreConsumerTestFixture fixture)
     {
         _fixture = fixture;
+        _fixture.ConfigureGetTokenMock(_mockServer);
     }
 
     [Theory(DisplayName = nameof(GenreEvent_WhenOperationIsCreateOrRead_SavesGenre))]
@@ -28,15 +29,16 @@ public class GenreConsumerTest: IDisposable
         var message = _fixture.BuildValidMessage(operation);
         var genre = _fixture.GetValidGenre(message.Payload.After.Id);
         var apiResponseBody = JsonSerializer.Serialize(genre, new JsonSerializerOptions(JsonSerializerDefaults.Web));
-        _mockServer.Given(
-            Request.Create()
-                .WithPath($"/genres/{genre.Id}")
-                .UsingGet())
-            .RespondWith(
-                Response.Create()
-                    .WithStatusCode(200)
-                    .WithHeader("Content-Type", "application/json")
-                    .WithBody(apiResponseBody));
+        var adminCatalogRequest = Request.Create()
+            .WithPath($"/genres/{genre.Id}")
+            .WithHeader("Authorization", "Bearer *")
+            .UsingGet();
+        var adminCatalogResponse = Response.Create()
+            .WithStatusCode(200)
+            .WithHeader("Content-Type", "application/json")
+            .WithBody(apiResponseBody);
+        _mockServer.Given(adminCatalogRequest)
+            .RespondWith(adminCatalogResponse);
         
         await _fixture.PublishMessageAsync(message);
         await Task.Delay(2_000);
@@ -51,6 +53,10 @@ public class GenreConsumerTest: IDisposable
         document.CreatedAt.Should().Be(genre.CreatedAt);
         document.IsActive.Should().Be(genre.IsActive);
         document.Categories.Should().BeEquivalentTo(genre.Categories.Select(c => new { c.Id, c.Name }));
+        _mockServer.FindLogEntries(adminCatalogRequest)
+            .Should().HaveCount(1);
+        _mockServer.FindLogEntries(_fixture.AuthRequestBuilderMock)
+            .Should().HaveCount(1);
     }
     
     [Fact(DisplayName = nameof(GenreEvent_WhenOperationIsUpdate_SavesGenre))]
@@ -63,15 +69,16 @@ public class GenreConsumerTest: IDisposable
         var message = _fixture.BuildValidMessage("u", example);
         var genre = _fixture.GetValidGenre(message.Payload.After.Id);
         var apiResponseBody = JsonSerializer.Serialize(genre, new JsonSerializerOptions(JsonSerializerDefaults.Web));
-        _mockServer.Given(
-                Request.Create()
-                    .WithPath($"/genres/{genre.Id}")
-                    .UsingGet())
-            .RespondWith(
-                Response.Create()
-                    .WithStatusCode(200)
-                    .WithHeader("Content-Type", "application/json")
-                    .WithBody(apiResponseBody));
+        var adminCatalogRequest = Request.Create()
+            .WithPath($"/genres/{genre.Id}")
+            .WithHeader("Authorization", "Bearer *")
+            .UsingGet();
+        var adminCatalogResponse = Response.Create()
+            .WithStatusCode(200)
+            .WithHeader("Content-Type", "application/json")
+            .WithBody(apiResponseBody);
+        _mockServer.Given(adminCatalogRequest)
+            .RespondWith(adminCatalogResponse);
         
         await _fixture.PublishMessageAsync(message);
         await Task.Delay(2_000);
@@ -86,6 +93,10 @@ public class GenreConsumerTest: IDisposable
         document.CreatedAt.Should().Be(genre.CreatedAt);
         document.IsActive.Should().Be(genre.IsActive);
         document.Categories.Should().BeEquivalentTo(genre.Categories.Select(c => new { c.Id, c.Name }));
+        _mockServer.FindLogEntries(adminCatalogRequest)
+            .Should().HaveCount(1);
+        _mockServer.FindLogEntries(_fixture.AuthRequestBuilderMock)
+            .Should().HaveCount(1);
     }
     
     [Fact(DisplayName = nameof(GenreEvent_WhenOperationIsDelete_DeletesGenre))]
