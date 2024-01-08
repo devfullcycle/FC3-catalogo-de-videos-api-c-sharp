@@ -1,6 +1,7 @@
 using FC.Codeflix.Catalog.Domain.Gateways;
 using FC.Codeflix.Catalog.Infra.HttpClients.DelegatingHandlers;
 using FC.Codeflix.Catalog.Infra.HttpClients.HttpClients;
+using FC.Codeflix.Catalog.Infra.HttpClients.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,9 +13,12 @@ public static class ServiceRegistrationExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddOptions<CredentialsModel>()
+            .BindConfiguration("HttpClients:AuthenticationServer:Credentials");
+        
         services.AddHttpClient<AuthenticationClient>(client =>
         {
-            client.BaseAddress = new Uri(configuration["HttpClients:AuthenticationServer"]!);
+            client.BaseAddress = new Uri(configuration["HttpClients:AuthenticationServer:BaseUrl"]!);
         }); 
         
         services
