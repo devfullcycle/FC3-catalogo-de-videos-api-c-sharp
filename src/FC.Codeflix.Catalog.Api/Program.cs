@@ -16,6 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
     .AddUseCases()
+    .AddMemoryCache()
     .AddHttpClients(builder.Configuration)
     .AddConsumers(builder.Configuration)
     .AddElasticSearch(builder.Configuration)

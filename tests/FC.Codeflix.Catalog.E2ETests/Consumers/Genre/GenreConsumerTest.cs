@@ -56,7 +56,7 @@ public class GenreConsumerTest: IDisposable
         _mockServer.FindLogEntries(adminCatalogRequest)
             .Should().HaveCount(1);
         _mockServer.FindLogEntries(_fixture.AuthRequestBuilderMock)
-            .Should().HaveCount(1);
+            .Should().HaveCountLessOrEqualTo(1);
     }
     
     [Fact(DisplayName = nameof(GenreEvent_WhenOperationIsUpdate_SavesGenre))]
@@ -96,7 +96,7 @@ public class GenreConsumerTest: IDisposable
         _mockServer.FindLogEntries(adminCatalogRequest)
             .Should().HaveCount(1);
         _mockServer.FindLogEntries(_fixture.AuthRequestBuilderMock)
-            .Should().HaveCount(1);
+            .Should().HaveCountLessOrEqualTo(1);
     }
     
     [Fact(DisplayName = nameof(GenreEvent_WhenOperationIsDelete_DeletesGenre))]

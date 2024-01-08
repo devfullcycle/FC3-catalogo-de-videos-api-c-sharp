@@ -17,7 +17,7 @@ internal class AuthenticationClient
         _credentials = credentials.Value;
     }
 
-    public async Task<string> GetAccessToken(
+    public async Task<AuthenticationResponseModel> GetAccessToken(
         string username,
         string password,
         CancellationToken cancellationToken = default)
@@ -32,8 +32,6 @@ internal class AuthenticationClient
         var content = new FormUrlEncodedContent(collection);
         request.Content = content;
         var response = await _client.SendAsync(request, cancellationToken);
-        var responseBody =
-            await response.Content.ReadFromJsonAsync<AuthenticationResponseModel>(cancellationToken: cancellationToken);
-        return responseBody!.AccessToken;
+        return (await response.Content.ReadFromJsonAsync<AuthenticationResponseModel>(cancellationToken: cancellationToken))!;
     }
 }
