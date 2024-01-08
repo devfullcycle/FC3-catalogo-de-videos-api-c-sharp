@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
-using FC.Codeflix.Catalog.lnfra.HttpClients.Models;
+using FC.Codeflix.Catalog.Infra.HttpClients.Models;
 
-namespace FC.Codeflix.Catalog.lnfra.HttpClients.HttpClients;
+namespace FC.Codeflix.Catalog.Infra.HttpClients.HttpClients;
 
 internal class AuthenticationClient
 {

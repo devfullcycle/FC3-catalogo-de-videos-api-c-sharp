@@ -1,10 +1,10 @@
 using FC.Codeflix.Catalog.Domain.Gateways;
-using FC.Codeflix.Catalog.lnfra.HttpClients.DelegatingHandlers;
-using FC.Codeflix.Catalog.lnfra.HttpClients.HttpClients;
+using FC.Codeflix.Catalog.Infra.HttpClients.DelegatingHandlers;
+using FC.Codeflix.Catalog.Infra.HttpClients.HttpClients;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FC.Codeflix.Catalog.lnfra.HttpClients;
+namespace FC.Codeflix.Catalog.Infra.HttpClients;
 
 public static class ServiceRegistrationExtensions
 {

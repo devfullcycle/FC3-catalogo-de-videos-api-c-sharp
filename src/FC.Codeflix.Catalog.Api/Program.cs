@@ -4,7 +4,7 @@ using FC.Codeflix.Catalog.Api.Genres;
 using FC.Codeflix.Catalog.Application;
 using FC.Codeflix.Catalog.Infra.Data.ES;
 using FC.Codeflix.Catalog.Infra.Messaging;
-using FC.Codeflix.Catalog.lnfra.HttpClients;
+using FC.Codeflix.Catalog.Infra.HttpClients;
 
 var builder = WebApplication.CreateBuilder(args);
 

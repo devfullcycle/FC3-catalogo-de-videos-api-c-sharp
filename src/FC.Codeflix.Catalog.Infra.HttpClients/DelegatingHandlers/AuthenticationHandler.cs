@@ -1,7 +1,7 @@
 using System.Net.Http.Headers;
-using FC.Codeflix.Catalog.lnfra.HttpClients.HttpClients;
+using FC.Codeflix.Catalog.Infra.HttpClients.HttpClients;
 
-namespace FC.Codeflix.Catalog.lnfra.HttpClients.DelegatingHandlers;
+namespace FC.Codeflix.Catalog.Infra.HttpClients.DelegatingHandlers;
 
 internal class AuthenticationHandler : DelegatingHandler
 {

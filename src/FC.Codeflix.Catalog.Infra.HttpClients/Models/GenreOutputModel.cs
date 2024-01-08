@@ -1,6 +1,6 @@
 using FC.Codeflix.Catalog.Domain.Entity;
 
-namespace FC.Codeflix.Catalog.lnfra.HttpClients.Models;
+namespace FC.Codeflix.Catalog.Infra.HttpClients.Models;
 
 public class GenreOutputModel
 {

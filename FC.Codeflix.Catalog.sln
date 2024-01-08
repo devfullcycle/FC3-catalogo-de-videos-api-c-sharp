@@ -40,7 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kafka", "kafka", "{99DE503F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.Codeflix.Catalog.Infra.Messaging", "src\FC.Codeflix.Catalog.Infra.Messaging\FC.Codeflix.Catalog.Infra.Messaging.csproj", "{A3244022-A055-47DE-B7DC-68FE9D27E61C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.Codeflix.Catalog.lnfra.HttpClients", "src\FC.Codeflix.Catalog.lnfra.HttpClients\FC.Codeflix.Catalog.lnfra.HttpClients.csproj", "{53BB79BB-F3A1-411B-B4CD-C8F9FFD14A8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.Codeflix.Catalog.Infra.HttpClients", "src\FC.Codeflix.Catalog.Infra.HttpClients\FC.Codeflix.Catalog.Infra.HttpClients.csproj", "{53BB79BB-F3A1-411B-B4CD-C8F9FFD14A8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

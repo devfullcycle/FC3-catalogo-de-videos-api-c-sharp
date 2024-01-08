@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Confluent.Kafka;
+using FC.Codeflix.Catalog.Infra.HttpClients.Models;
 using FC.Codeflix.Catalog.Infra.Messaging.Configuration;
-using FC.Codeflix.Catalog.lnfra.HttpClients.Models;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
