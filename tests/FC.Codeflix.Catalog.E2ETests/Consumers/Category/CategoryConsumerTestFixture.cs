@@ -22,8 +22,7 @@ public class CategoryConsumerTestFixture : CategoryTestFixtureBase
 
     public Task PublishMessageAsync(object message)
         => PublishMessageAsync(
-            _kafkaConfiguration.CategoryConsumer.BootstrapServers,
-            _kafkaConfiguration.CategoryConsumer.Topic,
+            _kafkaConfiguration.CategoryConsumer,
             message);
 
     public MessageModel<CategoryPayloadModel> BuildValidMessage(string operation, CategoryModel categoryModel)

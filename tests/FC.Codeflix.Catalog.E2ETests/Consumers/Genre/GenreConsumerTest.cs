@@ -1,5 +1,6 @@
 using System.Text.Json;
 using FC.Codeflix.Catalog.Infra.Data.ES.Models;
+using FC.Codeflix.Catalog.Infra.Messaging.Models;
 using FluentAssertions;
 using Nest;
 using WireMock.RequestBuilders;
@@ -9,7 +10,7 @@ using WireMock.Server;
 namespace FC.Codeflix.Catalog.E2ETests.Consumers.Genre;
 
 [Collection(nameof(GenreConsumerTestFixture))]
-public class GenreConsumerTest: IDisposable
+public class GenreConsumerTest : IDisposable
 {
     private readonly GenreConsumerTestFixture _fixture;
     private readonly WireMockServer _mockServer = WireMockServer.Start(5555);
@@ -22,12 +23,16 @@ public class GenreConsumerTest: IDisposable
 
     [Theory(DisplayName = nameof(GenreEvent_WhenOperationIsCreateOrRead_SavesGenre))]
     [Trait("E2E/Consumers", "Genre")]
-    [InlineData("c")]
-    [InlineData("r")]
-    public async Task GenreEvent_WhenOperationIsCreateOrRead_SavesGenre(string operation)
+    [InlineData("c", nameof(GenrePayloadModel))]
+    [InlineData("r", nameof(GenrePayloadModel))]
+    [InlineData("c", nameof(GenreCategoryPayloadModel))]
+    [InlineData("r", nameof(GenreCategoryPayloadModel))]
+    public async Task GenreEvent_WhenOperationIsCreateOrRead_SavesGenre(string operation, string messageType)
     {
-        var message = _fixture.BuildValidMessage(operation);
-        var genre = _fixture.GetValidGenre(message.Payload.After.Id);
+        dynamic message = messageType == nameof(GenreCategoryPayloadModel)
+            ? _fixture.BuildValidMessage<GenreCategoryPayloadModel>(operation)
+            : _fixture.BuildValidMessage<GenrePayloadModel>(operation);
+        Domain.Entity.Genre genre = _fixture.GetValidGenre(message.Payload.After.Id);
         var apiResponseBody = JsonSerializer.Serialize(genre, new JsonSerializerOptions(JsonSerializerDefaults.Web));
         var adminCatalogRequest = Request.Create()
             .WithPath($"/genres/{genre.Id}")
@@ -39,10 +44,10 @@ public class GenreConsumerTest: IDisposable
             .WithBody(apiResponseBody);
         _mockServer.Given(adminCatalogRequest)
             .RespondWith(adminCatalogResponse);
-        
+
         await _fixture.PublishMessageAsync(message);
         await Task.Delay(2_000);
-        
+
         var persisted = await _fixture.ElasticClient
             .GetAsync<GenreModel>(genre.Id);
         persisted.Found.Should().BeTrue();
@@ -58,7 +63,7 @@ public class GenreConsumerTest: IDisposable
         _mockServer.FindLogEntries(_fixture.AuthRequestBuilderMock)
             .Should().HaveCountLessOrEqualTo(1);
     }
-    
+
     [Fact(DisplayName = nameof(GenreEvent_WhenOperationIsUpdate_SavesGenre))]
     [Trait("E2E/Consumers", "Genre")]
     public async Task GenreEvent_WhenOperationIsUpdate_SavesGenre()
@@ -66,7 +71,7 @@ public class GenreConsumerTest: IDisposable
         var examplesList = _fixture.GetGenreModelList();
         await _fixture.ElasticClient.IndexManyAsync(examplesList);
         var example = examplesList[2];
-        var message = _fixture.BuildValidMessage("u", example);
+        var message = _fixture.BuildValidMessage<GenrePayloadModel>("u", example);
         var genre = _fixture.GetValidGenre(message.Payload.After.Id);
         var apiResponseBody = JsonSerializer.Serialize(genre, new JsonSerializerOptions(JsonSerializerDefaults.Web));
         var adminCatalogRequest = Request.Create()
@@ -79,10 +84,10 @@ public class GenreConsumerTest: IDisposable
             .WithBody(apiResponseBody);
         _mockServer.Given(adminCatalogRequest)
             .RespondWith(adminCatalogResponse);
-        
+
         await _fixture.PublishMessageAsync(message);
         await Task.Delay(2_000);
-        
+
         var persisted = await _fixture.ElasticClient
             .GetAsync<GenreModel>(genre.Id);
         persisted.Found.Should().BeTrue();
@@ -98,7 +103,7 @@ public class GenreConsumerTest: IDisposable
         _mockServer.FindLogEntries(_fixture.AuthRequestBuilderMock)
             .Should().HaveCountLessOrEqualTo(1);
     }
-    
+
     [Fact(DisplayName = nameof(GenreEvent_WhenOperationIsDelete_DeletesGenre))]
     [Trait("E2E/Consumers", "Genre")]
     public async Task GenreEvent_WhenOperationIsDelete_DeletesGenre()
@@ -106,12 +111,12 @@ public class GenreConsumerTest: IDisposable
         var examplesList = _fixture.GetGenreModelList();
         await _fixture.ElasticClient.IndexManyAsync(examplesList);
         var example = examplesList[2];
-        var message = _fixture.BuildValidMessage("d", example);
+        var message = _fixture.BuildValidMessage<GenrePayloadModel>("d", example);
         var genre = message.Payload.Before;
-        
+
         await _fixture.PublishMessageAsync(message);
-        await Task.Delay(5_000);
-        
+        await Task.Delay(10_000);
+
         var persisted = await _fixture.ElasticClient
             .GetAsync<GenreModel>(genre.Id);
         persisted.Found.Should().BeFalse();

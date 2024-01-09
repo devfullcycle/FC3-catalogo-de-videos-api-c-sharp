@@ -20,25 +20,38 @@ public class GenreConsumerTestFixture : GenreTestFixtureBase
         Thread.Sleep(15_000);
     }
 
-    public Task PublishMessageAsync(object message)
+    public Task PublishMessageAsync<T>(MessageModel<T> message) where T : GenrePayloadModel
         => PublishMessageAsync(
-            _kafkaConfiguration.GenreConsumer.BootstrapServers,
-            _kafkaConfiguration.GenreConsumer.Topic,
+            typeof(T) == typeof(GenreCategoryPayloadModel)
+                ? _kafkaConfiguration.GenreCategoryConsumer
+                : _kafkaConfiguration.GenreConsumer,
             message);
 
-    public MessageModel<GenrePayloadModel> BuildValidMessage(string operation, GenreModel genreModel)
+    public MessageModel<T> BuildValidMessage<T>(string operation, GenreModel genreModel) where T : GenrePayloadModel
     {
-        var message = new MessageModel<GenrePayloadModel>
+        var message = new MessageModel<T>
         {
-            Payload = new MessageModelPayload<GenrePayloadModel>
+            Payload = new MessageModelPayload<T>
             {
                 Op = operation
             }
         };
-        var genrePayload = new GenrePayloadModel
+        dynamic genrePayload;
+        if (typeof(T) == typeof(GenreCategoryPayloadModel))
         {
-            Id = genreModel.Id
-        };
+            genrePayload = new GenreCategoryPayloadModel
+            {
+                Id = genreModel.Id
+            };
+        }
+        else
+        {
+            genrePayload = new GenrePayloadModel
+            {
+                Id = genreModel.Id
+            };
+        }
+
         if (operation == "d")
         {
             message.Payload.Before = genrePayload;
@@ -50,9 +63,9 @@ public class GenreConsumerTestFixture : GenreTestFixtureBase
 
         return message;
     }
-    
-    public MessageModel<GenrePayloadModel> BuildValidMessage(string operation)
-        => BuildValidMessage(operation, DataGenerator.GetGenreModelList(1)[0]);
+
+    public MessageModel<T> BuildValidMessage<T>(string operation) where T : GenrePayloadModel
+        => BuildValidMessage<T>(operation, DataGenerator.GetGenreModelList(1)[0]);
 
     public Domain.Entity.Genre GetValidGenre(Guid id) => DataGenerator.GetValidGenre(id);
 }
@@ -60,4 +73,5 @@ public class GenreConsumerTestFixture : GenreTestFixtureBase
 [CollectionDefinition(nameof(GenreConsumerTestFixture))]
 public class GenreConsumerTestFixtureCollection
     : ICollectionFixture<GenreConsumerTestFixture>
-{ }
+{
+}

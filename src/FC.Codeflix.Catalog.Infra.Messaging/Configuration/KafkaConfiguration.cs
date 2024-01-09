@@ -6,6 +6,7 @@ public class KafkaConfiguration
 {
     public KafkaConsumerConfiguration CategoryConsumer { get; set; } = null!;
     public KafkaConsumerConfiguration GenreConsumer { get; set; } = null!;
+    public KafkaConsumerConfiguration GenreCategoryConsumer { get; set; } = null!;
 }
 
 public class KafkaConsumerConfiguration

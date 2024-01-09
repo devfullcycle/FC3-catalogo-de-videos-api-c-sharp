@@ -5,8 +5,8 @@ using MediatR;
 
 namespace FC.Codeflix.Catalog.Infra.Messaging.Consumers.MessageHandlers.Genre;
 
-public class SaveGenreMessageHandler
-    : IMessageHandler<GenrePayloadModel>
+public class SaveGenreMessageHandler<T>
+    : IMessageHandler<T> where T : GenrePayloadModel
 {
     private readonly IMediator _mediator;
 
@@ -15,7 +15,7 @@ public class SaveGenreMessageHandler
         _mediator = mediator;
     }
 
-    public async Task HandleMessageAsync(MessageModel<GenrePayloadModel> messageModel, CancellationToken cancellationToken)
+    public async Task HandleMessageAsync(MessageModel<T> messageModel, CancellationToken cancellationToken)
     {
         var id = messageModel.Payload.After.Id;
         var input = new SaveGenreInput(id);

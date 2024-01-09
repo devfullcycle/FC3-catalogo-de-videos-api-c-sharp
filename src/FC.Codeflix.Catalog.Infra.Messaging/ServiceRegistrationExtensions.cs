@@ -15,8 +15,6 @@ namespace FC.Codeflix.Catalog.Infra.Messaging;
 public static class ServiceRegistrationExtensions
 {
     private const string KafkaConfigurationSection = "KafkaConfiguration";
-    private const string CategoryConsumerConfigurationSection = "CategoryConsumer";
-    private const string GenreConsumerConfigurationSection = "GenreConsumer";
     public static IServiceCollection AddConsumers(
         this IServiceCollection services,
         IConfiguration configuration)
@@ -29,10 +27,10 @@ public static class ServiceRegistrationExtensions
         return services
             .AddScoped<SaveCategoryMessageHandler>()
             .AddScoped<DeleteCategoryMessageHandler>()
-            .AddScoped<SaveGenreMessageHandler>()
+            .AddScoped(typeof(SaveGenreMessageHandler<>))
             .AddScoped<DeleteGenreMessageHandler>()
             .AddKafkaConsumer<CategoryPayloadModel>()
-                .Configure(kafkaConfiguration.GetSection(CategoryConsumerConfigurationSection))
+                .Configure(kafkaConfiguration.GetSection(nameof(KafkaConfiguration.CategoryConsumer)))
                 .WithRetries(3)
                 .With<SaveCategoryMessageHandler>()
                 .When(message => message.Payload.Operation is
@@ -44,9 +42,9 @@ public static class ServiceRegistrationExtensions
                 .When(message => message.Payload.Operation is MessageModelOperation.Delete)
                 .Register()
             .AddKafkaConsumer<GenrePayloadModel>()
-                .Configure(kafkaConfiguration.GetSection(GenreConsumerConfigurationSection))
+                .Configure(kafkaConfiguration.GetSection(nameof(KafkaConfiguration.GenreConsumer)))
                 .WithRetries(3)
-                .With<SaveGenreMessageHandler>()
+                .With<SaveGenreMessageHandler<GenrePayloadModel>>()
                 .When(message => message.Payload.Operation is
                     MessageModelOperation.Create or
                     MessageModelOperation.Read or
@@ -54,6 +52,11 @@ public static class ServiceRegistrationExtensions
                 .And
                 .With<DeleteGenreMessageHandler>()
                 .When(message => message.Payload.Operation is MessageModelOperation.Delete)
+                .Register()
+            .AddKafkaConsumer<GenreCategoryPayloadModel>()
+                .Configure(kafkaConfiguration.GetSection(nameof(KafkaConfiguration.GenreCategoryConsumer)))
+                .WithRetries(3)
+                .WithDefault<SaveGenreMessageHandler<GenreCategoryPayloadModel>>()
                 .Register();
     }
 }

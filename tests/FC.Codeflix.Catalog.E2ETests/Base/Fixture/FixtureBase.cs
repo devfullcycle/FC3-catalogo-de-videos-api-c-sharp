@@ -16,13 +16,13 @@ public class FixtureBase
     
     public IRequestBuilder AuthRequestBuilderMock => _authRequestBuilderMock;
     
-    protected async Task PublishMessageAsync(string bootstrapServers, string topic, object message)
+    protected async Task PublishMessageAsync(KafkaConsumerConfiguration configuration, object message)
     {
-        var config = new ProducerConfig { BootstrapServers = bootstrapServers };
+        var config = new ProducerConfig { BootstrapServers = configuration.BootstrapServers };
         using var producer = new ProducerBuilder<string, string>(config).Build();
         var rawMessage = JsonSerializer.Serialize(message, SerializerConfiguration.JsonSerializerOptions);
         _ = await producer.ProduceAsync(
-            topic,
+            configuration.Topic,
             new Message<string, string>
             {
                 Key = Guid.NewGuid().ToString(),
