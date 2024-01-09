@@ -32,6 +32,7 @@ internal class AuthenticationClient
         var content = new FormUrlEncodedContent(collection);
         request.Content = content;
         var response = await _client.SendAsync(request, cancellationToken);
+        response.EnsureSuccessStatusCode();
         return (await response.Content.ReadFromJsonAsync<AuthenticationResponseModel>(cancellationToken: cancellationToken))!;
     }
 }
