@@ -17,7 +17,8 @@ public class SaveGenreMessageHandler<T>
 
     public async Task HandleMessageAsync(MessageModel<T> messageModel, CancellationToken cancellationToken)
     {
-        var id = messageModel.Payload.After.Id;
+        var id = messageModel.Payload.After?.Id
+            ?? messageModel.Payload.Before.Id;
         var input = new SaveGenreInput(id);
         await _mediator.Send(input, cancellationToken);
     }

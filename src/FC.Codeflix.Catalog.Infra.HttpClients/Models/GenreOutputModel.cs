@@ -11,12 +11,12 @@ public class GenreOutputModel
     public IEnumerable<GenreCategoryOutputModel> Categories { get; set; } = null!;
 
     public Genre ToGenre()
-        => new Genre(
+        => new(
             Id,
             Name,
             IsActive,
             CreatedAt,
-            Categories.Select(c => new Category(c.Id, c.Name)));
+            Categories?.Select(c => new Category(c.Id, c.Name)));
 }
 
 public class GenreCategoryOutputModel

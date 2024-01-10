@@ -1,5 +1,7 @@
 using System.Text.Json;
 using FC.Codeflix.Catalog.Infra.Data.ES.Models;
+using FC.Codeflix.Catalog.Infra.HttpClients.Configuration;
+using FC.Codeflix.Catalog.Infra.HttpClients.Models;
 using FC.Codeflix.Catalog.Infra.Messaging.Models;
 using FluentAssertions;
 using Nest;
@@ -33,7 +35,8 @@ public class GenreConsumerTest : IDisposable
             ? _fixture.BuildValidMessage<GenreCategoryPayloadModel>(operation)
             : _fixture.BuildValidMessage<GenrePayloadModel>(operation);
         Domain.Entity.Genre genre = _fixture.GetValidGenre(message.Payload.After.Id);
-        var apiResponseBody = JsonSerializer.Serialize(genre, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        var apiResponse = new DataWrapper<Domain.Entity.Genre>(genre);
+        var apiResponseBody = JsonSerializer.Serialize(apiResponse, SerializerConfiguration.SnakeCaseSerializerOptions);
         var adminCatalogRequest = Request.Create()
             .WithPath($"/genres/{genre.Id}")
             .WithHeader("Authorization", "Bearer *")
@@ -73,7 +76,8 @@ public class GenreConsumerTest : IDisposable
         var example = examplesList[2];
         var message = _fixture.BuildValidMessage<GenrePayloadModel>("u", example);
         var genre = _fixture.GetValidGenre(message.Payload.After.Id);
-        var apiResponseBody = JsonSerializer.Serialize(genre, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        var apiResponse = new DataWrapper<Domain.Entity.Genre>(genre);
+        var apiResponseBody = JsonSerializer.Serialize(apiResponse, SerializerConfiguration.SnakeCaseSerializerOptions);
         var adminCatalogRequest = Request.Create()
             .WithPath($"/genres/{genre.Id}")
             .WithHeader("Authorization", "Bearer *")
