@@ -24,4 +24,13 @@ public class DomainValidation
                 $"{fieldName} should not be empty or null");
     }
 
+    public static void IsDefined<T>(T target, string fieldName)
+        where T : Enum
+    {
+        if (!Enum.IsDefined(typeof(T), target))
+        {
+            throw new EntityValidationException(
+                $"{fieldName} is not a valid {typeof(T).Name}");
+        }
+    }
 }
