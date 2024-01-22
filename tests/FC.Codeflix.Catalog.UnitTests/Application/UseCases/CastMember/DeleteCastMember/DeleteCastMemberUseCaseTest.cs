@@ -4,6 +4,7 @@ using UseCase = FC.Codeflix.Catalog.Application.UseCases.CastMember.DeleteCastMe
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UseCases.CastMember.DeleteCastMember;
 
+[Collection(nameof(CastMemberUseCaseTestFixture))]
 public class DeleteCastMemberUseCaseTest
 {
     private readonly CastMemberUseCaseTestFixture _fixture;
@@ -19,7 +20,7 @@ public class DeleteCastMemberUseCaseTest
     {
         var repository = _fixture.GetMockRepository();
         var useCase = new UseCase.DeleteCastMember(repository);
-        var input = new DeleteCastMemberInput(Guid.NewGuid());
+        var input = new UseCase.DeleteCastMemberInput(Guid.NewGuid());
 
         await useCase.Handle(input, CancellationToken.None);
 
