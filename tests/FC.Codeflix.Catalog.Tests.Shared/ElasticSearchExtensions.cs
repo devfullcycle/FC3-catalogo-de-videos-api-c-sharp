@@ -74,6 +74,32 @@ public static class ElasticSearchExtensions
         );
     }
 
+    public static async Task CreateCastMemberIndexAsync(this IElasticClient elasticClient)
+    {
+        await elasticClient.DeleteIndexAsync(ElasticsearchIndices.CastMember);
+        _ = await elasticClient.Indices.CreateAsync(ElasticsearchIndices.CastMember, c => c
+            .Map<CastMemberModel>(m => m
+                .Properties(ps => ps
+                    .Keyword(t => t
+                        .Name(castMember => castMember.Id)
+                    ) 
+                    .Text(t => t
+                        .Name(castMember => castMember.Name)
+                        .Fields(fs => fs
+                            .Keyword(k => k.Name(castMember => castMember.Name.Suffix("keyword")))
+                        )
+                    ) 
+                    .Number(t => t
+                        .Name(castMember => castMember.Type)
+                    ) 
+                    .Date(d => d
+                        .Name(castMember => castMember.CreatedAt)
+                    )
+                )
+            )
+        );
+    }
+
     private static async Task DeleteIndexAsync(this IElasticClient elasticClient, string indexName)
     {
         var existsResponse = await elasticClient.Indices.ExistsAsync(indexName);
@@ -99,5 +125,10 @@ public static class ElasticSearchExtensions
     public static void DeleteGenreIndex(this IElasticClient elasticClient)
     {
         elasticClient.Indices.Delete(ElasticsearchIndices.Genre);
+    } 
+    
+    public static void DeleteCastMemberndex(this IElasticClient elasticClient)
+    {
+        elasticClient.Indices.Delete(ElasticsearchIndices.CastMember);
     } 
 }
