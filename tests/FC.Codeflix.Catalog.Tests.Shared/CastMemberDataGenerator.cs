@@ -18,4 +18,13 @@ public class CastMemberDataGenerator : DataGeneratorBase
     
     public CastMemberType GetRandomCastMemberType()
         => (CastMemberType)new Random().Next(1, 2);
+
+    public IList<CastMemberModel> GetCastMemberModelList(int count)
+        => Enumerable.Range(0, count)
+            .Select(_ =>
+            {
+                Task.Delay(5).GetAwaiter().GetResult();
+                return CastMemberModel.FromEntity(GetValidCastMember());
+            })
+            .ToList();
 }
