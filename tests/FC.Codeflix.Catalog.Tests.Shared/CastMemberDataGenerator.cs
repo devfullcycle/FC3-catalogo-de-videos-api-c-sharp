@@ -1,4 +1,5 @@
 using FC.Codeflix.Catalog.Domain.Enums;
+using FC.Codeflix.Catalog.Infra.Data.ES.Models;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 
 namespace FC.Codeflix.Catalog.Tests.Shared;

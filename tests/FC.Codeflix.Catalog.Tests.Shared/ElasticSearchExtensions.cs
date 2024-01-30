@@ -127,7 +127,7 @@ public static class ElasticSearchExtensions
         elasticClient.Indices.Delete(ElasticsearchIndices.Genre);
     } 
     
-    public static void DeleteCastMemberndex(this IElasticClient elasticClient)
+    public static void DeleteCastMemberIndex(this IElasticClient elasticClient)
     {
         elasticClient.Indices.Delete(ElasticsearchIndices.CastMember);
     } 

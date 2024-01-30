@@ -1,4 +1,5 @@
 using FC.Codeflix.Catalog.Domain.Exceptions;
+using FC.Codeflix.Catalog.Infra.Data.ES.Models;
 using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
