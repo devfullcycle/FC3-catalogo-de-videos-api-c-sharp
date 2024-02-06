@@ -20,6 +20,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.Codeflix.Catalog.Api", "src\FC.Codeflix.Catalog.Api\FC.Codeflix.Catalog.Api.csproj", "{C79C59A7-3C14-42F1-BC4A-79A007581866}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sandbox", "sandbox", "{AE598EDE-66A8-4954-A9BD-B0DB1D7CBB39}"
+	ProjectSection(SolutionItems) = preProject
+		sandbox\start.sh = sandbox\start.sh
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.Codeflix.Catalog.E2ETests", "tests\FC.Codeflix.Catalog.E2ETests\FC.Codeflix.Catalog.E2ETests.csproj", "{531CF613-3F8E-474F-8824-F7BE2E25D962}"
 EndProject

@@ -7,11 +7,20 @@ type Query {
   categories(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchCategoryPayload!
   genres(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchGenrePayload!
   genre(id: UUID!): GenrePayload
+  castMembers(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchCastMemberPayload!
 }
 
 type Mutation {
   saveCategory(input: SaveCategoryInput!): CategoryPayload!
   deleteCategory(id: UUID!): Boolean!
+}
+
+type CategoryPayload {
+  id: UUID!
+  name: String!
+  description: String!
+  isActive: Boolean!
+  createdAt: DateTime!
 }
 
 enum SearchOrder {
@@ -24,14 +33,6 @@ type SearchCategoryPayload {
   perPage: Int!
   total: Int!
   items: [CategoryPayload!]!
-}
-
-type CategoryPayload {
-  id: UUID!
-  name: String!
-  description: String!
-  isActive: Boolean!
-  createdAt: DateTime!
 }
 
 input SaveCategoryInput {
@@ -59,6 +60,20 @@ type GenrePayload {
   categories: [GenreCategoryPayload!]
 }
 
+type SearchCastMemberPayload {
+  currentPage: Int!
+  perPage: Int!
+  total: Int!
+  items: [CastMemberPayload!]!
+}
+
+type CastMemberPayload {
+  id: UUID!
+  name: String!
+  type: CastMemberType!
+  createdAt: DateTime!
+}
+
 type GenreCategoryPayload {
   id: UUID!
   name: String
@@ -66,3 +81,8 @@ type GenreCategoryPayload {
 
 "The `DateTime` scalar represents an ISO-8601 compliant date time type."
 scalar DateTime
+
+enum CastMemberType {
+  DIRECTOR
+  ACTOR
+}
