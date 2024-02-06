@@ -1,3 +1,4 @@
+using FC.Codeflix.Catalog.Api.CastMembers;
 using FC.Codeflix.Catalog.Api.Categories;
 using FC.Codeflix.Catalog.Api.Filters;
 using FC.Codeflix.Catalog.Api.Genres;
@@ -27,6 +28,7 @@ builder.Services
     .AddTypeExtension<CategoryQueries>()
     .AddTypeExtension<CategoryMutations>()
     .AddTypeExtension<GenreQueries>()
+    .AddTypeExtension<CastMemberQueries>()
     .AddErrorFilter<GraphQLErrorFilter>();
 
 var app = builder.Build();
