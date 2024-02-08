@@ -1,3 +1,4 @@
+using FC.Codeflix.Catalog.Application.UseCases.CastMember.SearchCastMember;
 using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 using MediatR;
 
@@ -15,6 +16,8 @@ public class CastMemberQueries
         SearchOrder direction = SearchOrder.Asc,
         CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var input = new SearchCastMemberInput(page, perPage, search, sort, direction);
+        var output = await mediator.Send(input, cancellationToken);
+        return SearchCastMemberPayload.FromSearchListOutput(output);
     }
 }

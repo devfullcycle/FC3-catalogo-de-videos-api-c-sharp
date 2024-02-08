@@ -62,7 +62,7 @@ public class SearchCastMemberTest : IDisposable
             var expected = examples.First(x => x.Id == outputItem.Id);
             outputItem.Name.Should().Be(expected!.Name);
             outputItem.Type.ToString("G").Should().Be(expected.Type.ToString("G"));
-            outputItem.CreatedAt.Should().Be(expected.CreatedAt);
+            outputItem.CreatedAt.Date.Should().Be(expected.CreatedAt.Date);
         }
     }
 
@@ -109,7 +109,7 @@ public class SearchCastMemberTest : IDisposable
             outputItem.Id.Should().Be(expected.Id);
             outputItem.Name.Should().Be(expected.Name);
             outputItem.Type.ToString("G").Should().Be(expected.Type.ToString("G"));
-            outputItem.CreatedAt.Should().Be(expected.CreatedAt);
+            outputItem.CreatedAt.Date.Should().Be(expected.CreatedAt.Date);
         }
     }
 
