@@ -1,5 +1,7 @@
 ﻿using FC.Codeflix.Catalog.Application;
+using FC.Codeflix.Catalog.Domain.Gateways;
 using FC.Codeflix.Catalog.Infra.Data.ES;
+using FC.Codeflix.Catalog.IntegrationTests.Fakes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,7 +30,8 @@ public abstract class BaseFixture
         services
             .AddUseCases()
             .AddElasticSearch(configuration)
-            .AddRepositories();
+            .AddRepositories()
+            .AddSingleton<IAdminCatalogGateway, AdminCatalogGatewayFake>();
 
         return services.BuildServiceProvider();
     }

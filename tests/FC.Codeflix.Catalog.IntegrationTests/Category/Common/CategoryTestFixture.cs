@@ -21,9 +21,6 @@ public class CategoryTestFixture : BaseFixture, IDisposable
         ElasticClient.CreateCategoryIndexAsync().GetAwaiter().GetResult();
     }
 
-    public DomainEntity.Category GetValidCategory()
-        => DataGenerator.GetValidCategory();
-
     public IList<CategoryModel> GetCategoryModelList(int count = 10)
         => DataGenerator.GetCategoryModelList(count);
 

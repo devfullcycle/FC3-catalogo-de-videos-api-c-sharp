@@ -20,19 +20,10 @@ public class CategoryConsumerTestFixture : CategoryTestFixtureBase
         Thread.Sleep(15_000);
     }
 
-    public async Task PublishMessageAsync(object message)
-    {
-        var config = new ProducerConfig { BootstrapServers = _kafkaConfiguration.CategoryConsumer.BootstrapServers };
-        using var producer = new ProducerBuilder<string, string>(config).Build();
-        var rawMessage = JsonSerializer.Serialize(message, SerializerConfiguration.JsonSerializerOptions);
-        _ = await producer.ProduceAsync(
-            _kafkaConfiguration.CategoryConsumer.Topic,
-            new Message<string, string>
-            {
-                Key = Guid.NewGuid().ToString(),
-                Value = rawMessage
-            });
-    }
+    public Task PublishMessageAsync(object message)
+        => PublishMessageAsync(
+            _kafkaConfiguration.CategoryConsumer,
+            message);
 
     public MessageModel<CategoryPayloadModel> BuildValidMessage(string operation, CategoryModel categoryModel)
     {

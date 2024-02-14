@@ -1,0 +1,13 @@
+query SearchCastMember($page: Int! = 1, $perPage: Int! = 10, $search: String! = "", $sort: String! = "", $direction: SearchOrder! = ASC) {
+    castMembers(page: $page, perPage: $perPage, search: $search, sort: $sort, direction: $direction) {
+        currentPage
+        perPage
+        total
+        items {
+            id
+            name
+            type
+            createdAt
+        }
+    }
+}
