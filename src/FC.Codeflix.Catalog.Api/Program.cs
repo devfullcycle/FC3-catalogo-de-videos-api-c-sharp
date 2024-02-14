@@ -4,6 +4,7 @@ using FC.Codeflix.Catalog.Api.Genres;
 using FC.Codeflix.Catalog.Application;
 using FC.Codeflix.Catalog.Infra.Data.ES;
 using FC.Codeflix.Catalog.Infra.Messaging;
+using FC.Codeflix.Catalog.Infra.HttpClients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
     .AddUseCases()
+    .AddMemoryCache()
+    .AddHttpClients(builder.Configuration)
     .AddConsumers(builder.Configuration)
     .AddElasticSearch(builder.Configuration)
     .AddRepositories()
@@ -35,7 +38,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

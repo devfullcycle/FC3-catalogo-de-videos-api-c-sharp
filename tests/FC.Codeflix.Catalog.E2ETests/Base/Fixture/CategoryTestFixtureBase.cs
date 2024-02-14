@@ -6,7 +6,7 @@ using Nest;
 
 namespace FC.Codeflix.Catalog.E2ETests.Base.Fixture;
 
-public class CategoryTestFixtureBase : IDisposable
+public class CategoryTestFixtureBase : FixtureBase, IDisposable
 {
     public CustomWebApplicationFactory<Program> WebAppFactory { get; }
     public IElasticClient ElasticClient { get; }

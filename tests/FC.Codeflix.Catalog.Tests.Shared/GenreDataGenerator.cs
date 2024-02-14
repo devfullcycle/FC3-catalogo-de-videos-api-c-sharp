@@ -1,4 +1,3 @@
-using FC.Codeflix.Catalog.Application.UseCases.Genre.SaveGenre;
 using FC.Codeflix.Catalog.Domain.Entity;
 using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 using FC.Codeflix.Catalog.Infra.Data.ES.Models;
@@ -12,7 +11,7 @@ public class GenreDataGenerator : DataGeneratorBase
     public string GetValidName()
         => Faker.Commerce.Categories(1)[0];
 
-    public Genre GetValidGenre()
+    public Genre GetValidGenre(Guid? id = null)
     {
         var categories = new[]
         {
@@ -20,7 +19,7 @@ public class GenreDataGenerator : DataGeneratorBase
             _categoryDataGenerator.GetValidCategory()
         };
         var genre = new Genre(
-            Guid.NewGuid(),
+            id ?? Guid.NewGuid(),
             GetValidName(),
             GetRandomBoolean(),
             DateTime.Now,
@@ -53,28 +52,6 @@ public class GenreDataGenerator : DataGeneratorBase
                 genre.Name = name;
                 return genre;
             }).ToList();
-    
-    public SaveGenreInput GetValidSaveGenreInput()
-    {
-        var genre = GetValidGenre();
-        return new(
-            genre.Id,
-            genre.Name,
-            genre.IsActive,
-            genre.CreatedAt,
-            genre.Categories.Select(item => new SaveGenreInputCategory(item.Id, item.Name)));
-    }
-
-    public SaveGenreInput GetInvalidSaveGenreInput()
-    {
-        var genre = GetValidGenre();
-        return new(
-            genre.Id,
-            null!,
-            genre.IsActive,
-            genre.CreatedAt,
-            genre.Categories.Select(item => new SaveGenreInputCategory(item.Id, item.Name)));
-    }
 
     public IList<GenreModel> CloneGenresListOrdered(List<GenreModel> genreList, string orderBy, SearchOrder inputOrder)
     {
