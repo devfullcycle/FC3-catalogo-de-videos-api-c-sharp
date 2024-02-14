@@ -37,6 +37,15 @@ public class KafkaConsumerBuilder<TMessage>
         return mappingBuilder;
     }
     
+    public KafkaConsumerBuilder<TMessage> WithDefault<THandler>()
+        where THandler : IMessageHandler<TMessage>
+    {
+        var mappingBuilder = new MessageHandlerMappingBuilder<TMessage>(this)
+            .WithDefault<THandler>();
+        _handlerMapping.Add(mappingBuilder);
+        return this;
+    }
+    
     
     public KafkaConsumer<TMessage> Build(
         IServiceProvider provider,

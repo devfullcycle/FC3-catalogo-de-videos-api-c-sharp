@@ -1,4 +1,5 @@
 using FC.Codeflix.Catalog.Domain.Exceptions;
+using FC.Codeflix.Catalog.UnitTests.Application.UseCases.Genre.Common;
 using FluentAssertions;
 using NSubstitute;
 using UseCase = FC.Codeflix.Catalog.Application.UseCases.Genre.SaveGenre;
@@ -6,12 +7,12 @@ using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UseCases.Genre.SaveGenre;
 
-[Collection(nameof(SaveGenreUseCaseTestFixture))]
+[Collection(nameof(GenreUseCaseTestFixture))]
 public class SaveGenreUseCaseTest
 {
-    private readonly SaveGenreUseCaseTestFixture _fixture;
+    private readonly GenreUseCaseTestFixture _fixture;
 
-    public SaveGenreUseCaseTest(SaveGenreUseCaseTestFixture fixture)
+    public SaveGenreUseCaseTest(GenreUseCaseTestFixture fixture)
     {
         _fixture = fixture;
     }
@@ -21,8 +22,14 @@ public class SaveGenreUseCaseTest
     public async Task SaveValidGenre()
     {
         var repository = _fixture.GetMockRepository();
-        var useCase = new UseCase.SaveGenre(repository);
-        var input = _fixture.GetValidInput();
+        var gateway = _fixture.GetMockAdminCatalogGateway();
+        var genre = _fixture.GetValidGenre();
+        gateway.GetGenreAsync(
+                genre.Id,
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(genre));
+        var useCase = new UseCase.SaveGenre(repository, gateway);
+        var input = new UseCase.SaveGenreInput(genre.Id);
         
         var output = await useCase.Handle(input, CancellationToken.None);
         
@@ -31,28 +38,9 @@ public class SaveGenreUseCaseTest
             Arg.Any<CancellationToken>());
         output.Should().NotBeNull();
         output.Id.Should().Be(input.Id);
-        output.Name.Should().Be(input.Name);
-        output.CreatedAt.Should().Be(input.CreatedAt);
-        output.IsActive.Should().Be(input.IsActive);
-        output.Categories.Should().BeEquivalentTo(input.Categories);
-    }
-
-    [Fact(DisplayName = nameof(SaveInvalidGenre))]
-    [Trait("Application", "[UseCase] SaveGenre")]
-    public async Task SaveInvalidGenre()
-    {
-        var repository = _fixture.GetMockRepository();
-        var useCase = new UseCase.SaveGenre(repository);
-        var input = _fixture.GetInvalidInput();
-        
-        var action = async () => await useCase.Handle(input, CancellationToken.None);
-        
-        await repository.DidNotReceive().SaveAsync(
-            Arg.Any<DomainEntity.Genre>(),
-            Arg.Any<CancellationToken>());
-        await action
-            .Should()
-            .ThrowAsync<EntityValidationException>()
-            .WithMessage("Name should not be empty or null");
+        output.Name.Should().Be(genre.Name);
+        output.CreatedAt.Should().Be(genre.CreatedAt);
+        output.IsActive.Should().Be(genre.IsActive);
+        output.Categories.Should().BeEquivalentTo(genre.Categories.Select(c => new { c.Id, c.Name }));
     }
 }

@@ -7,7 +7,7 @@ public class CategoryTestFixture : CategoryTestFixtureBase
     public CatalogClient GraphQLClient { get; }
     public CategoryTestFixture()
     {
-        GraphQLClient = WebAppFactory.Services.GetRequiredService<CatalogClient>();
+        GraphQLClient = WebAppFactory.GraphQLClient;
     }
 }
 

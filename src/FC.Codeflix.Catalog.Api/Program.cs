@@ -1,9 +1,11 @@
+using FC.Codeflix.Catalog.Api.CastMembers;
 using FC.Codeflix.Catalog.Api.Categories;
 using FC.Codeflix.Catalog.Api.Filters;
 using FC.Codeflix.Catalog.Api.Genres;
 using FC.Codeflix.Catalog.Application;
 using FC.Codeflix.Catalog.Infra.Data.ES;
 using FC.Codeflix.Catalog.Infra.Messaging;
+using FC.Codeflix.Catalog.Infra.HttpClients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
     .AddUseCases()
+    .AddMemoryCache()
+    .AddHttpClients(builder.Configuration)
     .AddConsumers(builder.Configuration)
     .AddElasticSearch(builder.Configuration)
     .AddRepositories()
@@ -24,6 +28,7 @@ builder.Services
     .AddTypeExtension<CategoryQueries>()
     .AddTypeExtension<CategoryMutations>()
     .AddTypeExtension<GenreQueries>()
+    .AddTypeExtension<CastMemberQueries>()
     .AddErrorFilter<GraphQLErrorFilter>();
 
 var app = builder.Build();
@@ -35,7 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

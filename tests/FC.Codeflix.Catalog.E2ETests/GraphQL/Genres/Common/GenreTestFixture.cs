@@ -8,7 +8,7 @@ public class GenreTestFixture : GenreTestFixtureBase
     public CatalogClient GraphQLClient { get; }
     public GenreTestFixture()
     {
-        GraphQLClient = WebAppFactory.Services.GetRequiredService<CatalogClient>();
+        GraphQLClient = WebAppFactory.GraphQLClient;
     }
 }
 
