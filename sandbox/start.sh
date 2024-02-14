@@ -1,3 +1,4 @@
+#!/bin/bash
 docker network create --driver bridge catalog_api || true
 docker network create --driver bridge service_catalog || true
 

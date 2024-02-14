@@ -1,0 +1,23 @@
+{
+  "mappings": {
+    "properties": {
+      "createdAt": {
+        "type": "date"
+      },
+      "type": {
+        "type": "integer"
+      },
+      "id": {
+        "type": "keyword"
+      },
+      "name": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}
