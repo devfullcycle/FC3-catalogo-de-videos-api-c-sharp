@@ -13,6 +13,9 @@
     <GraphQL Remove="GraphQL\Categories\DeleteCategory\DeleteCategory.graphql" />
     <GraphQL Remove="GraphQL\Categories\SaveCategory\SaveCategory.graphql" />
     <GraphQL Remove="GraphQL\Categories\SearchCategory\SearchCategory.graphql" />
+    <GraphQL Update="GraphQL\CastMembers\SearchCastMember\SearchCastMember.graphql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </GraphQL>
   </ItemGroup>
 
   <ItemGroup>
