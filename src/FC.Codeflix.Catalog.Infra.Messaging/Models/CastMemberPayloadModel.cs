@@ -1,3 +1,4 @@
+using FC.Codeflix.Catalog.Application.UseCases.CastMember.DeleteCastMember;
 using FC.Codeflix.Catalog.Application.UseCases.CastMember.SaveCastMember;
 using FC.Codeflix.Catalog.Domain.Enums;
 
@@ -12,4 +13,7 @@ public class CastMemberPayloadModel
 
     public SaveCastMemberInput ToSaveCastMemberInput()
         => new(Id, Name, Type, CreatedAt);
+    
+    public DeleteCastMemberInput ToDeleteCastMemberInput()
+        => new(Id);
 }
