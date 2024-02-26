@@ -69,9 +69,9 @@ public class Video
         DomainValidation.NotNullOrEmpty(Id, nameof(Id));
         DomainValidation.NotNullOrEmpty(Title, nameof(Title));
         DomainValidation.NotNullOrEmpty(Description, nameof(Description));
-        // DomainValidation.NotNegativeOrZero(YearLaunched, nameof(YearLaunched));
-        // DomainValidation.NotNegativeOrZero(Duration, nameof(Duration));
-        // DomainValidation.NotMinDateTime(CreatedAt, nameof(CreatedAt));
+        DomainValidation.NotNegativeOrZero(YearLaunched, nameof(YearLaunched));
+        DomainValidation.NotNegativeOrZero(Duration, nameof(Duration));
+        DomainValidation.NotMinDateTime(CreatedAt, nameof(CreatedAt));
         DomainValidation.IsDefined(Rating, nameof(Rating));
         DomainValidation.NotNull(Medias, nameof(Medias));
     }
