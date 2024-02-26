@@ -1,3 +1,7 @@
+using FC.Codeflix.Catalog.Domain.Enums;
+using FC.Codeflix.Catalog.Domain.Exceptions;
+using FluentAssertions;
+
 namespace FC.Codeflix.Catalog.UnitTests.Domain.Entity.Video;
 
 [Collection(nameof(VideoTestFixture))]

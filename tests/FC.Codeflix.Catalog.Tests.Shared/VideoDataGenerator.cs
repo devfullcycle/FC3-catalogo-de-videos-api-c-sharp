@@ -1,3 +1,7 @@
+using FC.Codeflix.Catalog.Domain.Entity;
+using FC.Codeflix.Catalog.Domain.Enums;
+using FC.Codeflix.Catalog.Domain.ValueObjects;
+
 namespace FC.Codeflix.Catalog.Tests.Shared;
 
 public class VideoDataGenerator : DataGeneratorBase
@@ -45,5 +49,4 @@ public class VideoDataGenerator : DataGeneratorBase
             GetValidUrl(),
             GetValidUrl()
         );
-}
 }
