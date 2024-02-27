@@ -49,4 +49,9 @@ public class VideoDataGenerator : DataGeneratorBase
             GetValidUrl(),
             GetValidUrl()
         );
+
+    public IList<Video> GetVideoList(int count)
+        => Enumerable.Range(0, count)
+            .Select(_ => GetValidVideo())
+            .ToList();
 }
