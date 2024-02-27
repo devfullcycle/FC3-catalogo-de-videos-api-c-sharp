@@ -6,8 +6,8 @@ namespace FC.Codeflix.Catalog.Tests.Shared;
 
 public class VideoDataGenerator : DataGeneratorBase
 {
-    public Video GetValidVideo()
-        => new(Guid.NewGuid(),
+    public Video GetValidVideo(Guid? id = null)
+        => new(id ?? Guid.NewGuid(),
             GetValidTitle(),
             GetValidDescription(),
             GetValidYearLaunched(),
