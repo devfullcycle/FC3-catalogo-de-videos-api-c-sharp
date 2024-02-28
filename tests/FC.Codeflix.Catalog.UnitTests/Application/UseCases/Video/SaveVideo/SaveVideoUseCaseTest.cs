@@ -1,6 +1,8 @@
+using FC.Codeflix.Catalog.Application.UseCases.Video.SaveVideo;
 using FC.Codeflix.Catalog.UnitTests.Application.UseCases.Video.Common;
 using FluentAssertions;
 using NSubstitute;
+using UseCase = FC.Codeflix.Catalog.Application.UseCases.Video.SaveVideo;
 
 namespace FC.Codeflix.Catalog.UnitTests.Application.UseCases.Video.SaveVideo;
 
@@ -25,7 +27,7 @@ public class SaveVideoUseCaseTest
                 video.Id,
                 Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(video));
-        var useCase = new SaveVideo(repository, gateway);
+        var useCase = new UseCase.SaveVideo(repository, gateway);
         var input = new SaveVideoInput(video.Id);
         
         var output = await useCase.Handle(input, CancellationToken.None);
