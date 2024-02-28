@@ -29,8 +29,4 @@
     <ProjectReference Include="..\FC.Codeflix.Catalog.Tests.Shared\FC.Codeflix.Catalog.Tests.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Application\UseCases\Video\SaveVideo\" />
-  </ItemGroup>
-
 </Project>
