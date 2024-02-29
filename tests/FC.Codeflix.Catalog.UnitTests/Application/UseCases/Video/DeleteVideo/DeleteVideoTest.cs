@@ -20,7 +20,7 @@ public class DeleteVideoTest
     {
         var repository = _fixture.GetMockRepository();
         var useCase = new UseCase.DeleteVideo(repository);
-        var input = new DeleteVideoInput(Guid.NewGuid());
+        var input = new UseCase.DeleteVideoInput(Guid.NewGuid());
 
         await useCase.Handle(input, CancellationToken.None);
 
