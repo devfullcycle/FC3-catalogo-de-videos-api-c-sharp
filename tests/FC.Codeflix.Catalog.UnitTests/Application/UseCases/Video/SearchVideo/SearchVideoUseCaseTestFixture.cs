@@ -1,3 +1,5 @@
+using FC.Codeflix.Catalog.Application.UseCases.Video.SearchVideo;
+using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 using FC.Codeflix.Catalog.UnitTests.Application.UseCases.Video.Common;
 using DomainEntity = FC.Codeflix.Catalog.Domain.Entity;
 
