@@ -17,9 +17,9 @@ public class VideoModelOutput
     public string? BannerUrl { get; private set; }
     public string? MediaUrl { get; private set; }
     public string? TrailerUrl { get; private set; }
-    public IReadOnlyList<VideoModelOutputRelation> Categories { get; private set; } = null!;
-    public IReadOnlyList<VideoModelOutputRelation> Genres { get; private set; } = null!;
-    public IReadOnlyList<VideoModelOutputRelation> CastMembers { get; private set; } = null!;
+    public IReadOnlyList<VideoModelOutputCategory> Categories { get; private set; } = null!;
+    public IReadOnlyList<VideoModelOutputGenre> Genres { get; private set; } = null!;
+    public IReadOnlyList<VideoModelOutputCastMember> CastMembers { get; private set; } = null!;
     
     public static VideoModelOutput FromVideo(
         DomainEntity.Video video)
@@ -39,15 +39,15 @@ public class VideoModelOutput
             MediaUrl = video.Medias?.MediaUrl,
             TrailerUrl = video.Medias?.TrailerUrl,
             Categories = video.Categories
-                .Select(category => new VideoModelOutputRelation(category.Id, category.Name))
+                .Select(category => new VideoModelOutputCategory(category.Id, category.Name))
                 .ToList()
                 .AsReadOnly(),
             Genres = video.Genres
-                .Select(genre => new VideoModelOutputRelation(genre.Id, genre.Name))
+                .Select(genre => new VideoModelOutputGenre(genre.Id, genre.Name))
                 .ToList()
                 .AsReadOnly(),
             CastMembers = video.CastMembers
-                .Select(castMember => new VideoModelOutputRelation(castMember.Id, castMember.Name))
+                .Select(castMember => new VideoModelOutputCastMember(castMember.Id, castMember.Name, castMember.Type))
                 .ToList()
                 .AsReadOnly()
         };
@@ -56,14 +56,40 @@ public class VideoModelOutput
     }
 }
 
-public class VideoModelOutputRelation
+public class VideoModelOutputCategory
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; } = null!;
     
-    public VideoModelOutputRelation(Guid id, string name)
+    public VideoModelOutputCategory(Guid id, string name)
     {
         Id = id;
         Name = name;
+    }
+}
+
+public class VideoModelOutputGenre
+{
+    public Guid Id { get; private set; }
+    public string Name { get; private set; } = null!;
+    
+    public VideoModelOutputGenre(Guid id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
+}
+
+public class VideoModelOutputCastMember
+{
+    public Guid Id { get; private set; }
+    public string Name { get; private set; }
+    public CastMemberType Type { get; private set; }
+    
+    public VideoModelOutputCastMember(Guid id, string name, CastMemberType type)
+    {
+        Id = id;
+        Name = name;
+        Type = type;
     }
 }

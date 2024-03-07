@@ -99,6 +99,92 @@ public static class ElasticSearchExtensions
             )
         );
     }
+    
+    public static async Task CreateVideoIndexAsync(this IElasticClient elasticClient)
+    {
+        await elasticClient.DeleteIndexAsync(ElasticsearchIndices.Video);
+        _ = await elasticClient.Indices.CreateAsync(ElasticsearchIndices.Video, c => c
+            .Map<VideoModel>(m => m
+                .Properties(ps => ps
+                    .Keyword(t => t
+                        .Name(video => video.Id)
+                    )
+                    .Text(t => t
+                        .Name(video => video.Title)
+                        .Fields(fs => fs
+                            .Keyword(k => k.Name(video => video.Title.Suffix("keyword")))
+                        )
+                    ) 
+                    .Text(t => t
+                        .Name(video => video.Description)
+                    )
+                    .Number(t => t
+                        .Name(video => video.YearLaunched)
+                    ) 
+                    .Number(t => t
+                        .Name(video => video.Duration)
+                    ) 
+                    .Date(d => d
+                        .Name(video => video.CreatedAt)
+                    )
+                    .Number(t => t
+                        .Name(video => video.Rating)
+                    ) 
+                    .Keyword(t => t
+                        .Name(video => video.ThumbUrl)
+                    )
+                    .Keyword(t => t
+                        .Name(video => video.ThumbHalfUrl)
+                    )
+                    .Keyword(t => t
+                        .Name(video => video.BannerUrl)
+                    )
+                    .Keyword(t => t
+                        .Name(video => video.MediaUrl)
+                    )
+                    .Keyword(t => t
+                        .Name(video => video.TrailerUrl)
+                    )
+                    .Nested<VideoCategoryModel>(n => n
+                        .Name(video => video.Categories)
+                        .Properties(pss => pss
+                            .Keyword(k => k
+                                .Name(category => category.Id)
+                            )
+                            .Keyword(k => k
+                                .Name(category => category.Name)
+                            )
+                        )
+                    )
+                    .Nested<VideoGenreModel>(n => n
+                        .Name(video => video.Genres)
+                        .Properties(pss => pss
+                            .Keyword(k => k
+                                .Name(genre => genre.Id)
+                            )
+                            .Keyword(k => k
+                                .Name(genre => genre.Name)
+                            )
+                        )
+                    )
+                    .Nested<VideoCastMemberModel>(n => n
+                        .Name(video => video.CastMembers)
+                        .Properties(pss => pss
+                            .Keyword(k => k
+                                .Name(castMember => castMember.Id)
+                            )
+                            .Keyword(k => k
+                                .Name(castMember => castMember.Name)
+                            )
+                            .Number(t => t
+                                .Name(castMember => castMember.Type)
+                            ) 
+                        )
+                    )
+                )
+            )
+        );
+    }
 
     private static async Task DeleteIndexAsync(this IElasticClient elasticClient, string indexName)
     {
@@ -130,5 +216,10 @@ public static class ElasticSearchExtensions
     public static void DeleteCastMemberIndex(this IElasticClient elasticClient)
     {
         elasticClient.Indices.Delete(ElasticsearchIndices.CastMember);
+    } 
+    
+    public static void DeleteVideoIndex(this IElasticClient elasticClient)
+    {
+        elasticClient.Indices.Delete(ElasticsearchIndices.Video);
     } 
 }
