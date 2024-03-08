@@ -1,6 +1,7 @@
 using FC.Codeflix.Catalog.Domain.Entity;
 using FC.Codeflix.Catalog.Domain.Enums;
 using FC.Codeflix.Catalog.Domain.ValueObjects;
+using FC.Codeflix.Catalog.Infra.Data.ES.Models;
 
 namespace FC.Codeflix.Catalog.Tests.Shared;
 
@@ -53,5 +54,10 @@ public class VideoDataGenerator : DataGeneratorBase
     public IList<Video> GetVideoList(int count)
         => Enumerable.Range(0, count)
             .Select(_ => GetValidVideo())
+            .ToList();
+
+    public List<VideoModel> GetVideoModelList(int count)
+        => GetVideoList(count)
+            .Select(VideoModel.FromEntity)
             .ToList();
 }
