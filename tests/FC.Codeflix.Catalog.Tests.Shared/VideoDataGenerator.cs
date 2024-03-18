@@ -1,5 +1,6 @@
 using FC.Codeflix.Catalog.Domain.Entity;
 using FC.Codeflix.Catalog.Domain.Enums;
+using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 using FC.Codeflix.Catalog.Domain.ValueObjects;
 using FC.Codeflix.Catalog.Infra.Data.ES.Models;
 
@@ -60,4 +61,35 @@ public class VideoDataGenerator : DataGeneratorBase
         => GetVideoList(count)
             .Select(VideoModel.FromEntity)
             .ToList();
+    
+    public List<VideoModel> GetVideoModelList(IEnumerable<string> titles)
+        => titles
+            .Select(title =>
+            {
+                var video = GetValidVideo();
+                var model = VideoModel.FromEntity(video);
+                model.Title = title;
+                return model;
+            })
+            .ToList();
+
+    
+    public IList<VideoModel> CloneVideosListOrdered(
+        List<VideoModel> examples, string orderBy, SearchOrder inputOrder)
+    {
+        var listClone = new List<VideoModel>(examples);
+        var orderedEnumerable = (orderBy.ToLower(), inputOrder) switch
+        {
+            ("title", SearchOrder.Asc) => listClone.OrderBy(x => x.Title)
+                .ThenBy(x => x.Id),
+            ("title", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Title)
+                .ThenByDescending(x => x.Id),
+            ("id", SearchOrder.Asc) => listClone.OrderBy(x => x.Id),
+            ("id", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Id),
+            ("createdat", SearchOrder.Asc) => listClone.OrderBy(x => x.CreatedAt),
+            ("createdat", SearchOrder.Desc) => listClone.OrderByDescending(x => x.CreatedAt),
+            _ => listClone.OrderBy(x => x.Title).ThenBy(x => x.Id),
+        };
+        return orderedEnumerable.ToList();
+    }
 }
