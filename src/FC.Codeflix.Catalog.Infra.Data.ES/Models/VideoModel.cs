@@ -1,5 +1,6 @@
 using FC.Codeflix.Catalog.Domain.Entity;
 using FC.Codeflix.Catalog.Domain.Enums;
+using FC.Codeflix.Catalog.Domain.ValueObjects;
 
 namespace FC.Codeflix.Catalog.Infra.Data.ES.Models;
 
@@ -40,6 +41,24 @@ public class VideoModel
             Genres = video.Genres.Select(g => new VideoGenreModel(g.Id, g.Name)).ToList(),
             CastMembers = video.CastMembers.Select(c => new VideoCastMemberModel(c.Id, c.Name, c.Type)).ToList()
         };
+
+    public Video ToEntity()
+    {
+        var video = new Video(
+            Id,
+            Title,
+            Description,
+            YearLaunched,
+            Duration,
+            CreatedAt,
+            Rating,
+            new Medias(ThumbUrl, ThumbHalfUrl, BannerUrl, MediaUrl, TrailerUrl));
+
+        video.AddCategories(Categories.Select(item => new Category(item.Id, item.Name)).ToArray());
+        video.AddGenres(Genres.Select(item => new Genre(item.Id, item.Name)).ToArray());
+        video.AddCastMembers(CastMembers.Select(item => new CastMember(item.Id, item.Name, item.Type)).ToArray());
+        return video;
+    }
 }
 
 public class VideoGenreModel

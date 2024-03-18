@@ -9,7 +9,7 @@ using Nest;
 namespace FC.Codeflix.Catalog.IntegrationTests.Video.SearchVideo;
 
 [Collection(nameof(SearchVideoTestFixture))]
-public class SearchVideoTest
+public class SearchVideoTest : IDisposable
 {
     private readonly SearchVideoTestFixture _fixture;
 
