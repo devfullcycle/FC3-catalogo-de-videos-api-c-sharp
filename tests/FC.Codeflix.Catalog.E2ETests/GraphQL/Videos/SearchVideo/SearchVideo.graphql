@@ -1,0 +1,35 @@
+query SearchVideo($page: Int! = 1, $perPage: Int! = 10, $search: String! = "", $sort: String! = "", $direction: SearchOrder! = ASC) {
+    videos(page: $page, perPage: $perPage, search: $search, sort: $sort, direction: $direction) {
+        currentPage
+        perPage
+        total
+        items {
+            id
+            title
+            description
+            yearLaunched
+            duration
+            createdAt
+            rating
+            createdAt
+            thumbUrl
+            thumbHalfUrl
+            bannerUrl
+            mediaUrl
+            trailerUrl
+            categories {
+                id
+                name
+            }
+            genres {
+                id
+                name
+            }
+            castMembers {
+                id
+                name
+                type
+            }
+        }
+    }
+}
