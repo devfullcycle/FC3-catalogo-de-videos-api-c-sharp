@@ -1,8 +1,6 @@
-using FC.Codeflix.Catalog.Api.Common;
-using FC.Codeflix.Catalog.Application.Common;
+using FC.Codeflix.Catalog.Application.UseCases.Genre.GetGenresByIds;
 using FC.Codeflix.Catalog.Application.UseCases.Video.Common;
 using FC.Codeflix.Catalog.Domain.Enums;
-using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
 using MediatR;
 
 namespace FC.Codeflix.Catalog.Api.Videos;
@@ -73,6 +71,18 @@ public class VideoGenrePayload
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
+
+    public async Task<IEnumerable<VideoCategoryPayload>> GetCategoriesAsync(
+        [Service] IMediator mediator,
+        [Parent] VideoGenrePayload parent,
+        CancellationToken cancellationToken)
+    {
+        var genre = await mediator
+            .Send(new GetGenresByIdsInput(new[] { parent.Id }), cancellationToken);
+        return genre.First().Categories
+            .Select(category => new VideoCategoryPayload(category.Id, category.Name!))
+            .ToList();
+    }
 
     public VideoGenrePayload(Guid id, string name)
     {
