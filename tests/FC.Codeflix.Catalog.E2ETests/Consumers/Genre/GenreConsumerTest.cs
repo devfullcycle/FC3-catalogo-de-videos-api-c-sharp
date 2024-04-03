@@ -119,7 +119,7 @@ public class GenreConsumerTest : IDisposable
         var genre = message.Payload.Before;
 
         await _fixture.PublishMessageAsync(message);
-        await Task.Delay(10_000);
+        await Task.Delay(2_000);
 
         var persisted = await _fixture.ElasticClient
             .GetAsync<GenreModel>(genre.Id);

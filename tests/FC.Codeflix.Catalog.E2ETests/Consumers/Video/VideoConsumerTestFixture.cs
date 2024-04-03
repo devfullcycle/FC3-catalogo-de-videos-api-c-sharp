@@ -82,6 +82,10 @@ public class VideoConsumerTestFixture : VideoTestFixtureBase
             VideoFileUrl = video.Medias.MediaUrl,
             TrailerFileUrl = video.Medias.TrailerUrl
         });
+
+    public Domain.Entity.Video GetValidVideo(Guid id)
+        => DataGenerator.GetValidVideo(id);
+
 }
 
 [CollectionDefinition(nameof(VideoConsumerTestFixture))]
