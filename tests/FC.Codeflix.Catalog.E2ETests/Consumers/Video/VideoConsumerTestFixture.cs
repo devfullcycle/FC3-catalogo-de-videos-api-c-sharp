@@ -2,6 +2,7 @@ using FC.Codeflix.Catalog.E2ETests.Base.Fixture;
 using FC.Codeflix.Catalog.Infra.HttpClients.Models;
 using FC.Codeflix.Catalog.Infra.Messaging.Configuration;
 using FC.Codeflix.Catalog.Infra.Messaging.Models;
+using FC.Codeflix.Catalog.Tests.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -10,7 +11,10 @@ namespace FC.Codeflix.Catalog.E2ETests.Consumers.Video;
 public class VideoConsumerTestFixture : VideoTestFixtureBase
 {
     private readonly KafkaConfiguration _kafkaConfiguration;
-
+    private readonly CategoryDataGenerator _categoryDataGenerator = new();
+    private readonly GenreDataGenerator _genreDataGenerator = new();
+    private readonly CastMemberDataGenerator _castMemberDataGenerator = new();
+    
     public VideoConsumerTestFixture()
     {
         _kafkaConfiguration = WebAppFactory.Services.GetRequiredService<IOptions<KafkaConfiguration>>().Value;
@@ -84,8 +88,13 @@ public class VideoConsumerTestFixture : VideoTestFixtureBase
         });
 
     public Domain.Entity.Video GetValidVideo(Guid id)
-        => DataGenerator.GetValidVideo(id);
-
+    {
+        var video = DataGenerator.GetValidVideo(id);
+        video.AddCategories(_categoryDataGenerator.GetValidCategory());
+        video.AddGenres(_genreDataGenerator.GetValidGenre());
+        video.AddCastMembers(_castMemberDataGenerator.GetValidCastMember());
+        return video;
+    }
 }
 
 [CollectionDefinition(nameof(VideoConsumerTestFixture))]
