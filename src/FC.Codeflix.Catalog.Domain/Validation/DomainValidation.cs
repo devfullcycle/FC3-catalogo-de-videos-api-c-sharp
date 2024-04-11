@@ -33,4 +33,18 @@ public class DomainValidation
                 $"{fieldName} is not a valid {typeof(T).Name}");
         }
     }
+
+    public static void NotNegativeOrZero(int target, string fieldName)
+    {
+        if (target <= 0)
+            throw new EntityValidationException(
+                $"{fieldName} should be greater than 0");
+    }
+
+    public static void NotMinDateTime(DateTime target, string fieldName)
+    {
+        if (target == DateTime.MinValue)
+            throw new EntityValidationException(
+                $"{fieldName} should be a valid date");
+    }
 }

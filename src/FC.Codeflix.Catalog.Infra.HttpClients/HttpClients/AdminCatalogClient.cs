@@ -21,4 +21,9 @@ public class AdminCatalogClient : IAdminCatalogGateway
             $"genres/{id}", SerializerConfiguration.SnakeCaseSerializerOptions, cancellationToken);
         return response!.Data.ToGenre();
     }
+
+    public Task<Video> GetVideoAsync(Guid id, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }
