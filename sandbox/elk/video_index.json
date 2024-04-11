@@ -1,0 +1,83 @@
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "createdAt":{
+        "type": "date"
+      },
+      "description": {
+        "type": "text"
+      },
+      "yearLaunched":{
+        "type": "integer"
+      },
+      "duration":{
+        "type": "integer"
+      },
+      "rating":{
+        "type": "integer"
+      },
+      "thumbUrl":{
+        "type": "keyword"
+      },
+      "thumbHalfUrl":{
+        "type": "keyword"
+      },
+      "bannerUrl":{
+        "type": "keyword"
+      },
+      "mediaUrl":{
+        "type": "keyword"
+      },
+      "trailerUrl":{
+        "type": "keyword"
+      },
+      "categories": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "name": {
+            "type": "keyword"
+          }
+        }
+      },
+      "genres": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "name": {
+            "type": "keyword"
+          }
+        }
+      },
+      "castMembers": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "name": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

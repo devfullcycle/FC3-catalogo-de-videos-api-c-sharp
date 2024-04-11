@@ -1,0 +1,51 @@
+PUT genres/_doc/3d7d94b3-28e8-40e8-9265-1a1e1c49a30f
+{
+  "id": "3d7d94b3-28e8-40e8-9265-1a1e1c49a30f",
+  "name": "Genre Test",
+  "categories": [
+    {
+      "id": "494b457a-8b6c-4cfd-9102-ddd30f1f50e5",
+      "name": "Category 1"
+    },
+    {
+      "id": "dca183c0-482e-4c91-8384-8fefda9fd223",
+      "name": "Category 2"
+    }
+  ]
+}
+
+
+PUT videos/_doc/08d1b36b-a886-4e88-a915-f90de4ffc2ae
+{
+  "id": "08d1b36b-a886-4e88-a915-f90de4ffc2ae",
+  "title": "Interstellar",
+  "createdAt": "2024-03-01",
+  "description": "Interstellar",
+  "yearLaunched": 2014,
+  "duration": 200,
+  "rating": 1,
+  "thumbUrl": "https://thumb.png",
+  "thumbHalfUrl": "https://thumbhalf.png",
+  "bannerUrl": "https://banner.png",
+  "trailerUrl": "https://trailer.png",
+  "mediaUrl": "https://media.png",
+  "genres": [
+    {
+      "id": "3d7d94b3-28e8-40e8-9265-1a1e1c49a30f",
+      "name": "Genre Test"
+    }
+  ],
+  "categories": [
+    {
+      "id": "5c464ce4-12f0-4f6e-bda4-1f2cab4b39d4",
+      "name": "Category Test"
+    }
+  ],
+  "castMembers": [
+    {
+      "id": "c6a5a519-b296-4a2f-a074-e1f2e3a83893",
+      "name": "Director",
+      "type": 1
+    }
+  ]
+}

@@ -8,7 +8,7 @@ public class SaveCastMemberTestFixture : CastMemberTestFixture
     public SaveCastMemberInput GetValidInput()
         => new(
             Guid.NewGuid(),
-            DataGenerator.GetValidName(),
+            DataGenerator.GetValidCastMemberName(),
             DataGenerator.GetRandomCastMemberType(),
             DateTime.Now);
 
