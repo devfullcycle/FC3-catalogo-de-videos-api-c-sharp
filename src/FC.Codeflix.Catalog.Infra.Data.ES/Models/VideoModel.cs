@@ -18,9 +18,9 @@ public class VideoModel
     public string? BannerUrl { get; set; }
     public string? MediaUrl { get; set; }
     public string? TrailerUrl { get; set; }
-    public List<VideoCategoryModel> Categories { get; set; } = null!;
-    public List<VideoGenreModel> Genres { get; set; } = null!;
-    public List<VideoCastMemberModel> CastMembers { get; set; } = null!;
+    public List<VideoCategoryModel>? Categories { get; set; }
+    public List<VideoGenreModel>? Genres { get; set; }
+    public List<VideoCastMemberModel>? CastMembers { get; set; }
 
     public static VideoModel FromEntity(Video video)
         => new()
@@ -54,9 +54,11 @@ public class VideoModel
             Rating,
             new Medias(ThumbUrl, ThumbHalfUrl, BannerUrl, MediaUrl, TrailerUrl));
 
-        video.AddCategories(Categories.Select(item => new Category(item.Id, item.Name)).ToArray());
-        video.AddGenres(Genres.Select(item => new Genre(item.Id, item.Name)).ToArray());
-        video.AddCastMembers(CastMembers.Select(item => new CastMember(item.Id, item.Name, item.Type)).ToArray());
+        video.AddCategories(Categories?.Select(item => new Category(item.Id, item.Name)).ToArray() ??
+                            Array.Empty<Category>());
+        video.AddGenres(Genres?.Select(item => new Genre(item.Id, item.Name)).ToArray() ?? Array.Empty<Genre>());
+        video.AddCastMembers(CastMembers?.Select(item => new CastMember(item.Id, item.Name, item.Type)).ToArray() ??
+                             Array.Empty<CastMember>());
         return video;
     }
 }

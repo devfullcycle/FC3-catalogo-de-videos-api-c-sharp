@@ -1,4 +1,4 @@
-﻿schema {
+schema {
   query: Query
   mutation: Mutation
 }
@@ -8,11 +8,20 @@ type Query {
   genres(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchGenrePayload!
   genre(id: UUID!): GenrePayload
   castMembers(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchCastMemberPayload!
+  videos(page: Int! = 1 perPage: Int! = 10 search: String! = "" sort: String! = "" direction: SearchOrder! = ASC): SearchVideoPayload!
 }
 
 type Mutation {
   saveCategory(input: SaveCategoryInput!): CategoryPayload!
   deleteCategory(id: UUID!): Boolean!
+}
+
+input SaveCategoryInput {
+  id: UUID!
+  name: String!
+  description: String!
+  isActive: Boolean!
+  createdAt: DateTime!
 }
 
 type CategoryPayload {
@@ -33,14 +42,6 @@ type SearchCategoryPayload {
   perPage: Int!
   total: Int!
   items: [CategoryPayload!]!
-}
-
-input SaveCategoryInput {
-  id: UUID!
-  name: String!
-  description: String!
-  isActive: Boolean!
-  createdAt: DateTime!
 }
 
 scalar UUID
@@ -67,6 +68,31 @@ type SearchCastMemberPayload {
   items: [CastMemberPayload!]!
 }
 
+type SearchVideoPayload {
+  currentPage: Int!
+  perPage: Int!
+  total: Int!
+  items: [VideoPayload!]!
+}
+
+type VideoPayload {
+  id: UUID!
+  title: String!
+  description: String!
+  yearLaunched: Int!
+  duration: Int!
+  createdAt: DateTime!
+  rating: Rating!
+  thumbUrl: String
+  thumbHalfUrl: String
+  bannerUrl: String
+  mediaUrl: String
+  trailerUrl: String
+  categories: [VideoCategoryPayload!]!
+  genres: [VideoGenrePayload!]!
+  castMembers: [VideoCastMemberPayload!]!
+}
+
 type CastMemberPayload {
   id: UUID!
   name: String!
@@ -85,4 +111,30 @@ scalar DateTime
 enum CastMemberType {
   DIRECTOR
   ACTOR
+}
+
+type VideoCastMemberPayload {
+  id: UUID!
+  name: String!
+  type: CastMemberType!
+}
+
+type VideoGenrePayload {
+  id: UUID!
+  name: String!
+}
+
+type VideoCategoryPayload {
+  id: UUID!
+  name: String!
+}
+
+enum Rating {
+  ER
+  L
+  RATE10
+  RATE12
+  RATE14
+  RATE16
+  RATE18
 }
