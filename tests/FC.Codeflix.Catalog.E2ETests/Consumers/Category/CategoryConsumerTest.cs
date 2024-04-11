@@ -14,11 +14,11 @@ public class CategoryConsumerTest : IDisposable
         _fixture = fixture;
     }
 
-    [Theory(DisplayName = nameof(CategoryEvent_WhenOperationIsCreate_SavesCategory))]
+    [Theory(DisplayName = nameof(CategoryEvent_WhenOperationIsCreateOrRead_SavesCategory))]
     [Trait("E2E/Consumers", "Category")]
     [InlineData("c")]
     [InlineData("r")]
-    public async Task CategoryEvent_WhenOperationIsCreate_SavesCategory(string operation)
+    public async Task CategoryEvent_WhenOperationIsCreateOrRead_SavesCategory(string operation)
     {
         var message = _fixture.BuildValidMessage(operation);
         var category = message.Payload.After;

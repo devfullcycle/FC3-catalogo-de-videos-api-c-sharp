@@ -80,4 +80,58 @@ public class DomainValidationTest
 
         action.Should().NotThrow();
     }
+    
+    [Fact(DisplayName = nameof(NotNegativeOrZeroOk))]
+    [Trait("Domain", "DomainValidation - Validation")]
+    public void NotNegativeOrZeroOk()
+    {
+        int target = Faker.Random.Int(1);
+        string fieldName = Faker.Commerce.ProductName().Replace(" ", "");
+
+        Action action =
+            () => DomainValidation.NotNegativeOrZero(target, fieldName);
+
+        action.Should().NotThrow();
+    }
+    
+    [Fact(DisplayName = nameof(NotNegativeOrZeroThrowWhenZeroOrNegative))]
+    [Trait("Domain", "DomainValidation - Validation")]
+    public void NotNegativeOrZeroThrowWhenZeroOrNegative()
+    {
+        int target = Faker.Random.Int(-10, 0);
+        string fieldName = Faker.Commerce.ProductName().Replace(" ", "");
+
+        Action action =
+            () => DomainValidation.NotNegativeOrZero(target, fieldName);
+
+        action.Should().Throw<EntityValidationException>()
+            .WithMessage($"{fieldName} should be greater than 0");
+    }
+    
+    [Fact(DisplayName = nameof(NotMinDateTimeOk))]
+    [Trait("Domain", "DomainValidation - Validation")]
+    public void NotMinDateTimeOk()
+    {
+        DateTime target = Faker.Date.Recent();
+        string fieldName = Faker.Commerce.ProductName().Replace(" ", "");
+
+        Action action =
+            () => DomainValidation.NotMinDateTime(target, fieldName);
+
+        action.Should().NotThrow();
+    }
+    
+    [Fact(DisplayName = nameof(NotMinDateTimeThrowWhenMinDateTime))]
+    [Trait("Domain", "DomainValidation - Validation")]
+    public void NotMinDateTimeThrowWhenMinDateTime()
+    {
+        DateTime target = DateTime.MinValue;
+        string fieldName = Faker.Commerce.ProductName().Replace(" ", "");
+
+        Action action =
+            () => DomainValidation.NotMinDateTime(target, fieldName);
+
+        action.Should().Throw<EntityValidationException>()
+            .WithMessage($"{fieldName} should be a valid date");
+    }
 }

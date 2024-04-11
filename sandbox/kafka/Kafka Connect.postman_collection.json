@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"catalog-admin\",\r\n    \"config\": {\r\n        \"connector.class\": \"io.debezium.connector.mysql.MySqlConnector\",\r\n        \"tasks.max\": \"1\",\r\n        \"database.hostname\": \"catalogdb\",\r\n        \"database.port\": \"3306\",\r\n        \"database.user\": \"root\",\r\n        \"database.password\": \"C0D3fl1X.@\",\r\n        \"database.server.id\": \"184054\",\r\n        \"topic.prefix\": \"catalogadmin\",\r\n        \"database.include.list\": \"catalog\",\r\n        \"schema.history.internal.kafka.bootstrap.servers\": \"kafka:9092\",\r\n        \"schema.history.internal.kafka.topic\": \"schema-changes.catalog\",\r\n        \"snapshot.mode\": \"when_needed\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"name\": \"catalog-admin\",\r\n    \"config\": {\r\n        \"name\": \"catalog-admin\",\r\n        \"connector.class\": \"io.debezium.connector.mysql.MySqlConnector\",\r\n        \"tasks.max\": \"1\",\r\n        \"database.hostname\": \"catalogdb\",\r\n        \"database.port\": \"3306\",\r\n        \"database.user\": \"root\",\r\n        \"database.password\": \"C0D3fl1X.@\",\r\n        \"database.server.id\": \"184054\",\r\n        \"topic.prefix\": \"catalogadmin\",\r\n        \"database.include.list\": \"catalog\",\r\n        \"schema.history.internal.kafka.bootstrap.servers\": \"kafka:9092\",\r\n        \"schema.history.internal.kafka.topic\": \"schema-changes.catalog\",\r\n        \"snapshot.mode\": \"when_needed\",\r\n        \"tombstones.on.delete\": false\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -41,7 +41,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"connector.class\": \"io.debezium.connector.mysql.MySqlConnector\",\r\n    \"tasks.max\": \"1\",\r\n    \"database.hostname\": \"catalogdb\",\r\n    \"database.port\": \"3306\",\r\n    \"database.user\": \"root\",\r\n    \"database.password\": \"C0D3fl1X.@\",\r\n    \"database.server.id\": \"184054\",\r\n    \"topic.prefix\": \"catalogadmin\",\r\n    \"database.include.list\": \"catalog\",\r\n    \"schema.history.internal.kafka.bootstrap.servers\": \"kafka:9092\",\r\n    \"schema.history.internal.kafka.topic\": \"schema-changes.catalog\",\r\n    \"snapshot.mode\": \"when_needed\",\r\n    \"name\": \"catalog-admin\"\r\n}",
+					"raw": "{\r\n    \"name\": \"catalog-admin\",\r\n    \"connector.class\": \"io.debezium.connector.mysql.MySqlConnector\",\r\n    \"tasks.max\": \"1\",\r\n    \"database.hostname\": \"catalogdb\",\r\n    \"database.port\": \"3306\",\r\n    \"database.user\": \"root\",\r\n    \"database.password\": \"C0D3fl1X.@\",\r\n    \"database.server.id\": \"184054\",\r\n    \"topic.prefix\": \"catalogadmin\",\r\n    \"database.include.list\": \"catalog\",\r\n    \"schema.history.internal.kafka.bootstrap.servers\": \"kafka:9092\",\r\n    \"schema.history.internal.kafka.topic\": \"schema-changes.catalog\",\r\n    \"snapshot.mode\": \"when_needed\",\r\n    \"tombstones.on.delete\": false\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -79,6 +79,37 @@
 					"path": [
 						"connectors",
 						"catalog-admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate Config",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"catalog-admin\",\n    \"connector.class\": \"io.debezium.connector.mysql.MySqlConnector\",\n    \"tasks.max\": \"1\",\n    \"database.hostname\": \"catalogdb\",\n    \"database.port\": \"3306\",\n    \"database.user\": \"root\",\n    \"database.password\": \"C0D3fl1X.@\",\n    \"database.server.id\": \"184054\",\n    \"topic.prefix\": \"catalogadmin\",\n    \"database.include.list\": \"catalog\",\n    \"schema.history.internal.kafka.bootstrap.servers\": \"kafka:9092\",\n    \"schema.history.internal.kafka.topic\": \"schema-changes.catalog\",\n    \"snapshot.mode\": \"when_needed\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/connector-plugins/MySqlConnector/config/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"connector-plugins",
+						"MySqlConnector",
+						"config",
+						"validate"
 					]
 				}
 			},
