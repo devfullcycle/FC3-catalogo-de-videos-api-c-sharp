@@ -11,6 +11,12 @@ public class Genre
 
     private readonly List<Category> _categories = new List<Category>();
     public IReadOnlyList<Category> Categories => _categories.AsReadOnly();
+
+    public Genre(Guid id, string name)
+        : this(id, name, true, DateTime.Now, null)
+    {
+        
+    }
     
     public Genre(
         Guid id,
