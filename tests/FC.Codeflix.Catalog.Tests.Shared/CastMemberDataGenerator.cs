@@ -11,11 +11,11 @@ public class CastMemberDataGenerator : DataGeneratorBase
     public DomainEntity.CastMember GetValidCastMember()
         => new(
             Guid.NewGuid(),
-            GetValidName(),
+            GetValidCastMemberName(),
             GetRandomCastMemberType()
         );
     
-    public string GetValidName()
+    public string GetValidCastMemberName()
         => Faker.Name.FullName();
     
     public CastMemberType GetRandomCastMemberType()
