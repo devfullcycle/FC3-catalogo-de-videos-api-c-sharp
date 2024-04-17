@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using FC.Codeflix.Catalog.Application.UseCases.Genre.GetGenresByIds;
 using FC.Codeflix.Catalog.Application.UseCases.Genre.SearchGenre;
 using FC.Codeflix.Catalog.Domain.Repositories.DTOs;
+using HotChocolate.Authorization;
 using HotChocolate.Resolvers;
 using MediatR;
 
@@ -11,6 +13,7 @@ public class GenreQueries
 {
     public async Task<SearchGenrePayload> GetGenresAsync(
         [Service] IMediator mediator,
+        ClaimsPrincipal claimsPrincipal,
         int page = 1,
         int perPage = 10,
         string search = "",

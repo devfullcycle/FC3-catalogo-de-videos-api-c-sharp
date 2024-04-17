@@ -7,6 +7,7 @@ using FC.Codeflix.Catalog.Application;
 using FC.Codeflix.Catalog.Infra.Data.ES;
 using FC.Codeflix.Catalog.Infra.Messaging;
 using FC.Codeflix.Catalog.Infra.HttpClients;
+using Keycloak.AuthServices.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddKeycloakAuthentication(builder.Configuration);
 builder.Services
+    .AddAuthorization()
     .AddUseCases()
     .AddMemoryCache()
     .AddHttpClients(builder.Configuration)
@@ -24,6 +27,7 @@ builder.Services
     .AddElasticSearch(builder.Configuration)
     .AddRepositories()
     .AddGraphQLServer()
+    .AddAuthorization()
     .AddQueryType()
     .AddMutationType()
     .AddTypeExtension<CategoryQueries>()
@@ -44,9 +48,10 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGraphQL();
+app.MapGraphQL().RequireAuthorization();
 
 app.MapControllers();
 

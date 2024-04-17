@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.6'
 
 services:
   elasticsearch:
@@ -6,20 +6,18 @@ services:
     container_name: elk_es01_tests
     restart: unless-stopped
     volumes:
-      - .docker/es01:/usr/share/elasticsearch/data
+      - .docker/es01:/var/lib/elasticsearch/data
     environment:
       - "discovery.type=single-node"
     ports:
       - '9201:9200'
       - '9301:9300'
-  
+
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper_tests
     environment:
       ZOOKEEPER_CLIENT_PORT: 2182
-    networks:
-      - catalog_api_tests
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -39,27 +37,19 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
-    networks:
-      - catalog_api_tests
 
   init-kafka:
     image: confluentinc/cp-kafka:latest
     depends_on:
       - kafka
     entrypoint: [ '/bin/sh', '-c' ]
-    networks:
-      - catalog_api_tests
     command: |
       "
       # blocks until kafka is reachable
       kafka-topics --bootstrap-server kafka:29092 --list
-      
+
       echo -e 'Deleting all topics'
       kafka-topics --bootstrap-server kafka:29092 --delete --topic 'catalogadmin.*'
 
       kafka-topics --bootstrap-server kafka:29092 --list
       "
-      
-networks:
-  catalog_api_tests:
-    external: true  
