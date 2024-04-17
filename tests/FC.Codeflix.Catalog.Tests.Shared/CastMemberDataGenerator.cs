@@ -23,10 +23,11 @@ public class CastMemberDataGenerator : DataGeneratorBase
 
     public IList<CastMemberModel> GetCastMemberModelList(int count)
         => Enumerable.Range(0, count)
-            .Select(_ =>
+            .Select(index =>
             {
-                Task.Delay(5).GetAwaiter().GetResult();
-                return CastMemberModel.FromEntity(GetValidCastMember());
+                var model = CastMemberModel.FromEntity(GetValidCastMember());
+                model.CreatedAt = DateTime.UtcNow.AddMinutes(index);
+                return model;
             })
             .ToList();
     
